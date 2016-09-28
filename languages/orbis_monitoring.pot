@@ -1,0 +1,149 @@
+# Copyright (C) 2016 Pronamic
+# This file is distributed under the Copyright (c) Pronamic.
+msgid ""
+msgstr ""
+"Project-Id-Version: Orbis Monitoring 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
+"POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: grunt-wp-i18n 0.5.4\n"
+
+#: admin/meta-box-monitor-details.php:11
+msgid "URL"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:22
+msgid "ID"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:23
+msgid "Date"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:24
+msgid "Duration"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:25
+msgid "Code"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:26
+msgid "Message"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:27
+msgid "Content Length"
+msgstr ""
+
+#: admin/meta-box-monitor-responses.php:28
+msgid "Content Type"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:38
+msgid "Monitor Details"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:47
+msgid "Monitor Responses"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:173
+msgid "D j M Y \\a\\t H:i:s"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:187
+msgid "Add New Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:188
+msgid "New Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:189
+msgid "Edit Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:190
+msgid "View Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:191
+msgid "All Monitors"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:192
+msgid "Search Monitors"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:193
+msgid "Parent Monitor:"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:194
+msgid "No monitors found."
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:195
+msgid "No monitors found in Trash."
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:197
+msgid "Description."
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:315
+msgid "Once Every 5 Minutes"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Orbis Monitoring"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"The Orbis Monitoring plugin extends your Orbis environment with the option "
+"to monitor websites."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Pronamic"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://www.pronamic.eu/"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:182
+msgctxt "post type general name"
+msgid "Monitors"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:183
+msgctxt "post type singular name"
+msgid "Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:184
+msgctxt "admin menu"
+msgid "Monitors"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:185
+msgctxt "add new on admin bar"
+msgid "Monitor"
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:186
+msgctxt "monitor"
+msgid "Add New"
+msgstr ""

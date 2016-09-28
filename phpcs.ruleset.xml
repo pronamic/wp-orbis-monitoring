@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<ruleset name="Orbis Monitoring rules">
+	<rule ref="WordPress">
+		<exclude name="Squiz.Commenting" />
+
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+	</rule>
+
+	<rule ref="WordPress.XSS.EscapeOutput">
+		<properties>
+			<property name="customEscapingFunctions" type="array" value="orbis_price" />
+		</properties>
+	</rule>
+</ruleset>

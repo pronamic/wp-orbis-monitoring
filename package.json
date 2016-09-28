@@ -1,0 +1,42 @@
+{
+  "name": "orbis-monitoring",
+  "version": "1.0.0",
+  "description": "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pronamic/wp-orbis-monitoring.git"
+  },
+  "keywords": [
+    "orbis",
+    "deal",
+    "monitoring",
+    "offer",
+    "offers"
+  ],
+  "author": {
+    "name": "Pronamic",
+    "email": "info@pronamic.nl",
+    "url": "http://www.pronamic.nl/"
+  },
+  "contributors": [
+    {
+      "name": "Remco Tolsma",
+      "email": "info@remcotolsma.nl",
+      "url": "http://www.remcotolsma.nl/"
+    }
+  ],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/pronamic/wp-orbis-monitoring/issues",
+    "email": "support@pronamic.nl"
+  },
+  "homepage": "https://github.com/pronamic/wp-orbis-monitoring",
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-checkwpversion": "~0.3.0",
+    "grunt-phpcs": "^0.4.0",
+    "grunt-phplint": "0.0.8",
+    "grunt-wp-i18n": "~0.5.4",
+    "load-grunt-tasks": "^3.5.2"
+  }
+}
