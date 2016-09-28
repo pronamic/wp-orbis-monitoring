@@ -282,7 +282,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$query = new WP_Query( array(
 			'post_type'      => 'orbis_monitor',
-			'posts_per_page' => 1,
+			'posts_per_page' => 5,
 			'orderby'        => 'modified',
 			'order'          => 'ASC',
 		) );
