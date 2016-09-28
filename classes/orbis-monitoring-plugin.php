@@ -22,6 +22,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		add_action( 'save_post_' . $post_type, array( $this, 'save_post' ) );
 
+		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
+
 		// Tables
 		orbis_register_table( 'orbis_monitor_responses' );
 	}
@@ -275,6 +277,13 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				'%s',
 			) 
 		);
+
+		// Custom actions
+		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
+
+		if ( '200' !== $response_code ) {
+			do_action( 'orbis_monitor_problem', $post );
+		}
 	}
 
 	public function monitor() {
@@ -315,5 +324,30 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		}
 
 		return $schedules;
+	}
+
+	/**
+	 * Slack events.
+	 *
+	 * @see http://gedex.web.id/wp-slack/
+	 * @see https://github.com/gedex/wp-slack/blob/0.5.1/includes/event-manager.php#L57-L167
+	 * @see https://github.com/gedex/wp-slack-edd/blob/0.1.0/slack-edd.php
+	 */
+	public function slack_get_events( $events ) {
+		$events['orbis_monitor_problem'] = array(
+			'action'      => 'orbis_monitor_problem',
+			'description' => __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' ),
+			'message'     => function( $post ) {
+				return sprintf(
+					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ),
+					get_permalink( $post ),
+					get_the_title( $post ),
+					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
+					get_post_meta( $post->ID, '_orbis_monitor_url', true ),
+				);
+			},
+		);
+
+		return $events;
 	}
 }
