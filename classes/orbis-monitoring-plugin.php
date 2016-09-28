@@ -212,8 +212,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		if ( ! wp_next_scheduled ( 'orbis_monitor' ) ) {
 			wp_schedule_event( time(), 'every_5_minutes', 'orbis_monitor' );
 		}
-
-		$this->monitor();
 	}
 
 	public function monitor_post( $post ) {
