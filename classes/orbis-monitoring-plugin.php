@@ -5,7 +5,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		parent::__construct( $file );
 
 		$this->set_name( 'orbis_monitoring' );
-		$this->set_db_version( '1.0.5' );
+		$this->set_db_version( '1.0.0' );
 
 		add_action( 'init', array( $this, 'init' ) );
 
@@ -113,7 +113,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			monitored_date DATETIME NOT NULL,
 			duration FLOAT DEFAULT NULL,
 			response_code VARCHAR(3) DEFAULT NULL,
-			response_message VARCHAR(20) DEFAULT NULL,
+			response_message VARCHAR(40) DEFAULT NULL,
 			response_body LONGTEXT DEFAULT NULL,
 			response_date DATETIME NOT NULL,
 			response_content_length BIGINT(20) DEFAULT NULL,
@@ -254,7 +254,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		wp_update_post( $post );
 
-		$wpdb->insert( 
+		$result = $wpdb->insert(
 			$wpdb->orbis_monitor_responses,
 			array( 
 				'post_id'                 => $post->ID,
@@ -343,7 +343,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
-					get_post_meta( $post->ID, '_orbis_monitor_url', true ),
+					get_post_meta( $post->ID, '_orbis_monitor_url', true )
 				);
 			},
 		);
