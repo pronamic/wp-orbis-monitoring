@@ -207,7 +207,14 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'has_archive'        => true,
 			'hierarchical'       => false,
 			'menu_position'      => null,
-			'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )
+			'supports'           => array(
+				'title',
+				'editor',
+				'author',
+				'thumbnail',
+				'excerpt',
+				'comments',
+			),
 		) );
 
 		if ( ! wp_next_scheduled ( 'orbis_monitor' ) ) {
