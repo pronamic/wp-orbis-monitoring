@@ -63,7 +63,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		include plugin_dir_path( $this->file ) . '/admin/meta-box-monitor-responses.php';
 	}
 
-
 	/**
 	 * When the post is saved, saves our custom data.
 	 *
