@@ -209,10 +209,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'menu_position'      => null,
 			'supports'           => array(
 				'title',
-				'editor',
 				'author',
-				'thumbnail',
-				'excerpt',
 				'comments',
 			),
 		) );
