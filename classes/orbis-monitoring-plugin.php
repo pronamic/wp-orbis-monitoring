@@ -95,6 +95,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				update_post_meta( $post_id, $key, $value );
 			}
 		}
+
+		$this->monitor_post( $post_id );
 	}
 
 	/**
@@ -222,6 +224,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function monitor_post( $post ) {
 		global $wpdb;
 
+		$post = get_post( $post );
+
 		$url = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 
 		if ( empty( $url ) ) {
@@ -232,9 +236,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		// @see https://codex.wordpress.org/Function_Reference/wp_remote_get
 		$response = wp_remote_get( $url, array(
-			'timeout'    => 30,
+			'timeout'     => 30,
+			'redirection' => 0,
 			// @see http://www.browser-info.net/useragents
-			'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
+			'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
 		) );
 
 		$end = microtime( true );
@@ -254,8 +259,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		update_post_meta( $post->ID, '_orbis_monitor_response_content_length', strlen( $body ) );
 		update_post_meta( $post->ID, '_orbis_monitor_response_content_type', $content_type );
 		update_post_meta( $post->ID, '_orbis_monitor_response_date', strtotime( $date ) );
-
-		wp_update_post( $post );
 
 		$result = $wpdb->insert(
 			$wpdb->orbis_monitor_responses,
@@ -305,8 +308,11 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			while( $query->have_posts() ) {
 				$query->the_post();
 
-				$this->monitor_post( get_post() );
+				$post = get_post();
 
+				$this->monitor_post( $post );
+
+				wp_update_post( $post );
 			}
 
 			wp_reset_postdata();
