@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2016-09-28 14:32+0100\n"
+"PO-Revision-Date: 2016-10-25 16:43+0100\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
 "Language: nl_NL\n"
@@ -14,9 +14,17 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.7.4\n"
 
-#: admin/meta-box-monitor-details.php:11
+#: admin/meta-box-monitor-details.php:13
 msgid "URL"
 msgstr "URL"
+
+#: admin/meta-box-monitor-details.php:21
+msgid "Required Response Code"
+msgstr "Vereiste antwoordcode"
+
+#: admin/meta-box-monitor-details.php:29
+msgid "Required Location"
+msgstr "Vereiste locatie"
 
 #: admin/meta-box-monitor-responses.php:22
 msgid "ID"
@@ -40,85 +48,96 @@ msgstr "Bericht"
 
 #: admin/meta-box-monitor-responses.php:27
 msgid "Content Length"
-msgstr ""
+msgstr "Content Length"
 
 #: admin/meta-box-monitor-responses.php:28
 msgid "Content Type"
-msgstr ""
+msgstr "Content Type"
 
-#: classes/orbis-monitoring-plugin.php:38
+#: classes/orbis-monitoring-plugin.php:40
 msgid "Monitor Details"
 msgstr "Monitor details"
 
-#: classes/orbis-monitoring-plugin.php:47
+#: classes/orbis-monitoring-plugin.php:49
 msgid "Monitor Responses"
-msgstr ""
+msgstr "Monitor antwoorden"
 
-#: classes/orbis-monitoring-plugin.php:173
+#: classes/orbis-monitoring-plugin.php:178
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
-#: classes/orbis-monitoring-plugin.php:187
+#: classes/orbis-monitoring-plugin.php:192
 #, fuzzy
 msgid "Add New Monitor"
 msgstr "Nieuwe categorie"
 
-#: classes/orbis-monitoring-plugin.php:188
+#: classes/orbis-monitoring-plugin.php:193
 msgid "New Monitor"
-msgstr ""
+msgstr "Nieuwe monitor"
 
-#: classes/orbis-monitoring-plugin.php:189
+#: classes/orbis-monitoring-plugin.php:194
 #, fuzzy
 msgid "Edit Monitor"
 msgstr "Bewerk categorie"
 
-#: classes/orbis-monitoring-plugin.php:190
+#: classes/orbis-monitoring-plugin.php:195
 msgid "View Monitor"
 msgstr ""
 
-#: classes/orbis-monitoring-plugin.php:191
+#: classes/orbis-monitoring-plugin.php:196
 #, fuzzy
 msgid "All Monitors"
 msgstr "Alle bedrijven"
 
-#: classes/orbis-monitoring-plugin.php:192
+#: classes/orbis-monitoring-plugin.php:197
 #, fuzzy
 msgid "Search Monitors"
 msgstr "Zoek bedrijven"
 
-#: classes/orbis-monitoring-plugin.php:193
+#: classes/orbis-monitoring-plugin.php:198
 #, fuzzy
 msgid "Parent Monitor:"
 msgstr "Bovenliggende categorie:"
 
-#: classes/orbis-monitoring-plugin.php:194
+#: classes/orbis-monitoring-plugin.php:199
 #, fuzzy
 msgid "No monitors found."
 msgstr "Geen bedrijven gevonden."
 
-#: classes/orbis-monitoring-plugin.php:195
+#: classes/orbis-monitoring-plugin.php:200
 #, fuzzy
 msgid "No monitors found in Trash."
 msgstr "Geen bedrijven gevonden in prullenbak."
 
-#: classes/orbis-monitoring-plugin.php:197
+#: classes/orbis-monitoring-plugin.php:202
 #, fuzzy
 msgid "Description."
 msgstr "Abonnement"
 
-#: classes/orbis-monitoring-plugin.php:315
+#: classes/orbis-monitoring-plugin.php:344
 msgid "Once Every 5 Minutes"
 msgstr ""
 
+#: classes/orbis-monitoring-plugin.php:361
+msgid "When a Orbis monitor problem was detected."
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:364
+#: classes/orbis-monitoring-plugin.php:378
+msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
+msgstr ""
+
+#: classes/orbis-monitoring-plugin.php:375
+msgid "When a Orbis monitor was checked."
+msgstr ""
+
 #. Plugin Name of the plugin/theme
-#, fuzzy
 msgid "Orbis Monitoring"
-msgstr "Orbis Logboek"
+msgstr "Orbis Monitoring"
 
 #. Plugin URI of the plugin/theme
-#, fuzzy
 msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
-msgstr "http://www.happywp.com/plugins/orbis-deals/"
+msgstr "https://www.pronamic.eu/plugins/orbis-monitoring/"
 
 #. Description of the plugin/theme
 #, fuzzy
@@ -134,31 +153,30 @@ msgid "Pronamic"
 msgstr "Pronamic"
 
 #. Author URI of the plugin/theme
-#, fuzzy
 msgid "https://www.pronamic.eu/"
-msgstr "http://www.pronamic.eu/"
+msgstr "https://www.pronamic.nl/"
 
-#: classes/orbis-monitoring-plugin.php:182
+#: classes/orbis-monitoring-plugin.php:187
 msgctxt "post type general name"
 msgid "Monitors"
 msgstr "Monitors"
 
-#: classes/orbis-monitoring-plugin.php:183
+#: classes/orbis-monitoring-plugin.php:188
 msgctxt "post type singular name"
 msgid "Monitor"
 msgstr "Monitor"
 
-#: classes/orbis-monitoring-plugin.php:184
+#: classes/orbis-monitoring-plugin.php:189
 msgctxt "admin menu"
 msgid "Monitors"
 msgstr "Monitors"
 
-#: classes/orbis-monitoring-plugin.php:185
+#: classes/orbis-monitoring-plugin.php:190
 msgctxt "add new on admin bar"
 msgid "Monitor"
 msgstr "Monitor"
 
-#: classes/orbis-monitoring-plugin.php:186
+#: classes/orbis-monitoring-plugin.php:191
 msgctxt "monitor"
 msgid "Add New"
 msgstr "Nieuwe monitor"

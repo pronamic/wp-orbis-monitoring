@@ -83,7 +83,9 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		/* OK, its safe for us to save the data now. */
 		$definition = array(
-			'_orbis_monitor_url' => FILTER_VALIDATE_URL,
+			'_orbis_monitor_url'                    => FILTER_VALIDATE_URL,
+			'_orbis_monitor_required_response_code' => FILTER_SANITIZE_STRING,
+			'_orbis_monitor_required_location'      => FILTER_SANITIZE_STRING,
 		);
 
 		$data = filter_input_array( INPUT_POST, $definition );
@@ -285,9 +287,18 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		);
 
 		// Custom actions
+		$required_response_code = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
+		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
+
+		$required_location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
+
 		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
 
-		if ( '200' !== $response_code ) {
+		if (
+			$required_response_code !== $response_code
+				&&
+			$required_location !== wp_remote_retrieve_header( $response, 'location' )
+		) {
 			do_action( 'orbis_monitor_problem', $post );
 		}
 
