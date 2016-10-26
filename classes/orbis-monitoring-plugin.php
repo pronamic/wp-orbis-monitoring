@@ -296,7 +296,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		if (
 			$required_response_code !== $response_code
-				&&
+				||
 			$required_location !== wp_remote_retrieve_header( $response, 'location' )
 		) {
 			do_action( 'orbis_monitor_problem', $post );
@@ -306,24 +306,23 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	}
 
 	public function monitor() {
-		global $wpdb;
-
 		$query = new WP_Query( array(
 			'post_type'      => 'orbis_monitor',
 			'posts_per_page' => 5,
 			'orderby'        => 'modified',
 			'order'          => 'ASC',
+			'no_found_rows'  => true,
 		) );
 
 		if ( $query->have_posts() ) {
 			while( $query->have_posts() ) {
 				$query->the_post();
 
-				$post = get_post();
+				$this->monitor_post( get_post() );
 
-				$this->monitor_post( $post );
-
-				wp_update_post( $post );
+				wp_update_post( array(
+					'ID' => get_the_ID(),
+				) );
 			}
 
 			wp_reset_postdata();
