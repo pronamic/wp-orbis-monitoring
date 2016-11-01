@@ -105,20 +105,20 @@ msgstr ""
 msgid "Description."
 msgstr ""
 
-#: classes/orbis-monitoring-plugin.php:344
+#: classes/orbis-monitoring-plugin.php:343
 msgid "Once Every 5 Minutes"
 msgstr ""
 
-#: classes/orbis-monitoring-plugin.php:361
+#: classes/orbis-monitoring-plugin.php:360
 msgid "When a Orbis monitor problem was detected."
 msgstr ""
 
-#: classes/orbis-monitoring-plugin.php:364
-#: classes/orbis-monitoring-plugin.php:378
+#: classes/orbis-monitoring-plugin.php:363
+#: classes/orbis-monitoring-plugin.php:384
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr ""
 
-#: classes/orbis-monitoring-plugin.php:375
+#: classes/orbis-monitoring-plugin.php:381
 msgid "When a Orbis monitor was checked."
 msgstr ""
 
