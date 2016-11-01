@@ -299,10 +299,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				||
 			$required_location !== wp_remote_retrieve_header( $response, 'location' )
 		) {
-			do_action( 'orbis_monitor_problem', $post );
+			do_action( 'orbis_monitor_problem', $post, $response );
 		}
 
-		do_action( 'orbis_monitor_checked', $post );
+		do_action( 'orbis_monitor_checked', $post, $response );
 	}
 
 	public function monitor() {
@@ -358,21 +358,28 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$events['orbis_monitor_problem'] = array(
 			'action'      => 'orbis_monitor_problem',
 			'description' => __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' ),
-			'message'     => function( $post ) {
-				return sprintf(
+			'message'     => function( $post, $response ) {
+				$message = sprintf(
 					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ),
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
 					get_post_meta( $post->ID, '_orbis_monitor_url', true )
 				);
+
+				if ( is_wp_error( $response ) ) {
+					$message .= "\n";
+					$message .= $response->get_error_message();
+				}
+
+				return $message;
 			},
 		);
 
 		$events['orbis_monitor_checked'] = array(
 			'action'      => 'orbis_monitor_checked',
 			'description' => __( 'When a Orbis monitor was checked.', 'orbis_monitoring' ),
-			'message'     => function( $post ) {
+			'message'     => function( $post, $response ) {
 				return sprintf(
 					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ),
 					get_permalink( $post ),
