@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2016-11-01 13:32+0100\n"
+"PO-Revision-Date: 2016-11-01 13:33+0100\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
 "Language: nl_NL\n"
@@ -118,8 +118,7 @@ msgstr "Zodra een Orbis probleem wordt gedetecteerd."
 #: classes/orbis-monitoring-plugin.php:384
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr ""
-"Orbis monitor <%s|%s> werd zojuist gecontroleerd, response code was `%s` » "
-"%s."
+"Orbis monitor <%s|%s> werd zojuist gecontroleerd, antwoordcode was `%s` » %s."
 
 #: classes/orbis-monitoring-plugin.php:381
 msgid "When a Orbis monitor was checked."
