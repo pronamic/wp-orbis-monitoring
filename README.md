@@ -8,6 +8,6 @@ UPDATE
 SET
 	response_body = NULL
 WHERE
-	monitored_date < DATE_ADD( NOW(),INTERVAL -1 MONTH )
+	monitored_date < DATE_ADD( NOW(), INTERVAL -1 MONTH )
 ;
 ```
