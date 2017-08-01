@@ -6,6 +6,11 @@ $url      = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 $code     = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
 
+$curl = sprintf(
+	'curl --head %s',
+	escapeshellarg( $url )
+);
+
 ?>
 <table class="form-table">
 	<tr valign="top">
@@ -30,6 +35,14 @@ $location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true )
 		</th>
 		<td>
 			<input id="orbis_monitor_location" name="_orbis_monitor_required_location" value="<?php echo esc_attr( $location ); ?>" type="text" class="regular-text" />
+		</td>
+	</tr>
+	<tr valign="top">
+		<th scope="row">
+			<label for="orbis_monitor_curl"><?php esc_html_e( 'cURL', 'orbis_monitoring' ); ?></label>
+		</th>
+		<td>
+			<input id="orbis_monitor_curl" name="_orbis_monitor_curl" value="<?php echo esc_attr( $curl ); ?>" readonly="readonly" type="text" class="regular-text" />
 		</td>
 	</tr>
 </table>
