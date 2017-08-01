@@ -295,9 +295,9 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
 
 		if (
-			$required_response_code !== $response_code
+			( $required_response_code !== $response_code )
 				||
-			$required_location !== wp_remote_retrieve_header( $response, 'location' )
+			( ! empty( $required_location ) && $required_location  !== wp_remote_retrieve_header( $response, 'location' ) )
 		) {
 			do_action( 'orbis_monitor_problem', $post, $response );
 		}
