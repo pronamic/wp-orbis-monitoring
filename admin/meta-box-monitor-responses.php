@@ -46,7 +46,7 @@ $responses = $wpdb->get_results( $wpdb->prepare( "
 					if ( empty( $response->duration ) ) {
 						echo '—';
 					} else {
-						echo esc_html( number_format_i18n( $response->duration, 6 ) );	
+						echo esc_html( number_format_i18n( $response->duration, 6 ) );
 					}
 
 					?>

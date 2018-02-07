@@ -110,7 +110,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	 */
 	public function install() {
 		// Tables
-		orbis_install_table( 'orbis_monitor_responses', "
+		orbis_install_table( 'orbis_monitor_responses', '
 			response_id BIGINT(16) UNSIGNED NOT NULL AUTO_INCREMENT,
 			post_id BIGINT(16) UNSIGNED NOT NULL,
 			monitored_date DATETIME NOT NULL,
@@ -123,7 +123,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			response_content_type VARCHAR(40) DEFAULT NULL,
 			PRIMARY KEY  (response_id),
 			KEY post_id (post_id)
-		" );
+		' );
 
 		// Parent
 		parent::install();
@@ -159,19 +159,19 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 				break;
 			case 'orbis_monitor_response_code' :
-				echo get_post_meta( $post_id, '_orbis_monitor_response_code', true );
+				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_code', true ) );
 
 				break;
 			case 'orbis_monitor_response_message' :
-				echo get_post_meta( $post_id, '_orbis_monitor_response_message', true );
+				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_message', true ) );
 
 				break;
 			case 'orbis_monitor_response_content_length' :
-				echo get_post_meta( $post_id, '_orbis_monitor_response_content_length', true );
+				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_content_length', true ) );
 
 				break;
 			case 'orbis_monitor_response_content_type' :
-				echo get_post_meta( $post_id, '_orbis_monitor_response_content_type', true );
+				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_content_type', true ) );
 
 				break;
 			case 'orbis_monitor_modified_date' :
@@ -183,7 +183,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 	public function init() {
 		register_post_type( 'orbis_monitor', array(
-			'labels'             =>  array(
+			'labels'              => array(
 				'name'               => _x( 'Monitors', 'post type general name', 'your-plugin-textdomain' ),
 				'singular_name'      => _x( 'Monitor', 'post type singular name', 'your-plugin-textdomain' ),
 				'menu_name'          => _x( 'Monitors', 'admin menu', 'your-plugin-textdomain' ),
@@ -197,7 +197,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				'search_items'       => __( 'Search Monitors', 'your-plugin-textdomain' ),
 				'parent_item_colon'  => __( 'Parent Monitor:', 'your-plugin-textdomain' ),
 				'not_found'          => __( 'No monitors found.', 'your-plugin-textdomain' ),
-				'not_found_in_trash' => __( 'No monitors found in Trash.', 'your-plugin-textdomain' )
+				'not_found_in_trash' => __( 'No monitors found in Trash.', 'your-plugin-textdomain' ),
 			),
 			'description'        => __( 'Description.', 'your-plugin-textdomain' ),
 			'public'             => true,
@@ -218,7 +218,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			),
 		) );
 
-		if ( ! wp_next_scheduled ( 'orbis_monitor' ) ) {
+		if ( ! wp_next_scheduled( 'orbis_monitor' ) ) {
 			wp_schedule_event( time(), 'every_5_minutes', 'orbis_monitor' );
 		}
 	}
@@ -264,7 +264,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$result = $wpdb->insert(
 			$wpdb->orbis_monitor_responses,
-			array( 
+			array(
 				'post_id'                 => $post->ID,
 				'monitored_date'          => current_time( 'mysql' ),
 				'duration'                => $duration,
@@ -272,16 +272,16 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				'response_message'        => $response_message,
 				'response_content_length' => strlen( $body ),
 				'response_content_type'   => $content_type,
-			), 
-			array( 
-				'%d', 
+			),
+			array(
+				'%d',
 				'%s',
 				'%f',
 				'%s',
 				'%s',
 				'%d',
 				'%s',
-			) 
+			)
 		);
 
 		// Custom actions
@@ -295,7 +295,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		if (
 			( $required_response_code !== $response_code )
 				||
-			( ! empty( $required_location ) && $required_location  !== wp_remote_retrieve_header( $response, 'location' ) )
+			( ! empty( $required_location ) && wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
 		) {
 			do_action( 'orbis_monitor_problem', $post, $response );
 		}
@@ -313,7 +313,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		) );
 
 		if ( $query->have_posts() ) {
-			while( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
 				$query->the_post();
 
 				$this->monitor_post( get_post() );
@@ -328,6 +328,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	}
 
 	/**
+	 * Cron Schedules
+	 *
 	 * @see https://codex.wordpress.org/Function_Reference/wp_schedule_event
 	 * @see https://developer.wordpress.org/plugins/cron/understanding-wp-cron-scheduling/
 	 * @see http://stackoverflow.com/questions/14103262/customizing-the-wp-schedule-event
