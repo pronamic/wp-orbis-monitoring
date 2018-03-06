@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2018-03-06 11:41+0100\n"
+"PO-Revision-Date: 2018-03-06 15:47+0100\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
 "Language: nl_NL\n"
@@ -13,6 +13,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: admin/meta-box-monitor-check-details.php:11
+#: admin/meta-box-monitor-details.php:51
+msgid "Required String"
+msgstr "Vereiste term"
 
 #: admin/meta-box-monitor-details.php:19
 msgid "URL"
@@ -29,10 +34,6 @@ msgstr "Vereiste locatie"
 #: admin/meta-box-monitor-details.php:43
 msgid "cURL"
 msgstr "cURL"
-
-#: admin/meta-box-monitor-details.php:51
-msgid "Required String"
-msgstr "Vereiste term"
 
 #: admin/meta-box-monitor-responses.php:22
 msgid "ID"
@@ -70,65 +71,110 @@ msgstr "Monitor details"
 msgid "Monitor Responses"
 msgstr "Monitor antwoorden"
 
-#: classes/orbis-monitoring-plugin.php:179
+#: classes/orbis-monitoring-plugin.php:58
+msgid "Monitor Check Details"
+msgstr "Monitor check details"
+
+#: classes/orbis-monitoring-plugin.php:197
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
-#: classes/orbis-monitoring-plugin.php:193
+#: classes/orbis-monitoring-plugin.php:211
 msgid "Add New Monitor"
 msgstr "Nieuwe monitor toevoegen"
 
-#: classes/orbis-monitoring-plugin.php:194
+#: classes/orbis-monitoring-plugin.php:212
 msgid "New Monitor"
 msgstr "Nieuwe monitor"
 
-#: classes/orbis-monitoring-plugin.php:195
+#: classes/orbis-monitoring-plugin.php:213
 msgid "Edit Monitor"
 msgstr "Monitor bewerken"
 
-#: classes/orbis-monitoring-plugin.php:196
+#: classes/orbis-monitoring-plugin.php:214
 msgid "View Monitor"
 msgstr "Monitor bekijken"
 
-#: classes/orbis-monitoring-plugin.php:197
+#: classes/orbis-monitoring-plugin.php:215
 msgid "All Monitors"
 msgstr "Alle monitors"
 
-#: classes/orbis-monitoring-plugin.php:198
+#: classes/orbis-monitoring-plugin.php:216
 msgid "Search Monitors"
 msgstr "Monitors zoeken"
 
-#: classes/orbis-monitoring-plugin.php:199
+#: classes/orbis-monitoring-plugin.php:217
 msgid "Parent Monitor:"
 msgstr "Bovenliggende monitor:"
 
-#: classes/orbis-monitoring-plugin.php:200
+#: classes/orbis-monitoring-plugin.php:218
 msgid "No monitors found."
 msgstr "Geen monitors gevonden."
 
-#: classes/orbis-monitoring-plugin.php:201
+#: classes/orbis-monitoring-plugin.php:219
 msgid "No monitors found in Trash."
 msgstr "Geen monitors gevonden in prullenbak."
 
-#: classes/orbis-monitoring-plugin.php:203
+#: classes/orbis-monitoring-plugin.php:221
+#: classes/orbis-monitoring-plugin.php:257
 msgid "Description."
 msgstr "Beschrijving."
 
-#: classes/orbis-monitoring-plugin.php:364
+#: classes/orbis-monitoring-plugin.php:247
+msgid "Add New Monitor Check"
+msgstr "Nieuw check toevoegen"
+
+#: classes/orbis-monitoring-plugin.php:248
+msgid "New Monitor Check"
+msgstr "Nieuwe check"
+
+#: classes/orbis-monitoring-plugin.php:249
+msgid "Edit Monitor Check"
+msgstr "Check bewerken"
+
+#: classes/orbis-monitoring-plugin.php:250
+msgid "View Monitor Check"
+msgstr "Check bekijken"
+
+#: classes/orbis-monitoring-plugin.php:251
+msgid "Monitor Checks"
+msgstr "Checks"
+
+#: classes/orbis-monitoring-plugin.php:252
+msgid "Search Monitor Checks"
+msgstr "Checks zoeken"
+
+#: classes/orbis-monitoring-plugin.php:253
+msgid "Parent Monitor Check:"
+msgstr "Bovenliggende check:"
+
+#: classes/orbis-monitoring-plugin.php:254
+msgid "No monitor check found."
+msgstr "Geen checks gevonden."
+
+#: classes/orbis-monitoring-plugin.php:255
+msgid "No monitor checks found in Trash."
+msgstr "Geen checks gevonden in prullenbak."
+
+#: classes/orbis-monitoring-plugin.php:382
+msgid "The response does not contain the required string. Expected \"%s\". \\n"
+msgstr "De respons bevat de vereiste term niet. Verwachtte \"%s\". \\n"
+
+#: classes/orbis-monitoring-plugin.php:447
 msgid "Once Every 5 Minutes"
 msgstr "Elke 5 minuten"
 
-#: classes/orbis-monitoring-plugin.php:381
+#: classes/orbis-monitoring-plugin.php:464
 msgid "When a Orbis monitor problem was detected."
 msgstr "Zodra een Orbis probleem wordt gedetecteerd."
 
-#: classes/orbis-monitoring-plugin.php:384
-#: classes/orbis-monitoring-plugin.php:410
+#: classes/orbis-monitoring-plugin.php:467
+#: classes/orbis-monitoring-plugin.php:493
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr ""
 "Orbis monitor <%s|%s> werd zojuist gecontroleerd, antwoordcode was `%s` » %s."
 
-#: classes/orbis-monitoring-plugin.php:407
+#: classes/orbis-monitoring-plugin.php:490
 msgid "When a Orbis monitor was checked."
 msgstr "Zodra een Orbis monitor wordt gecontroleerd."
 
@@ -156,27 +202,48 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: classes/orbis-monitoring-plugin.php:188
+#: classes/orbis-monitoring-plugin.php:206
 msgctxt "post type general name"
 msgid "Monitors"
 msgstr "Monitors"
 
-#: classes/orbis-monitoring-plugin.php:189
+#: classes/orbis-monitoring-plugin.php:242
+msgctxt "post type general name"
+msgid "Monitor Checks"
+msgstr "Checks"
+
+#: classes/orbis-monitoring-plugin.php:207
 msgctxt "post type singular name"
 msgid "Monitor"
 msgstr "Monitor"
 
-#: classes/orbis-monitoring-plugin.php:190
+#: classes/orbis-monitoring-plugin.php:243
+msgctxt "post type singular name"
+msgid "Monitor Check"
+msgstr "Check"
+
+#: classes/orbis-monitoring-plugin.php:208
 msgctxt "admin menu"
 msgid "Monitors"
 msgstr "Monitors"
 
-#: classes/orbis-monitoring-plugin.php:191
+#: classes/orbis-monitoring-plugin.php:244
+msgctxt "admin menu"
+msgid "Monitor Checks"
+msgstr "Monitor checks"
+
+#: classes/orbis-monitoring-plugin.php:209
 msgctxt "add new on admin bar"
 msgid "Monitor"
 msgstr "Monitor"
 
-#: classes/orbis-monitoring-plugin.php:192
+#: classes/orbis-monitoring-plugin.php:245
+msgctxt "add new on admin bar"
+msgid "Monitor Check"
+msgstr "Monitor check"
+
+#: classes/orbis-monitoring-plugin.php:210
+#: classes/orbis-monitoring-plugin.php:246
 msgctxt "monitor"
 msgid "Add New"
 msgstr "Nieuwe monitor"
