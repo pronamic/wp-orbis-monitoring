@@ -48,7 +48,7 @@ $curl = sprintf(
 	</tr>
 	<tr valign="top">
 		<th scope="row">
-			<label for="orbis_monitor_curl"><?php esc_html_e( 'Required String', 'orbis_monitoring' ); ?></label>
+			<label for="orbis_monitor_string"><?php esc_html_e( 'Required String', 'orbis_monitoring' ); ?></label>
 		</th>
 		<td>
 			<input id="orbis_monitor_string" name="_orbis_monitor_required_string" value="<?php echo esc_attr( $string ); ?>"  type="text" class="regular-text" />
