@@ -86,6 +86,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'_orbis_monitor_url'                    => FILTER_VALIDATE_URL,
 			'_orbis_monitor_required_response_code' => FILTER_SANITIZE_STRING,
 			'_orbis_monitor_required_location'      => FILTER_SANITIZE_STRING,
+			'_orbis_monitor_required_string'        => FILTER_UNSAFE_RAW,
 		);
 
 		$data = filter_input_array( INPUT_POST, $definition );
@@ -290,12 +291,32 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$required_location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
 
+		$required_string = get_post_meta( $post->ID, '_orbis_monitor_required_string', true );
+
 		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
+
+		// check if it has the required string
+		$has_required_string = false;
+
+		if ( $required_string === "" ) {
+			$has_required_string = true;
+		}
+		
+		if ( true !== $has_required_string && false !== strpos( $response['body'], $required_string ) ) {
+			$has_required_string = true;
+		}
+
+		// add custom message
+		if ( ! $has_required_string ) {
+			$response['custom_message'] = 'The response does not contain the required string.';
+		}
 
 		if (
 			( $required_response_code !== $response_code )
 				||
 			( ! empty( $required_location ) && wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
+				||
+			( ! $has_required_string )
 		) {
 			do_action( 'orbis_monitor_problem', $post, $response );
 		}
@@ -370,6 +391,11 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				if ( is_wp_error( $response ) ) {
 					$message .= "\n";
 					$message .= $response->get_error_message();
+				}
+
+				if ( $response['custom_message'] ) {
+					$message .= "\n";
+					$message .= $response['custom_message'];
 				}
 
 				return $message;
