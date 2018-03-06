@@ -13,14 +13,15 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		add_action( 'orbis_monitor', array( $this, 'monitor' ) );
 
-		$post_type = 'orbis_monitor';
+		$post_types = array( 'orbis_monitor', 'orbis_monitor_check' );
 
-		add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'columns' ) );
-		add_action( 'manage_' . $post_type . '_posts_custom_column', array( $this, 'custom_columns' ), 10, 2 );
+		foreach ( $post_types as $post_type ) {
+			add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'columns' ) );
 
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-
-		add_action( 'save_post_' . $post_type, array( $this, 'save_post' ) );
+			add_action( 'manage_' . $post_type . '_posts_custom_column', array( $this, 'custom_columns' ), 10, 2 );
+			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+			add_action( 'save_post_' . $post_type, array( $this, 'save_post' ) );
+		}
 
 		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
 
@@ -34,25 +35,32 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	 * Add meta boxes
 	 */
 	public function add_meta_boxes( $post_type ) {
-		if ( 'orbis_monitor' === $post_type ) {
-			add_meta_box(
-				'orbis_monitor_details',
-				__( 'Monitor Details', 'orbis_monitoring' ),
-				array( $this, 'meta_box_details' ),
-				$post_type,
-				'normal',
-				'high'
-			);
+		add_meta_box(
+			'orbis_monitor_details',
+			__( 'Monitor Details', 'orbis_monitoring' ),
+			array( $this, 'meta_box_details' ),
+			'orbis_monitor',
+			'normal',
+			'high'
+		);
 
-			add_meta_box(
-				'orbis_monitor_responses',
-				__( 'Monitor Responses', 'orbis_monitoring' ),
-				array( $this, 'meta_box_responses' ),
-				$post_type,
-				'normal',
-				'high'
-			);
-		}
+		add_meta_box(
+			'orbis_monitor_responses',
+			__( 'Monitor Responses', 'orbis_monitoring' ),
+			array( $this, 'meta_box_responses' ),
+			'orbis_monitor',
+			'normal',
+			'high'
+		);
+
+		add_meta_box(
+			'orbis_monitor_check_details',
+			__( 'Monitor Check Details', 'orbis_monitoring' ),
+			array( $this, 'meta_box_check_details' ),
+			'orbis_monitor_check',
+			'normal',
+			'high'
+		);
 	}
 
 	public function meta_box_details( $post ) {
@@ -63,12 +71,22 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		include plugin_dir_path( $this->file ) . '/admin/meta-box-monitor-responses.php';
 	}
 
+	public function meta_box_check_details( $post ) {
+		include plugin_dir_path( $this->file ) . '/admin/meta-box-monitor-check-details.php';
+	}
+
 	/**
 	 * When the post is saved, saves our custom data.
 	 *
 	 * @param int $post_id The ID of the post being saved.
 	 */
 	public function save_post( $post_id ) {
+
+		if ( filter_has_var( INPUT_POST, '_orbis_monitor_check' ) ) {
+			$this->orbis_save_monitor_check( $post_id );
+			return $post_id;
+		}
+
 		// Nonce
 		if ( ! filter_has_var( INPUT_POST, 'orbis_monitor_details_meta_box_nonce' ) ) {
 			return $post_id;
@@ -219,6 +237,42 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			),
 		) );
 
+		register_post_type( 'orbis_monitor_check', array(
+			'labels'              => array(
+				'name'               => _x( 'Monitor Checks', 'post type general name', 'your-plugin-textdomain' ),
+				'singular_name'      => _x( 'Monitor Check', 'post type singular name', 'your-plugin-textdomain' ),
+				'menu_name'          => _x( 'Monitor Checks', 'admin menu', 'your-plugin-textdomain' ),
+				'name_admin_bar'     => _x( 'Monitor Check', 'add new on admin bar', 'your-plugin-textdomain' ),
+				'add_new'            => _x( 'Add New', 'monitor', 'your-plugin-textdomain' ),
+				'add_new_item'       => __( 'Add New Monitor Check', 'your-plugin-textdomain' ),
+				'new_item'           => __( 'New Monitor Check', 'your-plugin-textdomain' ),
+				'edit_item'          => __( 'Edit Monitor Check', 'your-plugin-textdomain' ),
+				'view_item'          => __( 'View Monitor Check', 'your-plugin-textdomain' ),
+				'all_items'          => __( 'Monitor Checks', 'your-plugin-textdomain' ),
+				'search_items'       => __( 'Search Monitor Checks', 'your-plugin-textdomain' ),
+				'parent_item_colon'  => __( 'Parent Monitor Check:', 'your-plugin-textdomain' ),
+				'not_found'          => __( 'No monitor check found.', 'your-plugin-textdomain' ),
+				'not_found_in_trash' => __( 'No monitor checks found in Trash.', 'your-plugin-textdomain' ),
+			),
+			'description'        => __( 'Description.', 'your-plugin-textdomain' ),
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => true,
+			'show_in_menu'       => true,
+			'query_var'          => true,
+			'rewrite'            => array( 'slug' => 'monitor_checks' ),
+			'capability_type'    => 'post',
+			'has_archive'        => true,
+			'show_in_menu'       => 'edit.php?post_type=orbis_monitor',
+			'hierarchical'       => true,
+			'menu_position'      => null,
+			'supports'           => array(
+				'title',
+				'author',
+				'comments',
+			),
+		) );
+
 		if ( ! wp_next_scheduled( 'orbis_monitor' ) ) {
 			wp_schedule_event( time(), 'every_5_minutes', 'orbis_monitor' );
 		}
@@ -298,7 +352,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		// check if it has the required string
 		$has_required_string = false;
 
-		if ( $required_string === "" ) {
+		if ( '' === $required_string ) {
 			$has_required_string = true;
 		}
 		
@@ -311,17 +365,47 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			$response['custom_message'] = 'The response does not contain the required string.';
 		}
 
+		$check_ids = get_posts( array(
+			'post_type'        => 'orbis_monitor_check',
+			'post_status'      => 'publish',
+			'posts_per_page'   => -1,
+			'fields'           => 'ids',
+			'suppress_filters' => false,
+		) );
+
+		$has_checks = true;
+		foreach ( $check_ids as $check_id ) {
+			$check_string = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
+
+			if ( false === strpos( $response['body'], $check_string ) ) {
+				$has_checks = false;
+				$response['custom_message'] = sprintf(
+					__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ),
+					$check_string
+				);
+			}
+		}
+
 		if (
 			( $required_response_code !== $response_code )
 				||
 			( ! empty( $required_location ) && wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
 				||
 			( ! $has_required_string )
+				||
+			( ! $has_checks )
 		) {
 			do_action( 'orbis_monitor_problem', $post, $response );
 		}
 
 		do_action( 'orbis_monitor_checked', $post, $response );
+	}
+
+	public function orbis_save_monitor_check() {
+		global $post;
+
+		$required_string = filter_input( INPUT_POST, '_orbis_monitor_check_required_string', FILTER_SANITIZE_STRING );
+		update_post_meta( $post->ID, '_orbis_monitor_check_required_string', $required_string );
 	}
 
 	public function monitor() {
