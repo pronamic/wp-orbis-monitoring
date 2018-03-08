@@ -143,7 +143,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			KEY post_id (post_id)
 		' );
 
-		// Parent
 		parent::install();
 	}
 
@@ -280,7 +279,9 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function monitor_post( $post ) {
 		global $wpdb;
 
+		// @codingStandardsIgnoreStart
 		$post = get_post( $post );
+		// @codingStandardsIgnoreEnd
 
 		$url = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 
@@ -290,6 +291,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$start = microtime( true );
 
+		// @codingStandardsIgnoreStart
 		// @see https://codex.wordpress.org/Function_Reference/wp_remote_get
 		$response = wp_remote_get( $url, array(
 			'timeout'     => 30,
@@ -297,6 +299,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			// @see http://www.browser-info.net/useragents
 			'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
 		) );
+		// @codingStandardsIgnoreEnd
 
 		$end = microtime( true );
 
@@ -341,20 +344,19 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		// Custom actions
 		$required_response_code = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
+		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
 
 		$required_location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
 
+		// required string
 		$required_string = get_post_meta( $post->ID, '_orbis_monitor_required_string', true );
 
-		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
-
-		// check if it has the required string
 		$has_required_string = false;
 
 		if ( '' === $required_string ) {
 			$has_required_string = true;
 		}
-		
+
 		if ( true !== $has_required_string && false !== strpos( $response['body'], $required_string ) ) {
 			$has_required_string = true;
 		}
@@ -364,13 +366,14 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			$response['custom_message'] = 'The response does not contain the required string.';
 		}
 
-		$check_ids = get_posts( array(
+		// @codingStandardsIgnoreStart
+		$check_ids = new WP_Query( array(
 			'post_type'        => 'orbis_monitor_check',
 			'post_status'      => 'publish',
 			'posts_per_page'   => -1,
 			'fields'           => 'ids',
-			'suppress_filters' => false,
 		) );
+		// @codingStandardsIgnoreEnd
 
 		$has_checks = true;
 		foreach ( $check_ids as $check_id ) {
@@ -385,6 +388,33 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			}
 		}
 
+		// @codingStandardsIgnoreStart
+		// required regular expression
+		$monitor_checks = new WP_Query( array(
+			'post_type'      => 'orbis_monitor_check',
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		) );
+		// @codingStandardsIgnoreEnd
+
+		$monitor_checks = $monitor_checks->posts;
+		$regex_checks = array();
+
+		foreach ( $monitor_checks as $check_id ) {
+			$regex_check = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
+			$should_contain = get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true );
+
+			$regex_match = true;
+			// @codingStandardsIgnoreStart
+			if ( preg_match( $regex_check, $response['body'] ) != $should_contain ) {
+				// @codingStandardsIgnoreEnd
+				$regex_match = false;
+				$response['custom_message'] = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
+				break;
+			}
+		}
+
 		if (
 			( $required_response_code !== $response_code )
 				||
@@ -393,6 +423,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			( ! $has_required_string )
 				||
 			( ! $has_checks )
+				||
+			( ! $regex_match )
 		) {
 			do_action( 'orbis_monitor_problem', $post, $response );
 		}
@@ -404,7 +436,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		global $post;
 
 		$required_string = filter_input( INPUT_POST, '_orbis_monitor_check_required_string', FILTER_SANITIZE_STRING );
+		$should_contain  = filter_input( INPUT_POST, '_orbis_monitor_check_should_contain', FILTER_SANITIZE_STRING );
+
 		update_post_meta( $post->ID, '_orbis_monitor_check_required_string', $required_string );
+		update_post_meta( $post->ID, '_orbis_monitor_check_should_contain', $should_contain );
 	}
 
 	public function monitor() {
