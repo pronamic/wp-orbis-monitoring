@@ -13,13 +13,17 @@ module.exports = function( grunt ) {
 		// PHP Code Sniffer
 		phpcs: {
 			application: {
-				dir: [ '.' ],
+				src: [
+					'*.php',
+					'admin/**/*.php',
+					'classes/**/*.php',
+					'templates/**/*.php'
+				],
 			},
 			options: {
 				bin: 'vendor/bin/phpcs',
 				standard: 'phpcs.ruleset.xml',
-				extensions: 'php',
-				ignore: '<%= dirs.ignore %>',
+				showSniffCodes: true
 			}
 		},
 

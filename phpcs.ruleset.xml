@@ -6,6 +6,9 @@
 
 		<exclude name="WordPress.VIP.DirectDatabaseQuery.DirectQuery" />
 		<exclude name="WordPress.VIP.DirectDatabaseQuery.NoCaching" />
+
+		<exclude name="WordPress.VIP.CronInterval.ChangeDetected" />
+		<exclude name="WordPress.WP.I18n.UnorderedPlaceholders" />
 	</rule>
 
 	<rule ref="WordPress.XSS.EscapeOutput">
