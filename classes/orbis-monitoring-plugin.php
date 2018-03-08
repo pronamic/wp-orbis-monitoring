@@ -17,11 +17,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		foreach ( $post_types as $post_type ) {
 			add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'columns' ) );
-
 			add_action( 'manage_' . $post_type . '_posts_custom_column', array( $this, 'custom_columns' ), 10, 2 );
-			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 			add_action( 'save_post_' . $post_type, array( $this, 'save_post' ) );
 		}
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 
 		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
 
