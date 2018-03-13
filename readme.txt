@@ -1,5 +1,5 @@
 === Orbis Monitoring ===
-Contributors: pronamic, remcotolsma, stefanboonstra
+Contributors: pronamic, remcotolsma, stefanboonstra, rubendroogh
 Donate link: https://www.pronamic.eu/
 Tags: orbis, deal
 Requires at least: 3.5
