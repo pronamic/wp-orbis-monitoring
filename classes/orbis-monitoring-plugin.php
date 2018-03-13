@@ -7,23 +7,20 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$this->set_name( 'orbis_monitoring' );
 		$this->set_db_version( '1.0.0' );
 
+		// general hooks
 		add_action( 'init', array( $this, 'init' ) );
-
 		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
 
+		// orbis_monitor
 		add_action( 'orbis_monitor', array( $this, 'monitor' ) );
-
-		$post_types = array( 'orbis_monitor', 'orbis_monitor_check' );
-
-		foreach ( $post_types as $post_type ) {
-			add_filter( 'manage_edit-' . $post_type . '_columns', array( $this, 'columns' ) );
-			add_action( 'save_post_' . $post_type, array( $this, 'save_post' ) );
-		}
+		add_action( 'save_post_orbis_monitor', array( $this, 'save_post' ) );
+		add_filter( 'manage_edit-orbis_monitor_columns', array( $this, 'columns' ) );
 		add_action( 'manage_orbis_monitor_posts_custom_column', array( $this, 'custom_columns' ), 10, 2 );
 
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-
-		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
+		// orbis_monitor_check
+		add_action( 'save_post_orbis_monitor_check', array( $this, 'orbis_save_monitor_check' ) );
 
 		// Tables
 		orbis_register_table( 'orbis_monitor_responses' );
