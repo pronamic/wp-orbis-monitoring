@@ -11,6 +11,7 @@
 
 		<exclude name="WordPress.VIP.CronInterval.ChangeDetected" />
 		<exclude name="WordPress.WP.I18n.UnorderedPlaceholders" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
 	<rule ref="WordPress.XSS.EscapeOutput">

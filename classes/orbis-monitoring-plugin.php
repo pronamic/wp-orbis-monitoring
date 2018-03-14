@@ -9,7 +9,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		// general hooks
 		add_action( 'init', array( $this, 'init' ) );
-		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) );
+		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) ); // phpcs:ignore WordPress.VIP.CronInterval.CronSchedulesInterval
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_filter( 'slack_get_events', array( $this, 'slack_get_events' ) );
 
@@ -161,7 +161,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 	public function custom_columns( $column, $post_id ) {
 		switch ( $column ) {
-			case 'orbis_monitor_duration' :
+			case 'orbis_monitor_duration':
 				$duration = get_post_meta( $post_id, '_orbis_monitor_duration', true );
 
 				if ( empty( $duration ) ) {
@@ -173,23 +173,23 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				echo esc_html( number_format_i18n( $duration, 6 ) );
 
 				break;
-			case 'orbis_monitor_response_code' :
+			case 'orbis_monitor_response_code':
 				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_code', true ) );
 
 				break;
-			case 'orbis_monitor_response_message' :
+			case 'orbis_monitor_response_message':
 				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_message', true ) );
 
 				break;
-			case 'orbis_monitor_response_content_length' :
+			case 'orbis_monitor_response_content_length':
 				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_content_length', true ) );
 
 				break;
-			case 'orbis_monitor_response_content_type' :
+			case 'orbis_monitor_response_content_type':
 				echo esc_html( get_post_meta( $post_id, '_orbis_monitor_response_content_type', true ) );
 
 				break;
-			case 'orbis_monitor_modified_date' :
+			case 'orbis_monitor_modified_date':
 				the_modified_date( __( 'D j M Y \a\t H:i:s', 'orbis_monitor' ) );
 
 				break;
@@ -198,7 +198,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 	public function init() {
 		register_post_type( 'orbis_monitor', array(
-			'labels'              => array(
+			'labels'             => array(
 				'name'               => _x( 'Monitors', 'post type general name', 'orbis_monitoring' ),
 				'singular_name'      => _x( 'Monitor', 'post type singular name', 'orbis_monitoring' ),
 				'menu_name'          => _x( 'Monitors', 'admin menu', 'orbis_monitoring' ),
@@ -234,7 +234,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		) );
 
 		register_post_type( 'orbis_monitor_check', array(
-			'labels'              => array(
+			'labels'             => array(
 				'name'               => _x( 'Monitor Checks', 'post type general name', 'orbis_monitoring' ),
 				'singular_name'      => _x( 'Monitor Check', 'post type singular name', 'orbis_monitoring' ),
 				'menu_name'          => _x( 'Monitor Checks', 'admin menu', 'orbis_monitoring' ),
@@ -338,6 +338,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		// Custom actions
 		$required_response_code = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
+
 		$response_code = get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
 
 		$required_location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
@@ -361,10 +362,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		}
 
 		$check_ids = new WP_Query( array(
-			'post_type'        => 'orbis_monitor_check',
-			'post_status'      => 'publish',
-			'posts_per_page'   => 50,
-			'fields'           => 'ids',
+			'post_type'      => 'orbis_monitor_check',
+			'post_status'    => 'publish',
+			'posts_per_page' => 50,
+			'fields'         => 'ids',
 		) );
 
 		$has_checks = true;
@@ -373,8 +374,9 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			if ( $check_string ) {
 				if ( false === strpos( $response['body'], $check_string ) ) {
 					$has_checks = false;
+
 					$response['custom_message'] = sprintf(
-						__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ),
+						__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 						$check_string
 					);
 				}
@@ -390,15 +392,16 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		) );
 
 		$monitor_checks = $monitor_checks->posts;
-		$regex_checks = array();
+		$regex_checks   = array();
 
 		foreach ( $monitor_checks as $check_id ) {
-			$regex_check = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
+			$regex_check    = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
 			$should_contain = intval( get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true ) );
 
 			$regex_match = true;
 			if ( preg_match( $regex_check, $response['body'] ) !== $should_contain ) {
 				$regex_match = false;
+
 				$response['custom_message'] = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
 				break;
 			}
@@ -488,7 +491,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'description' => __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' ),
 			'message'     => function( $post, $response ) {
 				$message = sprintf(
-					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ),
+					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
@@ -514,7 +517,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'description' => __( 'When a Orbis monitor was checked.', 'orbis_monitoring' ),
 			'message'     => function( $post, $response ) {
 				return sprintf(
-					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ),
+					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
