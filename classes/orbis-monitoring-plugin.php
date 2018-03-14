@@ -361,28 +361,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			$response['custom_message'] = 'The response does not contain the required string.';
 		}
 
-		$check_ids = new WP_Query( array(
-			'post_type'      => 'orbis_monitor_check',
-			'post_status'    => 'publish',
-			'posts_per_page' => 50,
-			'fields'         => 'ids',
-		) );
-
-		$has_checks = true;
-		foreach ( $check_ids as $check_id ) {
-			$check_string = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
-			if ( $check_string ) {
-				if ( false === strpos( $response['body'], $check_string ) ) {
-					$has_checks = false;
-
-					$response['custom_message'] = sprintf(
-						__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
-						$check_string
-					);
-				}
-			}
-		}
-
 		// required regular expression
 		$monitor_checks = new WP_Query( array(
 			'post_type'      => 'orbis_monitor_check',
@@ -392,7 +370,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		) );
 
 		$monitor_checks = $monitor_checks->posts;
-		$regex_checks   = array();
 
 		foreach ( $monitor_checks as $check_id ) {
 			$regex_check    = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
@@ -413,8 +390,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			( ! empty( $required_location ) && wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
 				||
 			( ! $has_required_string )
-				||
-			( ! $has_checks )
 				||
 			( ! $regex_match )
 		) {
