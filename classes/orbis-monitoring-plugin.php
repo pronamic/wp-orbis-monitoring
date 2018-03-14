@@ -277,9 +277,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function monitor_post( $post ) {
 		global $wpdb;
 
-		// @codingStandardsIgnoreStart
-		$post = get_post( $post );
-		// @codingStandardsIgnoreEnd
+		$post = get_post( $post ); // WPCS: override ok.
 
 		$url = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 
@@ -289,15 +287,13 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$start = microtime( true );
 
-		// @codingStandardsIgnoreStart
 		// @see https://codex.wordpress.org/Function_Reference/wp_remote_get
-		$response = wp_remote_get( $url, array(
+		$response = wp_safe_remote_get( $url, array(
 			'timeout'     => 30,
 			'redirection' => 0,
 			// @see http://www.browser-info.net/useragents
 			'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
 		) );
-		// @codingStandardsIgnoreEnd
 
 		$end = microtime( true );
 
@@ -364,49 +360,44 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			$response['custom_message'] = 'The response does not contain the required string.';
 		}
 
-		// @codingStandardsIgnoreStart
 		$check_ids = new WP_Query( array(
 			'post_type'        => 'orbis_monitor_check',
 			'post_status'      => 'publish',
-			'posts_per_page'   => -1,
+			'posts_per_page'   => 50,
 			'fields'           => 'ids',
 		) );
-		// @codingStandardsIgnoreEnd
 
 		$has_checks = true;
 		foreach ( $check_ids as $check_id ) {
 			$check_string = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
-
-			if ( false === strpos( $response['body'], $check_string ) ) {
-				$has_checks = false;
-				$response['custom_message'] = sprintf(
-					__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ),
-					$check_string
-				);
+			if ( $check_string ) {
+				if ( false === strpos( $response['body'], $check_string ) ) {
+					$has_checks = false;
+					$response['custom_message'] = sprintf(
+						__( 'The response does not contain the required string. Expected "%s". \n', 'orbis_monitoring' ),
+						$check_string
+					);
+				}
 			}
 		}
 
-		// @codingStandardsIgnoreStart
 		// required regular expression
 		$monitor_checks = new WP_Query( array(
 			'post_type'      => 'orbis_monitor_check',
 			'post_status'    => 'publish',
-			'posts_per_page' => -1,
+			'posts_per_page' => 50,
 			'fields'         => 'ids',
 		) );
-		// @codingStandardsIgnoreEnd
 
 		$monitor_checks = $monitor_checks->posts;
 		$regex_checks = array();
 
 		foreach ( $monitor_checks as $check_id ) {
 			$regex_check = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
-			$should_contain = get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true );
+			$should_contain = intval( get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true ) );
 
 			$regex_match = true;
-			// @codingStandardsIgnoreStart
-			if ( preg_match( $regex_check, $response['body'] ) != $should_contain ) {
-				// @codingStandardsIgnoreEnd
+			if ( preg_match( $regex_check, $response['body'] ) !== $should_contain ) {
 				$regex_match = false;
 				$response['custom_message'] = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
 				break;
