@@ -288,12 +288,14 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$start = microtime( true );
 
 		// @see https://codex.wordpress.org/Function_Reference/wp_remote_get
-		$response = wp_remote_get( $url, array(
-			'timeout'     => 30,
-			'redirection' => 0,
-			// @see http://www.browser-info.net/useragents
-			'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
-		) );
+		$response = wp_remote_get( $url, // phpcs:ignore WordPress.VIP.RestrictedFunctions.wp_remote_get_wp_remote_get
+			array(
+				'timeout'     => 30,
+				'redirection' => 0,
+				// @see http://www.browser-info.net/useragents
+				'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
+			)
+		);
 
 		$end = microtime( true );
 
