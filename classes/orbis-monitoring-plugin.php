@@ -371,11 +371,12 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$monitor_checks = $monitor_checks->posts;
 
+		$regex_match = true;
+
 		foreach ( $monitor_checks as $check_id ) {
 			$regex_check    = get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
 			$should_contain = intval( get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true ) );
 
-			$regex_match = true;
 			if ( preg_match( $regex_check, $response['body'] ) !== $should_contain ) {
 				$regex_match = false;
 
