@@ -288,7 +288,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$start = microtime( true );
 
 		// @see https://codex.wordpress.org/Function_Reference/wp_remote_get
-		$response = wp_safe_remote_get( $url, array(
+		$response = wp_remote_get( $url, array(
 			'timeout'     => 30,
 			'redirection' => 0,
 			// @see http://www.browser-info.net/useragents
@@ -357,8 +357,10 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		}
 
 		// add custom message
+		$message = null;
+
 		if ( ! $has_required_string ) {
-			$response['custom_message'] = 'The response does not contain the required string.';
+			$message = 'The response does not contain the required string.';
 		}
 
 		// required regular expression
@@ -380,7 +382,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			if ( preg_match( $regex_check, $response['body'] ) !== $should_contain ) {
 				$regex_match = false;
 
-				$response['custom_message'] = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
+				$message = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
 				break;
 			}
 		}
@@ -394,7 +396,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 				||
 			( ! $regex_match )
 		) {
-			do_action( 'orbis_monitor_problem', $post, $response );
+			do_action( 'orbis_monitor_problem', $post, $response, $message );
 		}
 
 		do_action( 'orbis_monitor_checked', $post, $response );
@@ -465,7 +467,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$events['orbis_monitor_problem'] = array(
 			'action'      => 'orbis_monitor_problem',
 			'description' => __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' ),
-			'message'     => function( $post, $response ) {
+			'message'     => function( $post, $response, $extra ) {
 				$message = sprintf(
 					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
 					get_permalink( $post ),
@@ -479,9 +481,9 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 					$message .= $response->get_error_message();
 				}
 
-				if ( $response['custom_message'] ) {
+				if ( ! empty( $extra ) ) {
 					$message .= "\n";
-					$message .= $response['custom_message'];
+					$message .= $extra;
 				}
 
 				return $message;
