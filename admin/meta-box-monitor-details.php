@@ -5,7 +5,6 @@ wp_nonce_field( 'orbis_save_monitor_details', 'orbis_monitor_details_meta_box_no
 $url      = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 $code     = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
-$string   = get_post_meta( $post->ID, '_orbis_monitor_required_string', true );
 
 $curl = sprintf(
 	'curl --head %s',
@@ -44,14 +43,6 @@ $curl = sprintf(
 		</th>
 		<td>
 			<input id="orbis_monitor_curl" name="_orbis_monitor_curl" value="<?php echo esc_attr( $curl ); ?>" readonly="readonly" type="text" class="regular-text" />
-		</td>
-	</tr>
-	<tr valign="top">
-		<th scope="row">
-			<label for="orbis_monitor_string"><?php esc_html_e( 'Required String', 'orbis_monitoring' ); ?></label>
-		</th>
-		<td>
-			<input id="orbis_monitor_string" name="_orbis_monitor_required_string" value="<?php echo esc_attr( $string ); ?>"  type="text" class="regular-text" />
 		</td>
 	</tr>
 </table>

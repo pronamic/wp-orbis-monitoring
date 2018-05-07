@@ -220,10 +220,15 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'show_ui'            => true,
 			'show_in_menu'       => true,
 			'query_var'          => true,
-			'rewrite'            => array( 'slug' => 'monitors' ),
+			'rewrite'            => array(
+				'slug'       => 'monitors',
+				'with_front' => false,
+			),
 			'menu_icon'          => 'dashicons-sos',
 			'capability_type'    => 'post',
 			'has_archive'        => true,
+			'show_in_rest'       => true,
+			'rest_base'          => 'orbis/monitors',
 			'hierarchical'       => false,
 			'menu_position'      => null,
 			'supports'           => array(
@@ -345,25 +350,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$required_location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
 
-		// required string
-		$required_string = get_post_meta( $post->ID, '_orbis_monitor_required_string', true );
-
-		$has_required_string = false;
-
-		if ( '' === $required_string ) {
-			$has_required_string = true;
-		}
-
-		if ( true !== $has_required_string && false !== strpos( $response['body'], $required_string ) ) {
-			$has_required_string = true;
-		}
-
 		// add custom message
 		$message = null;
-
-		if ( ! $has_required_string ) {
-			$message = 'The response does not contain the required string.';
-		}
 
 		// required regular expression
 		$monitor_checks = new WP_Query( array(
@@ -393,8 +381,6 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			( $required_response_code !== $response_code )
 				||
 			( ! empty( $required_location ) && wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
-				||
-			( ! $has_required_string )
 				||
 			( ! $regex_match )
 		) {
