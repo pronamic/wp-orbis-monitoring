@@ -302,6 +302,20 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			)
 		);
 
+		// Try again if resolving timed out ("cURL error 28: Resolving timed out after XXXXX milliseconds").
+		if ( is_wp_error( $response ) ) {
+			$error_message = $response->get_error_message();
+
+			// Retry if error message contains 'Resolving timed out'.
+			if ( false !== stripos( $error_message, 'Resolving timed out' ) ) {
+				usleep( 300000 ); // Wait 300ms
+
+				$start = microtime( true );
+
+				$response = wp_remote_get( $url, $request_args );
+			}
+		}
+
 		$end = microtime( true );
 
 		$duration = $end - $start;
