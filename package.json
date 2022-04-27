@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/pronamic/wp-orbis-monitoring",
   "devDependencies": {
-    "grunt": "~1.0.2",
+    "grunt": "~1.5.2",
     "grunt-phpcs": "^0.4.0",
     "grunt-checkwpversion": "~0.3.0",
     "grunt-phplint": "0.1.0",
