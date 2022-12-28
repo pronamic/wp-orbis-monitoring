@@ -297,8 +297,14 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			array(
 				'timeout'     => 30,
 				'redirection' => 0,
-				// @see http://www.browser-info.net/useragents
-				'user-agent'  => 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.85 Safari/537.36',
+				/**
+				 * We pretend to be a widely used web browser.
+				 * 
+				 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/10
+				 * @link http://www.browser-info.net/useragents
+				 * @link https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
+				 */
+				'user-agent'  => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
 			)
 		);
 
