@@ -8,6 +8,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$this->set_db_version( '1.0.0' );
 
 		// general hooks
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 0 );
 		add_action( 'init', array( $this, 'init' ) );
 		add_filter( 'cron_schedules', array( $this, 'cron_schedules' ) ); // phpcs:ignore WordPress.VIP.CronInterval.CronSchedulesInterval
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -144,8 +145,31 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		parent::install();
 	}
 
-	public function loaded() {
+	/**
+	 * Load plugin text domain.
+	 *
+	 * Translations must not be loaded before the `init` action, WordPress 6.7 and
+	 * higher will trigger a `_load_textdomain_just_in_time` notice otherwise.
+	 *
+	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/21
+	 * @link https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
+	 */
+	public function load_plugin_textdomain() {
 		$this->load_textdomain( 'orbis_monitoring', '/languages/' );
+	}
+
+	/**
+	 * Can translate.
+	 *
+	 * Translation functions can only be used once the `init` action is running,
+	 * some filters this plugin hooks into are applied earlier.
+	 *
+	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/21
+	 *
+	 * @return bool True if it is safe to translate, false otherwise.
+	 */
+	private function can_translate() {
+		return ( did_action( 'init' ) || doing_action( 'init' ) );
 	}
 
 	public function columns( $columns ) {
@@ -190,7 +214,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 				break;
 			case 'orbis_monitor_modified_date':
-				the_modified_date( __( 'D j M Y \a\t H:i:s', 'orbis_monitor' ) );
+				the_modified_date( __( 'D j M Y \a\t H:i:s', 'orbis_monitoring' ) );
 
 				break;
 		}
@@ -441,9 +465,15 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	 */
 	public function cron_schedules( $schedules ) {
 		if ( ! isset( $schedules['every_5_minutes'] ) ) {
+			$display = 'Once Every 5 Minutes';
+
+			if ( $this->can_translate() ) {
+				$display = __( 'Once Every 5 Minutes', 'orbis_monitoring' );
+			}
+
 			$schedules['every_5_minutes'] = array(
 				'interval' => 5 * MINUTE_IN_SECONDS,
-				'display'  => __( 'Once Every 5 Minutes', 'orbis_monitoring' ),
+				'display'  => $display,
 			);
 		}
 
@@ -458,9 +488,27 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	 * @see https://github.com/gedex/wp-slack-edd/blob/0.1.0/slack-edd.php
 	 */
 	public function slack_get_events( $events ) {
+		/*
+		 * The `slack_get_events` filter is applied on `plugins_loaded`, before the
+		 * `init` action, so translations are only resolved when it is safe to do so.
+		 * The event descriptions are only displayed on the Slack integration settings
+		 * page, where this filter is applied again after the `init` action.
+		 *
+		 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/21
+		 */
+		$can_translate = $this->can_translate();
+
+		$problem_description = 'When a Orbis monitor problem was detected.';
+		$checked_description = 'When a Orbis monitor was checked.';
+
+		if ( $can_translate ) {
+			$problem_description = __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' );
+			$checked_description = __( 'When a Orbis monitor was checked.', 'orbis_monitoring' );
+		}
+
 		$events['orbis_monitor_problem'] = array(
 			'action'      => 'orbis_monitor_problem',
-			'description' => __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' ),
+			'description' => $problem_description,
 			'message'     => function( $post, $response, $extra ) {
 				$message = sprintf(
 					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
@@ -486,7 +534,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		$events['orbis_monitor_checked'] = array(
 			'action'      => 'orbis_monitor_checked',
-			'description' => __( 'When a Orbis monitor was checked.', 'orbis_monitoring' ),
+			'description' => $checked_description,
 			'message'     => function( $post, $response ) {
 				return sprintf(
 					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
