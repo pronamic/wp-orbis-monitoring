@@ -1,7 +1,7 @@
 {
-	"name": "orbis-neighborhood",
+	"name": "pronamic/wp-orbis-monitoring",
 	"description": "The Orbis Neighborhood plugin extends your Orbis environment with the option to manage a neighborhood.",
-	"version": "1.0.0",
+	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"orbis",
 		"neighborhood",
@@ -33,11 +33,40 @@
 	"autoload": {
 		"classmap": ["classes/"]
 	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"wp-slug": "orbis-monitoring"
+	},
 	"require": {
 
 	},
 	"require-dev": {
-		"squizlabs/php_codesniffer": "^3.2",
-		"wp-coding-standards/wpcs": "^0.14.1"
+		"pronamic/wp-coding-standards": "^2.1",
+		"wp-cli/dist-archive-command": "*",
+		"wp-cli/wp-cli-bundle": "*"
+	},
+	"scripts": {
+		"build": [
+			"rm -rf ./build/stage-1",
+			"rm -rf ./build/orbis-monitoring",
+			"rsync --recursive --verbose --exclude-from=.distignore --exclude=/vendor/ ./ ./build/stage-1/",
+			"composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=./build/stage-1/",
+			"rsync --recursive --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-monitoring/",
+			"vendor/bin/wp i18n make-pot ./build/orbis-monitoring/ --slug=orbis-monitoring",
+			"vendor/bin/wp i18n make-mo ./build/orbis-monitoring/languages/",
+			"vendor/bin/wp dist-archive ./build/orbis-monitoring/ --plugin-dirname=orbis-monitoring --force"
+		],
+		"dist-archive": "wp dist-archive . --plugin-dirname=orbis-monitoring",
+		"make-pot": [
+			"@build",
+			"rsync --recursive --delete --verbose ./build/orbis-monitoring/languages/ ./languages/",
+			"vendor/bin/wp i18n update-po ./languages/orbis-monitoring.pot"
+		],
+		"phpcs": "vendor/bin/phpcs",
+		"qa": [
+			"@phpcs"
+		]
 	}
 }
