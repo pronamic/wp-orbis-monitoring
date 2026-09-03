@@ -39,13 +39,11 @@
 		},
 		"wp-slug": "orbis-monitoring"
 	},
-	"require": {
-
-	},
 	"require-dev": {
 		"pronamic/wp-coding-standards": "^2.1",
 		"wp-cli/dist-archive-command": "*",
-		"wp-cli/wp-cli-bundle": "*"
+		"wp-cli/wp-cli-bundle": "*",
+		"deployer/deployer": "^7.5"
 	},
 	"scripts": {
 		"build": [
