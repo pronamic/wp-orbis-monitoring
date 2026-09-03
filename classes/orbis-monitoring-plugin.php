@@ -100,12 +100,19 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		/* OK, its safe for us to save the data now. */
 		$definition = array(
 			'_orbis_monitor_url'                    => FILTER_VALIDATE_URL,
-			'_orbis_monitor_required_response_code' => FILTER_SANITIZE_STRING,
-			'_orbis_monitor_required_location'      => FILTER_SANITIZE_STRING,
+			'_orbis_monitor_required_response_code' => array(
+				'filter' => FILTER_VALIDATE_INT,
+				'flags'  => FILTER_NULL_ON_FAILURE,
+			),
+			'_orbis_monitor_required_location'      => FILTER_UNSAFE_RAW,
 			'_orbis_monitor_required_string'        => FILTER_UNSAFE_RAW,
 		);
 
 		$data = filter_input_array( INPUT_POST, $definition );
+
+		if ( isset( $data['_orbis_monitor_required_location'] ) ) {
+			$data['_orbis_monitor_required_location'] = sanitize_text_field( wp_unslash( $data['_orbis_monitor_required_location'] ) );
+		}
 
 		foreach ( $data as $key => $value ) {
 			if ( empty( $value ) ) {
@@ -423,8 +430,12 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function orbis_save_monitor_check() {
 		global $post;
 
-		$required_string = filter_input( INPUT_POST, '_orbis_monitor_check_required_string', FILTER_SANITIZE_STRING );
-		$should_contain  = filter_input( INPUT_POST, '_orbis_monitor_check_should_contain', FILTER_SANITIZE_STRING );
+		$required_string = filter_input( INPUT_POST, '_orbis_monitor_check_required_string', FILTER_UNSAFE_RAW );
+		$should_contain  = filter_input( INPUT_POST, '_orbis_monitor_check_should_contain', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE );
+
+		if ( null !== $required_string ) {
+			$required_string = sanitize_text_field( wp_unslash( $required_string ) );
+		}
 
 		update_post_meta( $post->ID, '_orbis_monitor_check_required_string', $required_string );
 		update_post_meta( $post->ID, '_orbis_monitor_check_should_contain', $should_contain );
