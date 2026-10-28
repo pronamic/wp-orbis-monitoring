@@ -14,13 +14,16 @@ $responses = $wpdb->get_results(
 	$wpdb->prepare(
 		<<<SQL
 		SELECT
-			*
+			response.*
 		FROM
-			$wpdb->orbis_monitor_responses
+			$wpdb->orbis_monitor_responses AS response
+				INNER JOIN
+			$wpdb->orbis_monitors AS monitor
+					ON monitor.id = response.monitor_id
 		WHERE
-			post_id = %d
+			monitor.post_id = %d
 		ORDER BY
-			monitored_date DESC
+			response.monitored_date DESC
 		LIMIT
 			0, 10
 		SQL,
@@ -48,7 +51,7 @@ $responses = $wpdb->get_results(
 
 			<tr>
 				<td>
-					<?php echo esc_html( $response->response_id ); ?>
+					<?php echo esc_html( $response->id ); ?>
 				</td>
 				<td>
 					<?php echo esc_html( $response->monitored_date ); ?>

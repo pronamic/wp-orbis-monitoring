@@ -35,6 +35,73 @@ final readonly class MonitorController {
 		\add_action( 'action_scheduler_init', $this->schedule( ... ) );
 		\add_action( 'orbis_monitoring_schedule_checks', $this->schedule_checks( ... ) );
 		\add_action( 'orbis_monitoring_check_monitor', $this->check_monitor( ... ) );
+		\add_action( 'wp_after_insert_post', $this->sync_monitor( ... ), 10, 2 );
+	}
+
+	/**
+	 * Sync monitor.
+	 *
+	 * Makes sure each monitor post has a row in the monitors table.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post.
+	 * @return void
+	 */
+	private function sync_monitor( $post_id, $post ): void {
+		if ( 'orbis_monitor' !== $post->post_type ) {
+			return;
+		}
+
+		if ( \wp_is_post_revision( $post_id ) || \wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		if ( 'auto-draft' === $post->post_status ) {
+			return;
+		}
+
+		$this->get_monitor_id( $post_id );
+	}
+
+	/**
+	 * Get monitor ID.
+	 *
+	 * Inserts a row in the monitors table when the post has none yet.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return int
+	 */
+	public function get_monitor_id( $post_id ): int {
+		global $wpdb;
+
+		$monitor_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT id FROM $wpdb->orbis_monitors WHERE post_id = %d;",
+				$post_id
+			)
+		);
+
+		if ( null !== $monitor_id ) {
+			return (int) $monitor_id;
+		}
+
+		$now = \current_time( 'mysql', true );
+
+		$wpdb->insert(
+			$wpdb->orbis_monitors,
+			[
+				'post_id'    => $post_id,
+				'created_at' => $now,
+				'updated_at' => $now,
+			],
+			[
+				'%d',
+				'%s',
+				'%s',
+			]
+		);
+
+		return (int) $wpdb->insert_id;
 	}
 
 	/**
@@ -139,7 +206,7 @@ final readonly class MonitorController {
 		$wpdb->insert(
 			$wpdb->orbis_monitor_responses,
 			[
-				'post_id'                 => $post->ID,
+				'monitor_id'              => $this->get_monitor_id( $post->ID ),
 				'monitored_date'          => \current_time( 'mysql' ),
 				'duration'                => $duration,
 				'response_code'           => $response_code,

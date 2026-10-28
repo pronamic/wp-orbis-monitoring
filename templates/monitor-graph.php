@@ -27,9 +27,9 @@ if ( ! array_key_exists( $period, $periods ) ) {
 }
 
 $group_by = match ( $period ) {
-	'd'     => 'DATE( monitored_date )',
-	'm'     => 'EXTRACT( YEAR_MONTH FROM monitored_date )',
-	default => 'YEARWEEK( monitored_date, 3 )',
+	'd'     => 'DATE( response.monitored_date )',
+	'm'     => 'EXTRACT( YEAR_MONTH FROM response.monitored_date )',
+	default => 'YEARWEEK( response.monitored_date, 3 )',
 };
 
 $label_format = match ( $period ) {
@@ -44,14 +44,17 @@ $response_times = $wpdb->get_results(
 	$wpdb->prepare(
 		<<<SQL
 		SELECT
-			AVG( duration ) AS avg_duration,
-			MIN( monitored_date ) AS monitored_date
+			AVG( response.duration ) AS avg_duration,
+			MIN( response.monitored_date ) AS monitored_date
 		FROM
-			$wpdb->orbis_monitor_responses
+			$wpdb->orbis_monitor_responses AS response
+				INNER JOIN
+			$wpdb->orbis_monitors AS monitor
+					ON monitor.id = response.monitor_id
 		WHERE
-			post_id = %d
+			monitor.post_id = %d
 				AND
-			monitored_date > %s
+			response.monitored_date > %s
 		GROUP BY
 			$group_by
 		ORDER BY
