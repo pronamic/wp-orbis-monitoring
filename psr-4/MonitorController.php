@@ -192,38 +192,10 @@ final class MonitorController {
 		// Add custom message.
 		$message = null;
 
-		// Required regular expression.
-		$monitor_checks = new \WP_Query(
-			[
-				'post_type'      => 'orbis_monitor_check',
-				'post_status'    => 'publish',
-				'posts_per_page' => 50,
-				'fields'         => 'ids',
-			]
-		);
-
-		$monitor_checks = $monitor_checks->posts;
-
-		$regex_match = true;
-
-		foreach ( $monitor_checks as $check_id ) {
-			$regex_check    = \get_post_meta( $check_id, '_orbis_monitor_check_required_string', true );
-			$should_contain = \intval( \get_post_meta( $check_id, '_orbis_monitor_check_should_contain', true ) );
-
-			if ( \preg_match( $regex_check, $body ) !== $should_contain ) {
-				$regex_match = false;
-
-				$message = \esc_html__( 'The response does not match the check.', 'orbis-monitoring' );
-				break;
-			}
-		}
-
 		if (
 			( $required_response_code !== $response_code )
 				||
 			( ! empty( $required_location ) && \wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
-				||
-			( ! $regex_match )
 		) {
 			\do_action( 'orbis_monitor_problem', $post, $response, $message );
 		}

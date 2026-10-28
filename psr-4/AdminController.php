@@ -40,9 +40,6 @@ final class AdminController {
 		\add_action( 'save_post_orbis_monitor', $this->save_monitor( ... ) );
 		\add_filter( 'manage_edit-orbis_monitor_columns', $this->columns( ... ) );
 		\add_action( 'manage_orbis_monitor_posts_custom_column', $this->custom_columns( ... ), 10, 2 );
-
-		// Monitor check.
-		\add_action( 'save_post_orbis_monitor_check', $this->save_monitor_check( ... ) );
 	}
 
 	/**
@@ -65,15 +62,6 @@ final class AdminController {
 			\__( 'Monitor Responses', 'orbis-monitoring' ),
 			$this->meta_box_responses( ... ),
 			'orbis_monitor',
-			'normal',
-			'high'
-		);
-
-		\add_meta_box(
-			'orbis_monitor_check_details',
-			\__( 'Monitor Check Details', 'orbis-monitoring' ),
-			$this->meta_box_check_details( ... ),
-			'orbis_monitor_check',
 			'normal',
 			'high'
 		);
@@ -100,27 +88,12 @@ final class AdminController {
 	}
 
 	/**
-	 * Meta box check details.
-	 *
-	 * @param \WP_Post $post Post.
-	 * @return void
-	 */
-	private function meta_box_check_details( $post ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Used in the included template.
-		include \plugin_dir_path( $this->file ) . 'admin/meta-box-monitor-check-details.php';
-	}
-
-	/**
 	 * Save monitor.
 	 *
 	 * @param int $post_id The ID of the post being saved.
 	 * @return void
 	 */
 	private function save_monitor( $post_id ): void {
-		if ( isset( $_POST['_orbis_monitor_check'] ) ) {
-			$this->save_monitor_check( $post_id );
-			return;
-		}
-
 		// Nonce.
 		if ( ! isset( $_POST['orbis_monitor_details_meta_box_nonce'] ) ) {
 			return;
@@ -149,32 +122,6 @@ final class AdminController {
 		}
 
 		$this->monitor_controller->monitor_post( $post_id );
-	}
-
-	/**
-	 * Save monitor check.
-	 *
-	 * @param int $post_id The ID of the post being saved.
-	 * @return void
-	 */
-	private function save_monitor_check( $post_id ): void {
-		// Nonce.
-		if ( ! isset( $_POST['orbis_monitor_check_details_meta_box_nonce'] ) ) {
-			return;
-		}
-
-		\check_admin_referer( 'orbis_save_monitor_check_details', 'orbis_monitor_check_details_meta_box_nonce' );
-
-		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
-		if ( \defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
-
-		$required_string = isset( $_POST['_orbis_monitor_check_required_string'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_monitor_check_required_string'] ) ) : '';
-		$should_contain  = isset( $_POST['_orbis_monitor_check_should_contain'] ) ? \absint( $_POST['_orbis_monitor_check_should_contain'] ) : 0;
-
-		\update_post_meta( $post_id, '_orbis_monitor_check_required_string', $required_string );
-		\update_post_meta( $post_id, '_orbis_monitor_check_should_contain', $should_contain );
 	}
 
 	/**
