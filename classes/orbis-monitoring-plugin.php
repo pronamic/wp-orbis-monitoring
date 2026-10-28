@@ -35,7 +35,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function add_meta_boxes( $post_type ) {
 		add_meta_box(
 			'orbis_monitor_details',
-			__( 'Monitor Details', 'orbis_monitoring' ),
+			__( 'Monitor Details', 'orbis-monitoring' ),
 			array( $this, 'meta_box_details' ),
 			'orbis_monitor',
 			'normal',
@@ -44,7 +44,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		add_meta_box(
 			'orbis_monitor_responses',
-			__( 'Monitor Responses', 'orbis_monitoring' ),
+			__( 'Monitor Responses', 'orbis-monitoring' ),
 			array( $this, 'meta_box_responses' ),
 			'orbis_monitor',
 			'normal',
@@ -53,7 +53,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		add_meta_box(
 			'orbis_monitor_check_details',
-			__( 'Monitor Check Details', 'orbis_monitoring' ),
+			__( 'Monitor Check Details', 'orbis-monitoring' ),
 			array( $this, 'meta_box_check_details' ),
 			'orbis_monitor_check',
 			'normal',
@@ -162,7 +162,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	 * @link https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
 	 */
 	public function load_plugin_textdomain() {
-		$this->load_textdomain( 'orbis_monitoring', '/languages/' );
+		$this->load_textdomain( 'orbis-monitoring', '/languages/' );
 	}
 
 	/**
@@ -221,7 +221,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 				break;
 			case 'orbis_monitor_modified_date':
-				the_modified_date( __( 'D j M Y \a\t H:i:s', 'orbis_monitoring' ) );
+				the_modified_date( __( 'D j M Y \a\t H:i:s', 'orbis-monitoring' ) );
 
 				break;
 		}
@@ -230,22 +230,22 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 	public function init() {
 		register_post_type( 'orbis_monitor', array(
 			'labels'             => array(
-				'name'               => _x( 'Monitors', 'post type general name', 'orbis_monitoring' ),
-				'singular_name'      => _x( 'Monitor', 'post type singular name', 'orbis_monitoring' ),
-				'menu_name'          => _x( 'Monitors', 'admin menu', 'orbis_monitoring' ),
-				'name_admin_bar'     => _x( 'Monitor', 'add new on admin bar', 'orbis_monitoring' ),
-				'add_new'            => _x( 'Add New', 'monitor', 'orbis_monitoring' ),
-				'add_new_item'       => __( 'Add New Monitor', 'orbis_monitoring' ),
-				'new_item'           => __( 'New Monitor', 'orbis_monitoring' ),
-				'edit_item'          => __( 'Edit Monitor', 'orbis_monitoring' ),
-				'view_item'          => __( 'View Monitor', 'orbis_monitoring' ),
-				'all_items'          => __( 'All Monitors', 'orbis_monitoring' ),
-				'search_items'       => __( 'Search Monitors', 'orbis_monitoring' ),
-				'parent_item_colon'  => __( 'Parent Monitor:', 'orbis_monitoring' ),
-				'not_found'          => __( 'No monitors found.', 'orbis_monitoring' ),
-				'not_found_in_trash' => __( 'No monitors found in Trash.', 'orbis_monitoring' ),
+				'name'               => _x( 'Monitors', 'post type general name', 'orbis-monitoring' ),
+				'singular_name'      => _x( 'Monitor', 'post type singular name', 'orbis-monitoring' ),
+				'menu_name'          => _x( 'Monitors', 'admin menu', 'orbis-monitoring' ),
+				'name_admin_bar'     => _x( 'Monitor', 'add new on admin bar', 'orbis-monitoring' ),
+				'add_new'            => _x( 'Add New', 'monitor', 'orbis-monitoring' ),
+				'add_new_item'       => __( 'Add New Monitor', 'orbis-monitoring' ),
+				'new_item'           => __( 'New Monitor', 'orbis-monitoring' ),
+				'edit_item'          => __( 'Edit Monitor', 'orbis-monitoring' ),
+				'view_item'          => __( 'View Monitor', 'orbis-monitoring' ),
+				'all_items'          => __( 'All Monitors', 'orbis-monitoring' ),
+				'search_items'       => __( 'Search Monitors', 'orbis-monitoring' ),
+				'parent_item_colon'  => __( 'Parent Monitor:', 'orbis-monitoring' ),
+				'not_found'          => __( 'No monitors found.', 'orbis-monitoring' ),
+				'not_found_in_trash' => __( 'No monitors found in Trash.', 'orbis-monitoring' ),
 			),
-			'description'        => __( 'Description.', 'orbis_monitoring' ),
+			'description'        => __( 'Description.', 'orbis-monitoring' ),
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_ui'            => true,
@@ -271,22 +271,22 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 
 		register_post_type( 'orbis_monitor_check', array(
 			'labels'             => array(
-				'name'               => _x( 'Monitor Checks', 'post type general name', 'orbis_monitoring' ),
-				'singular_name'      => _x( 'Monitor Check', 'post type singular name', 'orbis_monitoring' ),
-				'menu_name'          => _x( 'Monitor Checks', 'admin menu', 'orbis_monitoring' ),
-				'name_admin_bar'     => _x( 'Monitor Check', 'add new on admin bar', 'orbis_monitoring' ),
-				'add_new'            => _x( 'Add New', 'monitor', 'orbis_monitoring' ),
-				'add_new_item'       => __( 'Add New Monitor Check', 'orbis_monitoring' ),
-				'new_item'           => __( 'New Monitor Check', 'orbis_monitoring' ),
-				'edit_item'          => __( 'Edit Monitor Check', 'orbis_monitoring' ),
-				'view_item'          => __( 'View Monitor Check', 'orbis_monitoring' ),
-				'all_items'          => __( 'Monitor Checks', 'orbis_monitoring' ),
-				'search_items'       => __( 'Search Monitor Checks', 'orbis_monitoring' ),
-				'parent_item_colon'  => __( 'Parent Monitor Check:', 'orbis_monitoring' ),
-				'not_found'          => __( 'No monitor check found.', 'orbis_monitoring' ),
-				'not_found_in_trash' => __( 'No monitor checks found in Trash.', 'orbis_monitoring' ),
+				'name'               => _x( 'Monitor Checks', 'post type general name', 'orbis-monitoring' ),
+				'singular_name'      => _x( 'Monitor Check', 'post type singular name', 'orbis-monitoring' ),
+				'menu_name'          => _x( 'Monitor Checks', 'admin menu', 'orbis-monitoring' ),
+				'name_admin_bar'     => _x( 'Monitor Check', 'add new on admin bar', 'orbis-monitoring' ),
+				'add_new'            => _x( 'Add New', 'monitor', 'orbis-monitoring' ),
+				'add_new_item'       => __( 'Add New Monitor Check', 'orbis-monitoring' ),
+				'new_item'           => __( 'New Monitor Check', 'orbis-monitoring' ),
+				'edit_item'          => __( 'Edit Monitor Check', 'orbis-monitoring' ),
+				'view_item'          => __( 'View Monitor Check', 'orbis-monitoring' ),
+				'all_items'          => __( 'Monitor Checks', 'orbis-monitoring' ),
+				'search_items'       => __( 'Search Monitor Checks', 'orbis-monitoring' ),
+				'parent_item_colon'  => __( 'Parent Monitor Check:', 'orbis-monitoring' ),
+				'not_found'          => __( 'No monitor check found.', 'orbis-monitoring' ),
+				'not_found_in_trash' => __( 'No monitor checks found in Trash.', 'orbis-monitoring' ),
 			),
-			'description'        => __( 'Description.', 'orbis_monitoring' ),
+			'description'        => __( 'Description.', 'orbis-monitoring' ),
 			'public'             => true,
 			'publicly_queryable' => true,
 			'show_ui'            => true,
@@ -409,7 +409,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			if ( preg_match( $regex_check, $response['body'] ) !== $should_contain ) {
 				$regex_match = false;
 
-				$message = esc_html__( 'The response does not match the check.', 'orbis_monitoring' );
+				$message = esc_html__( 'The response does not match the check.', 'orbis-monitoring' );
 				break;
 			}
 		}
@@ -479,7 +479,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			$display = 'Once Every 5 Minutes';
 
 			if ( $this->can_translate() ) {
-				$display = __( 'Once Every 5 Minutes', 'orbis_monitoring' );
+				$display = __( 'Once Every 5 Minutes', 'orbis-monitoring' );
 			}
 
 			$schedules['every_5_minutes'] = array(
@@ -513,8 +513,8 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 		$checked_description = 'When a Orbis monitor was checked.';
 
 		if ( $can_translate ) {
-			$problem_description = __( 'When a Orbis monitor problem was detected.', 'orbis_monitoring' );
-			$checked_description = __( 'When a Orbis monitor was checked.', 'orbis_monitoring' );
+			$problem_description = __( 'When a Orbis monitor problem was detected.', 'orbis-monitoring' );
+			$checked_description = __( 'When a Orbis monitor was checked.', 'orbis-monitoring' );
 		}
 
 		$events['orbis_monitor_problem'] = array(
@@ -522,7 +522,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'description' => $problem_description,
 			'message'     => function( $post, $response, $extra ) {
 				$message = sprintf(
-					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
@@ -548,7 +548,7 @@ class Orbis_Monitoring_Plugin extends Orbis_Plugin {
 			'description' => $checked_description,
 			'message'     => function( $post, $response ) {
 				return sprintf(
-					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis_monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+					__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
 					get_permalink( $post ),
 					get_the_title( $post ),
 					get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),

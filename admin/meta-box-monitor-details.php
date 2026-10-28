@@ -15,7 +15,7 @@ $curl = sprintf(
 <table class="form-table">
 	<tr valign="top">
 		<th scope="row">
-			<label for="orbis_monitor_url"><?php esc_html_e( 'URL', 'orbis_monitoring' ); ?></label>
+			<label for="orbis_monitor_url"><?php esc_html_e( 'URL', 'orbis-monitoring' ); ?></label>
 		</th>
 		<td>
 			<input id="orbis_monitor_url" name="_orbis_monitor_url" value="<?php echo esc_attr( $url ); ?>" type="text" class="regular-text" />
@@ -23,7 +23,7 @@ $curl = sprintf(
 	</tr>
 	<tr valign="top">
 		<th scope="row">
-			<label for="orbis_monitor_status_code"><?php esc_html_e( 'Required Response Code', 'orbis_monitoring' ); ?></label>
+			<label for="orbis_monitor_status_code"><?php esc_html_e( 'Required Response Code', 'orbis-monitoring' ); ?></label>
 		</th>
 		<td>
 			<input id="orbis_monitor_status_code" name="_orbis_monitor_required_response_code" value="<?php echo esc_attr( $code ); ?>" type="text" class="regular-text" />
@@ -31,7 +31,7 @@ $curl = sprintf(
 	</tr>
 	<tr valign="top">
 		<th scope="row">
-			<label for="orbis_monitor_location"><?php esc_html_e( 'Required Location', 'orbis_monitoring' ); ?></label>
+			<label for="orbis_monitor_location"><?php esc_html_e( 'Required Location', 'orbis-monitoring' ); ?></label>
 		</th>
 		<td>
 			<input id="orbis_monitor_location" name="_orbis_monitor_required_location" value="<?php echo esc_attr( $location ); ?>" type="text" class="regular-text" />
@@ -39,7 +39,7 @@ $curl = sprintf(
 	</tr>
 	<tr valign="top">
 		<th scope="row">
-			<label for="orbis_monitor_curl"><?php esc_html_e( 'cURL', 'orbis_monitoring' ); ?></label>
+			<label for="orbis_monitor_curl"><?php esc_html_e( 'cURL', 'orbis-monitoring' ); ?></label>
 		</th>
 		<td>
 			<input id="orbis_monitor_curl" name="_orbis_monitor_curl" value="<?php echo esc_attr( $curl ); ?>" readonly="readonly" type="text" class="regular-text" />
