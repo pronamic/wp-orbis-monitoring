@@ -18,3 +18,6 @@
 
 # Node
 /node_modules/
+
+# Composer installers
+/packages/

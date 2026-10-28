@@ -1,19 +1,32 @@
 <?php
+/**
+ * Meta box monitor responses
+ *
+ * @author    Pronamic
+ * @copyright 2026 Pronamic
+ * @license   GPL-2.0-or-later
+ * @package   Pronamic\Orbis\Monitoring
+ */
 
 global $wpdb;
 
-$responses = $wpdb->get_results( $wpdb->prepare( "
-	SELECT
-		*
-	FROM
-		$wpdb->orbis_monitor_responses
-	WHERE
-		post_id = %d
-	ORDER BY
-		monitored_date DESC
-	LIMIT
-		0, 10
-", $post->ID ) );
+$responses = $wpdb->get_results(
+	$wpdb->prepare(
+		<<<SQL
+		SELECT
+			*
+		FROM
+			$wpdb->orbis_monitor_responses
+		WHERE
+			post_id = %d
+		ORDER BY
+			monitored_date DESC
+		LIMIT
+			0, 10
+		SQL,
+		$post->ID
+	)
+);
 
 ?>
 <table class="widefat table">

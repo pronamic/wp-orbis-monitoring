@@ -43,5 +43,3 @@ psalm.xml
 /package.json
 /package-lock.json
 
-# PHP_CodeSniffer
-/phpcs.ruleset.xml

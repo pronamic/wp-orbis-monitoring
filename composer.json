@@ -1,13 +1,12 @@
 {
 	"name": "pronamic/wp-orbis-monitoring",
-	"description": "The Orbis Neighborhood plugin extends your Orbis environment with the option to manage a neighborhood.",
+	"description": "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites.",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"orbis",
-		"neighborhood",
+		"monitoring",
 		"wordpress",
-		"plugin",
-		"bootstrap"
+		"plugin"
 	],
 	"homepage": "https://www.pronamic.eu/orbis/",
 	"authors": [
@@ -26,27 +25,48 @@
 	],
 	"support": {
 		"email": "support@pronamic.nl",
-		"issues": "https://github.com/pronamic/wp-orbis/issues",
-		"source": "https://github.com/pronamic/wp-orbis"
+		"issues": "https://github.com/pronamic/wp-orbis-monitoring/issues",
+		"source": "https://github.com/pronamic/wp-orbis-monitoring"
 	},
 	"type": "wordpress-plugin",
 	"require": {
-		"php": ">=8.3"
+		"php": "^8.3",
+		"automattic/jetpack-autoloader": "^6.0",
+		"composer/installers": "^2.3"
 	},
 	"autoload": {
-		"classmap": ["classes/"]
+		"psr-4": {
+			"Pronamic\\Orbis\\Monitoring\\": "psr-4/"
+		}
 	},
 	"config": {
 		"allow-plugins": {
+			"automattic/jetpack-autoloader": true,
+			"composer/installers": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		},
-		"wp-slug": "orbis-monitoring"
+		"platform": {
+			"php": "8.3"
+		},
+		"platform-check": false,
+		"sort-packages": true
 	},
 	"require-dev": {
 		"pronamic/wp-coding-standards": "^2.1",
 		"wp-cli/dist-archive-command": "*",
 		"wp-cli/wp-cli-bundle": "*",
 		"deployer/deployer": "^7.5"
+	},
+	"extra": {
+		"installer-paths": {
+			"packages/{$vendor}/{$name}": [
+				"vendor:pronamic",
+				"vendor:solvebeam",
+				"vendor:wp-pay",
+				"woocommerce/action-scheduler"
+			]
+		},
+		"wp-slug": "orbis-monitoring"
 	},
 	"scripts": {
 		"build": [

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Meta box monitor check details
+ *
+ * @author    Pronamic
+ * @copyright 2026 Pronamic
+ * @license   GPL-2.0-or-later
+ * @package   Pronamic\Orbis\Monitoring
+ */
 
 global $post;
 

@@ -1,34 +1,26 @@
 {
-  "name": "orbis-monitoring",
-  "version": "1.0.0",
-  "description": "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/pronamic/wp-orbis-monitoring.git"
-  },
-  "keywords": [
-    "orbis",
-    "deal",
-    "monitoring",
-    "offer",
-    "offers"
-  ],
-  "author": {
-    "name": "Pronamic",
-    "email": "info@pronamic.nl",
-    "url": "http://www.pronamic.nl/"
-  },
-  "contributors": [
-    {
-      "name": "Remco Tolsma",
-      "email": "info@remcotolsma.nl",
-      "url": "http://www.remcotolsma.nl/"
-    }
-  ],
-  "license": "GPL-2.0-or-later",
-  "bugs": {
-    "url": "https://github.com/pronamic/wp-orbis-monitoring/issues",
-    "email": "support@pronamic.nl"
-  },
-  "homepage": "https://github.com/pronamic/wp-orbis-monitoring"
+	"name": "@pronamic/wp-orbis-monitoring",
+	"version": "1.0.0",
+	"description": "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites.",
+	"author": "Pronamic",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"pronamic",
+		"orbis",
+		"monitoring"
+	],
+	"homepage": "https://github.com/pronamic/wp-orbis-monitoring#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/pronamic/wp-orbis-monitoring.git"
+	},
+	"bugs": {
+		"url": "https://github.com/pronamic/wp-orbis-monitoring/issues"
+	},
+	"dependencies": {},
+	"devDependencies": {},
+	"prettier": "@wordpress/prettier-config",
+	"scripts": {
+		"lint:pkg-json": "wp-scripts lint-pkg-json"
+	}
 }

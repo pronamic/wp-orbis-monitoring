@@ -23,14 +23,22 @@
  * GitHub URI:        https://github.com/pronamic/wp-orbis-monitoring
  */
 
-function orbis_monitoring_bootstrap() {
-	// Classes
-	require_once 'classes/orbis-monitoring-plugin.php';
+declare(strict_types=1);
 
-	// Initialize
-	global $orbis_onitoring_plugin;
+namespace Pronamic\Orbis\Monitoring;
 
-	$orbis_onitoring_plugin = new Orbis_Monitoring_Plugin( __FILE__ );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-add_action( 'orbis_bootstrap', 'orbis_monitoring_bootstrap' );
+( static function (): void {
+	$autoload_path = __DIR__ . '/vendor/autoload_packages.php';
+
+	if ( \file_exists( $autoload_path ) ) {
+		require_once $autoload_path;
+	}
+
+	\register_activation_hook( __FILE__, [ Plugin::class, 'activate' ] );
+
+	Plugin::instance( __FILE__ );
+} )();

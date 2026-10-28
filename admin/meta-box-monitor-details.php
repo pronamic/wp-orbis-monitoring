@@ -1,4 +1,12 @@
 <?php
+/**
+ * Meta box monitor details
+ *
+ * @author    Pronamic
+ * @copyright 2026 Pronamic
+ * @license   GPL-2.0-or-later
+ * @package   Pronamic\Orbis\Monitoring
+ */
 
 wp_nonce_field( 'orbis_save_monitor_details', 'orbis_monitor_details_meta_box_nonce' );
 
