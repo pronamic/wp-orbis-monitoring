@@ -60,6 +60,24 @@ final readonly class AdminController {
 		);
 
 		\add_meta_box(
+			'orbis_monitor_status',
+			\__( 'Monitor Status', 'orbis-monitoring' ),
+			$this->meta_box_status( ... ),
+			'orbis_monitor',
+			'side',
+			'high'
+		);
+
+		\add_meta_box(
+			'orbis_monitor_incidents',
+			\__( 'Monitor Incidents', 'orbis-monitoring' ),
+			$this->meta_box_incidents( ... ),
+			'orbis_monitor',
+			'normal',
+			'high'
+		);
+
+		\add_meta_box(
 			'orbis_monitor_responses',
 			\__( 'Monitor Responses', 'orbis-monitoring' ),
 			$this->meta_box_responses( ... ),
@@ -77,6 +95,28 @@ final readonly class AdminController {
 	 */
 	private function meta_box_details( $post ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Used in the included template.
 		include \plugin_dir_path( $this->file ) . 'admin/meta-box-monitor-details.php';
+	}
+
+	/**
+	 * Meta box status.
+	 *
+	 * @param \WP_Post $post Post.
+	 * @return void
+	 */
+	private function meta_box_status( $post ): void {
+		$this->column_status( $post->ID );
+	}
+
+	/**
+	 * Meta box incidents.
+	 *
+	 * @param \WP_Post $post Post.
+	 * @return void
+	 */
+	private function meta_box_incidents( $post ): void { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Used in the included template.
+		$incident_controller = $this->incident_controller;
+
+		include \plugin_dir_path( $this->file ) . 'admin/meta-box-monitor-incidents.php';
 	}
 
 	/**
@@ -207,13 +247,6 @@ final readonly class AdminController {
 			return;
 		}
 
-		$labels = [
-			'unknown' => \__( 'Unknown', 'orbis-monitoring' ),
-			'up'      => \__( 'Up', 'orbis-monitoring' ),
-			'pending' => \__( 'Pending', 'orbis-monitoring' ),
-			'down'    => \__( 'Down', 'orbis-monitoring' ),
-		];
-
 		$icons = [
 			'unknown' => '⚪',
 			'up'      => '🟢',
@@ -221,7 +254,7 @@ final readonly class AdminController {
 			'down'    => '🔴',
 		];
 
-		echo \esc_html( ( $icons[ $status->status ] ?? '' ) . ' ' . ( $labels[ $status->status ] ?? $status->status ) );
+		echo \esc_html( ( $icons[ $status->status ] ?? '' ) . ' ' . $this->incident_controller->get_status_label( $status->status ) );
 
 		if ( 'pending' === $status->status ) {
 			echo ' ';

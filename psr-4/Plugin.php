@@ -24,6 +24,13 @@ final class Plugin {
 	private static $instance = null;
 
 	/**
+	 * Incident controller.
+	 *
+	 * @var IncidentController
+	 */
+	public readonly IncidentController $incident_controller;
+
+	/**
 	 * Return instance of this class.
 	 *
 	 * @param string $file Plugin file.
@@ -50,6 +57,8 @@ final class Plugin {
 		$incident_controller = new IncidentController( $settings_controller );
 		$monitor_controller  = new MonitorController( $settings_controller, $incident_controller );
 
+		$this->incident_controller = $incident_controller;
+
 		( new InstallController() )->setup();
 		( new PostTypesController() )->setup();
 		$settings_controller->setup();
@@ -57,6 +66,6 @@ final class Plugin {
 		$monitor_controller->setup();
 		( new AdminController( $file, $monitor_controller, $incident_controller ) )->setup();
 		( new SlackController() )->setup();
-		( new TemplateController( $file ) )->setup();
+		( new TemplateController( $file, $incident_controller ) )->setup();
 	}
 }

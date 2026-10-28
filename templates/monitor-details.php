@@ -16,12 +16,40 @@ $url      = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
 $code     = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( get_the_ID(), '_orbis_monitor_required_location', true );
 
+$monitor_status = $incident_controller->get_status( (int) get_the_ID() );
+$incident       = ( null !== $monitor_status && 'down' === $monitor_status->status ) ? $incident_controller->get_open_incident( (int) $monitor_status->id ) : null;
+
 ?>
 <div class="card mb-3">
 	<div class="card-header"><?php esc_html_e( 'Monitor Details', 'orbis-monitoring' ); ?></div>
 	<div class="card-body">
 		<div class="content">
 			<dl>
+				<dt><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></dt>
+				<dd>
+					<?php require __DIR__ . '/monitor-status-badge.php'; ?>
+				</dd>
+
+				<?php if ( null !== $incident ) : ?>
+					<dt><?php esc_html_e( 'Current Incident', 'orbis-monitoring' ); ?></dt>
+					<dd>
+						<?php
+
+						printf(
+							/* translators: %s: date the incident started */
+							esc_html__( 'Since %s', 'orbis-monitoring' ),
+							esc_html( wp_date( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) strtotime( $incident->started_at . ' UTC' ) ) )
+						);
+
+						if ( ! empty( $incident->response_code ) || ! empty( $incident->response_message ) ) {
+							echo '<br />';
+							echo esc_html( trim( $incident->response_code . ' ' . $incident->response_message ) );
+						}
+
+						?>
+					</dd>
+				<?php endif; ?>
+
 				<dt><?php esc_html_e( 'URL', 'orbis-monitoring' ); ?></dt>
 				<dd>
 					<?php if ( empty( $url ) ) : ?>

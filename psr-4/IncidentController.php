@@ -207,6 +207,116 @@ final readonly class IncidentController {
 	}
 
 	/**
+	 * Get the statuses of monitor posts.
+	 *
+	 * @param int[] $post_ids Post IDs.
+	 * @return array<int, object{id: string, post_id: string, status: string, failure_count: string, status_changed_at: string|null}> Statuses keyed by post ID.
+	 */
+	public function get_statuses( array $post_ids ): array {
+		global $wpdb;
+
+		$post_ids = \array_filter( \array_map( 'intval', $post_ids ) );
+
+		if ( [] === $post_ids ) {
+			return [];
+		}
+
+		$placeholders = \implode( ', ', \array_fill( 0, \count( $post_ids ), '%d' ) );
+
+		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- The placeholders are generated above.
+		$rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT id, post_id, status, failure_count, status_changed_at FROM $wpdb->orbis_monitors WHERE post_id IN ( $placeholders );",
+				$post_ids
+			)
+		);
+		// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
+
+		$statuses = [];
+
+		foreach ( $rows as $row ) {
+			$statuses[ (int) $row->post_id ] = $row;
+		}
+
+		return $statuses;
+	}
+
+	/**
+	 * Get the incidents of a monitor post, newest first.
+	 *
+	 * @param int $post_id Post ID.
+	 * @param int $limit   Maximum number of incidents.
+	 * @return array<object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, response_message: string|null}>
+	 */
+	public function get_incidents( int $post_id, int $limit = 10 ): array {
+		global $wpdb;
+
+		$incidents = $wpdb->get_results(
+			$wpdb->prepare(
+				<<<SQL
+				SELECT
+					incident.*
+				FROM
+					$wpdb->orbis_monitor_incidents AS incident
+						INNER JOIN
+					$wpdb->orbis_monitors AS monitor
+							ON monitor.id = incident.monitor_id
+				WHERE
+					monitor.post_id = %d
+				ORDER BY
+					incident.started_at DESC
+				LIMIT
+					0, %d
+				;
+				SQL,
+				$post_id,
+				$limit
+			)
+		);
+
+		return $incidents ?? [];
+	}
+
+	/**
+	 * Get the status labels.
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_status_labels(): array {
+		return [
+			'unknown' => \__( 'Unknown', 'orbis-monitoring' ),
+			'up'      => \__( 'Up', 'orbis-monitoring' ),
+			'pending' => \__( 'Pending', 'orbis-monitoring' ),
+			'down'    => \__( 'Down', 'orbis-monitoring' ),
+		];
+	}
+
+	/**
+	 * Get the label of a status.
+	 *
+	 * @param string $status Status.
+	 * @return string
+	 */
+	public function get_status_label( string $status ): string {
+		return $this->get_status_labels()[ $status ] ?? $status;
+	}
+
+	/**
+	 * Get the human readable duration of an incident.
+	 *
+	 * Ongoing incidents are measured until now.
+	 *
+	 * @param object{started_at: string, resolved_at: string|null} $incident Incident.
+	 * @return string
+	 */
+	public function get_incident_duration( object $incident ): string {
+		$from = (int) \strtotime( $incident->started_at . ' UTC' );
+		$to   = ( null === $incident->resolved_at ) ? \time() : (int) \strtotime( $incident->resolved_at . ' UTC' );
+
+		return \human_time_diff( $from, $to );
+	}
+
+	/**
 	 * Get monitor.
 	 *
 	 * @param int $monitor_id Monitor ID.
@@ -266,7 +376,7 @@ final readonly class IncidentController {
 	 * @param int $monitor_id Monitor ID.
 	 * @return object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, response_message: string|null}|null
 	 */
-	private function get_open_incident( int $monitor_id ): ?object {
+	public function get_open_incident( int $monitor_id ): ?object {
 		global $wpdb;
 
 		$incident = $wpdb->get_row(

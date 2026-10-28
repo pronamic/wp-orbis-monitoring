@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2026-10-28T15:47:52+00:00\n"
+"PO-Revision-Date: 2026-10-28T15:57:59+00:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -42,24 +42,66 @@ msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
 #: admin/meta-box-monitor-details.php:26
-#: templates/archive-orbis_monitor.php:30
-#: templates/monitor-details.php:25
+#: templates/archive-orbis_monitor.php:37
+#: templates/monitor-details.php:53
 msgid "URL"
 msgstr "URL"
 
 #: admin/meta-box-monitor-details.php:34
-#: templates/monitor-details.php:34
+#: templates/monitor-details.php:62
 msgid "Required Response Code"
 msgstr "Vereiste antwoordcode"
 
 #: admin/meta-box-monitor-details.php:42
-#: templates/monitor-details.php:39
+#: templates/monitor-details.php:67
 msgid "Required Location"
 msgstr "Vereiste locatie"
 
 #: admin/meta-box-monitor-details.php:50
 msgid "cURL"
 msgstr "cURL"
+
+#: admin/meta-box-monitor-incidents.php:15
+#: templates/monitor-incidents.php:42
+msgid "No incidents."
+msgstr "Geen incidenten."
+
+#: admin/meta-box-monitor-incidents.php:26
+#: templates/monitor-incidents.php:51
+msgid "Started"
+msgstr "Gestart"
+
+#: admin/meta-box-monitor-incidents.php:27
+#: templates/monitor-incidents.php:52
+msgid "Resolved"
+msgstr "Opgelost"
+
+#: admin/meta-box-monitor-incidents.php:28
+#: admin/meta-box-monitor-responses.php:40
+#: psr-4/AdminController.php:177
+#: templates/monitor-incidents.php:53
+#: templates/monitor-responses.php:76
+msgid "Duration"
+msgstr "Duur"
+
+#: admin/meta-box-monitor-incidents.php:29
+#: admin/meta-box-monitor-responses.php:41
+#: templates/monitor-incidents.php:54
+#: templates/monitor-responses.php:77
+msgid "Code"
+msgstr "Code"
+
+#: admin/meta-box-monitor-incidents.php:30
+#: admin/meta-box-monitor-responses.php:42
+#: templates/monitor-incidents.php:55
+#: templates/monitor-responses.php:78
+msgid "Message"
+msgstr "Bericht"
+
+#: admin/meta-box-monitor-incidents.php:43
+#: templates/monitor-incidents.php:69
+msgid "Ongoing"
+msgstr "Lopend"
 
 #: admin/meta-box-monitor-responses.php:38
 msgid "ID"
@@ -69,22 +111,6 @@ msgstr "ID"
 #: templates/monitor-responses.php:75
 msgid "Date"
 msgstr "Datum"
-
-#: admin/meta-box-monitor-responses.php:40
-#: psr-4/AdminController.php:137
-#: templates/monitor-responses.php:76
-msgid "Duration"
-msgstr "Duur"
-
-#: admin/meta-box-monitor-responses.php:41
-#: templates/monitor-responses.php:77
-msgid "Code"
-msgstr "Code"
-
-#: admin/meta-box-monitor-responses.php:42
-#: templates/monitor-responses.php:78
-msgid "Message"
-msgstr "Bericht"
 
 #: admin/meta-box-monitor-responses.php:43
 #: templates/monitor-responses.php:79
@@ -96,60 +122,55 @@ msgid "Content Type"
 msgstr "Content Type"
 
 #: psr-4/AdminController.php:55
-#: templates/monitor-details.php:21
+#: templates/monitor-details.php:24
 msgid "Monitor Details"
 msgstr "Monitor details"
 
 #: psr-4/AdminController.php:64
+msgid "Monitor Status"
+msgstr "Monitorstatus"
+
+#: psr-4/AdminController.php:73
+msgid "Monitor Incidents"
+msgstr "Monitorincidenten"
+
+#: psr-4/AdminController.php:82
 msgid "Monitor Responses"
 msgstr "Monitor antwoorden"
 
-#: psr-4/AdminController.php:136
+#: psr-4/AdminController.php:176
+#: templates/archive-orbis_monitor.php:35
+#: templates/monitor-details.php:28
 msgid "Status"
 msgstr "Status"
 
-#: psr-4/AdminController.php:138
+#: psr-4/AdminController.php:178
 msgid "Last Response Code"
 msgstr "Laatste antwoordcode"
 
-#: psr-4/AdminController.php:139
+#: psr-4/AdminController.php:179
 msgid "Last Response Message"
 msgstr "Laatste antwoordbericht"
 
-#: psr-4/AdminController.php:140
+#: psr-4/AdminController.php:180
 msgid "Last Content Length"
 msgstr "Laatste Content Length"
 
-#: psr-4/AdminController.php:141
+#: psr-4/AdminController.php:181
 msgid "Last Content Type"
 msgstr "Laatste Content Type"
 
-#: psr-4/AdminController.php:142
+#: psr-4/AdminController.php:182
 msgid "Last Check"
 msgstr "Laatste controle"
 
-#: psr-4/AdminController.php:189
+#: psr-4/AdminController.php:229
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
-#: psr-4/AdminController.php:211
-msgid "Unknown"
-msgstr "Onbekend"
-
-#: psr-4/AdminController.php:212
-msgid "Up"
-msgstr "Up"
-
-#: psr-4/AdminController.php:213
-msgid "Pending"
-msgstr "In afwachting"
-
-#: psr-4/AdminController.php:214
-msgid "Down"
-msgstr "Down"
-
 #. translators: %d: number of failed checks in a row
-#: psr-4/AdminController.php:230
+#: psr-4/AdminController.php:263
+#: templates/monitor-status-badge.php:33
 #, php-format
 msgid "(%d failed check)"
 msgid_plural "(%d failed checks)"
@@ -157,10 +178,27 @@ msgstr[0] "(%d mislukte controle)"
 msgstr[1] "(%d mislukte controles)"
 
 #. translators: %s: human readable time difference
-#: psr-4/AdminController.php:239
+#: psr-4/AdminController.php:272
+#: templates/monitor-status-badge.php:45
 #, php-format
 msgid "for %s"
 msgstr "al %s"
+
+#: psr-4/IncidentController.php:287
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: psr-4/IncidentController.php:288
+msgid "Up"
+msgstr "Up"
+
+#: psr-4/IncidentController.php:289
+msgid "Pending"
+msgstr "In afwachting"
+
+#: psr-4/IncidentController.php:290
+msgid "Down"
+msgstr "Down"
 
 #: psr-4/PostTypesController.php:38
 msgctxt "post type general name"
@@ -321,34 +359,47 @@ msgstr "%1$s is weer up na %2$s."
 msgid "response code `%s`"
 msgstr "antwoordcode `%s`"
 
-#: templates/archive-orbis_monitor.php:29
+#: templates/archive-orbis_monitor.php:36
 msgid "Title"
 msgstr "Titel"
 
-#: templates/archive-orbis_monitor.php:31
+#: templates/archive-orbis_monitor.php:38
 msgid "Required response code"
 msgstr "Vereiste antwoordcode"
 
-#: templates/archive-orbis_monitor.php:32
+#: templates/archive-orbis_monitor.php:39
 msgid "Last response code"
 msgstr "Laatste antwoordcode"
 
-#: templates/archive-orbis_monitor.php:33
+#: templates/archive-orbis_monitor.php:40
 msgid "Last response message"
 msgstr "Laatste antwoordbericht"
 
-#: templates/archive-orbis_monitor.php:34
+#: templates/archive-orbis_monitor.php:41
 msgid "Last response duration"
 msgstr "Laatste antwoordduur"
 
-#: templates/archive-orbis_monitor.php:35
+#: templates/archive-orbis_monitor.php:42
 msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
-#: templates/archive-orbis_monitor.php:79
+#: templates/archive-orbis_monitor.php:90
+#: templates/monitor-details.php:41
+#: templates/monitor-incidents.php:65
+#: templates/monitor-incidents.php:71
 #: templates/monitor-responses.php:89
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
+
+#: templates/monitor-details.php:34
+msgid "Current Incident"
+msgstr "Huidig incident"
+
+#. translators: %s: date the incident started
+#: templates/monitor-details.php:40
+#, php-format
+msgid "Since %s"
+msgstr "Sinds %s"
 
 #: templates/monitor-graph.php:20
 msgid "Day"
@@ -377,6 +428,10 @@ msgstr "Gemiddelde responstijd"
 #: templates/monitor-graph.php:145
 msgid "Average response time chart"
 msgstr "Grafiek gemiddelde responstijd"
+
+#: templates/monitor-incidents.php:28
+msgid "Incidents"
+msgstr "Incidenten"
 
 #. translators: %d: number of responses.
 #: templates/monitor-responses.php:55

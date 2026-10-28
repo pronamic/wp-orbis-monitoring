@@ -19,10 +19,12 @@ final readonly class TemplateController {
 	/**
 	 * Construct.
 	 *
-	 * @param string $file Plugin file.
+	 * @param string             $file                Plugin file.
+	 * @param IncidentController $incident_controller Incident controller.
 	 */
 	public function __construct(
-		private string $file
+		private string $file,
+		private IncidentController $incident_controller
 	) {
 	}
 
@@ -38,6 +40,7 @@ final readonly class TemplateController {
 
 		\add_action( 'orbis_before_side_content', $this->maybe_include_monitor_details( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_graph( ... ) );
+		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_incidents( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_responses( ... ) );
 	}
 
@@ -83,6 +86,8 @@ final readonly class TemplateController {
 			return;
 		}
 
+		$incident_controller = $this->incident_controller;
+
 		include __DIR__ . '/../templates/monitor-details.php';
 	}
 
@@ -97,6 +102,21 @@ final readonly class TemplateController {
 		}
 
 		include __DIR__ . '/../templates/monitor-graph.php';
+	}
+
+	/**
+	 * Maybe include monitor incidents.
+	 *
+	 * @return void
+	 */
+	private function maybe_include_monitor_incidents(): void {
+		if ( ! \is_singular( 'orbis_monitor' ) ) {
+			return;
+		}
+
+		$incident_controller = $this->incident_controller;
+
+		include __DIR__ . '/../templates/monitor-incidents.php';
 	}
 
 	/**

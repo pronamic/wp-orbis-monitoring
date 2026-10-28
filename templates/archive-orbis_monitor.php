@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header();
 
+global $wp_query;
+
+$incident_controller = \Pronamic\Orbis\Monitoring\Plugin::instance()->incident_controller;
+
+$statuses = $incident_controller->get_statuses( wp_list_pluck( $wp_query->posts, 'ID' ) );
+
 ?>
 <div class="card">
 	<div class="card-block">
@@ -26,6 +32,7 @@ get_header();
 			<table class="table table-striped table-condense table-hover">
 				<thead>
 					<tr>
+						<th><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'Title', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'URL', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'Required response code', 'orbis-monitoring' ); ?></th>
@@ -42,15 +49,19 @@ get_header();
 					while ( have_posts() ) :
 						the_post();
 
-						$url           = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
-						$required_code = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
-						$code          = get_post_meta( get_the_ID(), '_orbis_monitor_response_code', true );
-						$message       = get_post_meta( get_the_ID(), '_orbis_monitor_response_message', true );
-						$duration      = get_post_meta( get_the_ID(), '_orbis_monitor_duration', true );
-						$time          = get_post_meta( get_the_ID(), '_orbis_monitor_response_date', true );
+						$url            = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
+						$required_code  = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
+						$code           = get_post_meta( get_the_ID(), '_orbis_monitor_response_code', true );
+						$message        = get_post_meta( get_the_ID(), '_orbis_monitor_response_message', true );
+						$duration       = get_post_meta( get_the_ID(), '_orbis_monitor_duration', true );
+						$time           = get_post_meta( get_the_ID(), '_orbis_monitor_response_date', true );
+						$monitor_status = $statuses[ get_the_ID() ] ?? null;
 
 						?>
 						<tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+							<td>
+								<?php require __DIR__ . '/monitor-status-badge.php'; ?>
+							</td>
 							<td>
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
 

@@ -35,8 +35,9 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 | 🔔 **Slack alerts without the noise** | A monitor is only considered down after a number of failed checks in a row (default 3). You get one message when it goes down and one when it is up again, with the duration of the outage. Reminders while it stays down are optional. |
 | 📈 **Response time graphs** | See how fast a site responded over the past year, grouped per day, week or month, with [Chart.js](https://www.chartjs.org/). |
 | 🗂️ **Full history** | Every check is stored: duration, status code, message, content type and content length. Spot trends, prove SLAs, find out when it started. |
-| 📋 **Overview at a glance** | The admin list shows the last response code, response time, content type and check time of all monitors. |
-| 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status. |
+| 📋 **Overview at a glance** | See the status (up, pending or down) of all monitors in one list, together with the last response code, response time and check time. |
+| 🚨 **Incident history** | Every outage is stored as an incident, with start, end, duration and the error. Open a monitor to see its incidents, including the one that is still ongoing. |
+| 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status and incident history. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
 | 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitoring_incident_opened`, `orbis_monitoring_incident_resolved` and other actions. |
 | 🇳🇱 **Translated** | Ships with Dutch translations, ready for more. |
@@ -61,7 +62,7 @@ flowchart LR
 1. **Add a monitor**: give it a title and a URL, and optionally the status code and redirect location you expect.
 2. **Sit back**: Action Scheduler queues one check per monitor every minute. Checks are unique per monitor, so a slow site never piles up a backlog.
 3. **Get notified**: when the response doesn't match a number of times in a row, an incident is opened, the `orbis_monitoring_incident_opened` action fires and your team gets one Slack message. When it recovers, the incident is resolved and `orbis_monitoring_incident_resolved` fires. The threshold and an optional reminder interval are set under **Settings → Orbis Monitoring**.
-4. **Dig in**: open the monitor to see its response history and response time graph.
+4. **Dig in**: open the monitor to see its status, incident history, response history and response time graph.
 
 > [!TIP]
 > Redirects are **not** followed. That's on purpose: it lets you check that `http://` sends visitors to `https://`, or that an old domain still redirects to the right place.
