@@ -55,11 +55,13 @@ $responses = $wpdb->get_results(
 		);
 
 		?>
-		<button class="btn btn-light dropdown-toggle m-0 p-0 float-right" type="button" id="orbis-monitor-responses-amount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo esc_html( (string) $amount ); ?></button>
-		<div class="dropdown-menu" aria-labelledby="orbis-monitor-responses-amount">
-			<?php foreach ( $amounts as $value ) : ?>
-				<a class="dropdown-item" href="<?php echo esc_url( add_query_arg( 'amount', $value ) ); ?>"><?php echo esc_html( (string) $value ); ?></a>
-			<?php endforeach; ?>
+		<div class="dropdown float-end">
+			<button class="btn btn-light dropdown-toggle m-0 p-0" type="button" id="orbis-monitor-responses-amount" data-bs-toggle="dropdown" aria-expanded="false"><?php echo esc_html( (string) $amount ); ?></button>
+			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orbis-monitor-responses-amount">
+				<?php foreach ( $amounts as $value ) : ?>
+					<li><a class="dropdown-item" href="<?php echo esc_url( add_query_arg( 'amount', $value ) ); ?>"><?php echo esc_html( (string) $value ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 	</div>
 

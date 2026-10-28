@@ -138,11 +138,13 @@ wp_add_inline_script(
 		);
 
 		?>
-		<button class="btn btn-light dropdown-toggle m-0 p-0 float-right" type="button" id="orbis-monitor-graph-period" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo esc_html( $periods[ $period ] ); ?></button>
-		<div class="dropdown-menu" aria-labelledby="orbis-monitor-graph-period">
-			<?php foreach ( $periods as $key => $label ) : ?>
-				<a class="dropdown-item" href="<?php echo esc_url( add_query_arg( 'period', $key ) ); ?>"><?php echo esc_html( $label ); ?></a>
-			<?php endforeach; ?>
+		<div class="dropdown float-end">
+			<button class="btn btn-light dropdown-toggle m-0 p-0" type="button" id="orbis-monitor-graph-period" data-bs-toggle="dropdown" aria-expanded="false"><?php echo esc_html( $periods[ $period ] ); ?></button>
+			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orbis-monitor-graph-period">
+				<?php foreach ( $periods as $key => $label ) : ?>
+					<li><a class="dropdown-item" href="<?php echo esc_url( add_query_arg( 'period', $key ) ); ?>"><?php echo esc_html( $label ); ?></a></li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
 	</div>
 	<div class="card-body">
