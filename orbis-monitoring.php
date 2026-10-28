@@ -38,7 +38,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		require_once $autoload_path;
 	}
 
-	\register_activation_hook( __FILE__, [ Plugin::class, 'activate' ] );
+	\register_activation_hook( __FILE__, [ InstallController::class, 'activate' ] );
 
 	Plugin::instance( __FILE__ );
 } )();
