@@ -116,13 +116,13 @@ final class AdminController {
 	 * @return void
 	 */
 	private function save_monitor( $post_id ): void {
-		if ( \filter_has_var( INPUT_POST, '_orbis_monitor_check' ) ) {
+		if ( isset( $_POST['_orbis_monitor_check'] ) ) {
 			$this->save_monitor_check();
 			return;
 		}
 
 		// Nonce.
-		if ( ! \filter_has_var( INPUT_POST, 'orbis_monitor_details_meta_box_nonce' ) ) {
+		if ( ! isset( $_POST['orbis_monitor_details_meta_box_nonce'] ) ) {
 			return;
 		}
 
@@ -134,21 +134,11 @@ final class AdminController {
 		}
 
 		// OK, its safe for us to save the data now.
-		$definition = [
-			'_orbis_monitor_url'                    => FILTER_VALIDATE_URL,
-			'_orbis_monitor_required_response_code' => [
-				'filter' => FILTER_VALIDATE_INT,
-				'flags'  => FILTER_NULL_ON_FAILURE,
-			],
-			'_orbis_monitor_required_location'      => FILTER_UNSAFE_RAW,
-			'_orbis_monitor_required_string'        => FILTER_UNSAFE_RAW,
+		$data = [
+			'_orbis_monitor_url'                    => isset( $_POST['_orbis_monitor_url'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_url'] ) ) : '',
+			'_orbis_monitor_required_response_code' => isset( $_POST['_orbis_monitor_required_response_code'] ) ? \absint( $_POST['_orbis_monitor_required_response_code'] ) : 0,
+			'_orbis_monitor_required_location'      => isset( $_POST['_orbis_monitor_required_location'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_monitor_required_location'] ) ) : '',
 		];
-
-		$data = \filter_input_array( INPUT_POST, $definition );
-
-		if ( isset( $data['_orbis_monitor_required_location'] ) ) {
-			$data['_orbis_monitor_required_location'] = \sanitize_text_field( \wp_unslash( $data['_orbis_monitor_required_location'] ) );
-		}
 
 		foreach ( $data as $key => $value ) {
 			if ( empty( $value ) ) {
@@ -169,12 +159,10 @@ final class AdminController {
 	private function save_monitor_check(): void {
 		global $post;
 
-		$required_string = \filter_input( INPUT_POST, '_orbis_monitor_check_required_string', FILTER_UNSAFE_RAW );
-		$should_contain  = \filter_input( INPUT_POST, '_orbis_monitor_check_should_contain', FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE );
-
-		if ( null !== $required_string ) {
-			$required_string = \sanitize_text_field( \wp_unslash( $required_string ) );
-		}
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Existing behaviour, the check meta box has no nonce.
+		$required_string = isset( $_POST['_orbis_monitor_check_required_string'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_monitor_check_required_string'] ) ) : '';
+		$should_contain  = isset( $_POST['_orbis_monitor_check_should_contain'] ) ? \absint( $_POST['_orbis_monitor_check_should_contain'] ) : 0;
+		// phpcs:enable
 
 		\update_post_meta( $post->ID, '_orbis_monitor_check_required_string', $required_string );
 		\update_post_meta( $post->ID, '_orbis_monitor_check_should_contain', $should_contain );
