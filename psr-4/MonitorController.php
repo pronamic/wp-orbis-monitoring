@@ -20,9 +20,11 @@ final readonly class MonitorController {
 	 * Construct.
 	 *
 	 * @param SettingsController $settings_controller Settings controller.
+	 * @param IncidentController $incident_controller Incident controller.
 	 */
 	public function __construct(
-		private SettingsController $settings_controller
+		private SettingsController $settings_controller,
+		private IncidentController $incident_controller
 	) {
 	}
 
@@ -203,10 +205,12 @@ final readonly class MonitorController {
 		\update_post_meta( $post->ID, '_orbis_monitor_response_content_type', $content_type );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_date', \strtotime( $date ) );
 
+		$monitor_id = $this->get_monitor_id( $post->ID );
+
 		$wpdb->insert(
 			$wpdb->orbis_monitor_responses,
 			[
-				'monitor_id'              => $this->get_monitor_id( $post->ID ),
+				'monitor_id'              => $monitor_id,
 				'monitored_date'          => \current_time( 'mysql' ),
 				'duration'                => $duration,
 				'response_code'           => $response_code,
@@ -236,14 +240,19 @@ final readonly class MonitorController {
 		// Add custom message.
 		$message = null;
 
-		if (
-			( $required_response_code !== $response_code )
-				||
-			( ! empty( $required_location ) && \wp_remote_retrieve_header( $response, 'location' ) !== $required_location )
-		) {
+		$is_up = (
+			( $required_response_code === $response_code )
+				&&
+			( empty( $required_location ) || \wp_remote_retrieve_header( $response, 'location' ) === $required_location )
+		);
+
+		if ( ! $is_up ) {
 			\do_action( 'orbis_monitor_problem', $post, $response, $message );
 		}
 
 		\do_action( 'orbis_monitor_checked', $post, $response );
+
+		// Status changes trigger the `orbis_monitor_down`, `orbis_monitor_still_down` and `orbis_monitor_up` actions.
+		$this->incident_controller->process( $post, $response, $is_up, $monitor_id );
 	}
 }

@@ -19,12 +19,14 @@ final readonly class AdminController {
 	/**
 	 * Construct.
 	 *
-	 * @param string            $file               Plugin file.
-	 * @param MonitorController $monitor_controller Monitor controller.
+	 * @param string             $file                Plugin file.
+	 * @param MonitorController  $monitor_controller  Monitor controller.
+	 * @param IncidentController $incident_controller Incident controller.
 	 */
 	public function __construct(
 		private string $file,
-		private MonitorController $monitor_controller
+		private MonitorController $monitor_controller,
+		private IncidentController $incident_controller
 	) {
 	}
 
@@ -131,6 +133,7 @@ final readonly class AdminController {
 	 * @return array<string, string>
 	 */
 	private function columns( $columns ) {
+		$columns['orbis_monitor_status']                  = \__( 'Status', 'orbis-monitoring' );
 		$columns['orbis_monitor_duration']                = \__( 'Duration', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_code']           = \__( 'Last Response Code', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_message']        = \__( 'Last Response Message', 'orbis-monitoring' );
@@ -150,6 +153,10 @@ final readonly class AdminController {
 	 */
 	private function custom_columns( $column, $post_id ): void {
 		switch ( $column ) {
+			case 'orbis_monitor_status':
+				$this->column_status( $post_id );
+
+				break;
 			case 'orbis_monitor_duration':
 				$duration = \get_post_meta( $post_id, '_orbis_monitor_duration', true );
 
@@ -182,6 +189,56 @@ final readonly class AdminController {
 				\the_modified_date( \__( 'D j M Y \a\t H:i:s', 'orbis-monitoring' ) );
 
 				break;
+		}
+	}
+
+	/**
+	 * Status column.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	private function column_status( $post_id ): void {
+		$status = $this->incident_controller->get_status( $post_id );
+
+		if ( null === $status ) {
+			echo '—';
+
+			return;
+		}
+
+		$labels = [
+			'unknown' => \__( 'Unknown', 'orbis-monitoring' ),
+			'up'      => \__( 'Up', 'orbis-monitoring' ),
+			'pending' => \__( 'Pending', 'orbis-monitoring' ),
+			'down'    => \__( 'Down', 'orbis-monitoring' ),
+		];
+
+		$icons = [
+			'unknown' => '⚪',
+			'up'      => '🟢',
+			'pending' => '🟠',
+			'down'    => '🔴',
+		];
+
+		echo \esc_html( ( $icons[ $status->status ] ?? '' ) . ' ' . ( $labels[ $status->status ] ?? $status->status ) );
+
+		if ( 'pending' === $status->status ) {
+			echo ' ';
+			\printf(
+				/* translators: %d: number of failed checks in a row */
+				\esc_html( \_n( '(%d failed check)', '(%d failed checks)', (int) $status->failure_count, 'orbis-monitoring' ) ),
+				(int) $status->failure_count
+			);
+		}
+
+		if ( null !== $status->status_changed_at && 'unknown' !== $status->status ) {
+			echo '<br />';
+			\printf(
+				/* translators: %s: human readable time difference */
+				\esc_html__( 'for %s', 'orbis-monitoring' ),
+				\esc_html( \human_time_diff( (int) \strtotime( $status->status_changed_at . ' UTC' ) ) )
+			);
 		}
 	}
 }

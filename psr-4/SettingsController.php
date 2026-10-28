@@ -56,6 +56,24 @@ final readonly class SettingsController {
 	}
 
 	/**
+	 * Get the number of failed checks in a row before a monitor is considered down.
+	 *
+	 * @return int
+	 */
+	public function get_failure_threshold(): int {
+		return \max( 1, (int) \get_option( 'orbis_monitoring_failure_threshold', 3 ) );
+	}
+
+	/**
+	 * Get the reminder interval in minutes while a monitor is down, `0` disables reminders.
+	 *
+	 * @return int
+	 */
+	public function get_reminder_interval(): int {
+		return \max( 0, (int) \get_option( 'orbis_monitoring_reminder_interval', 0 ) );
+	}
+
+	/**
 	 * Get the default user agent, an honest product token identifying Orbis Monitoring.
 	 *
 	 * @link https://www.rfc-editor.org/rfc/rfc9110#name-user-agent
@@ -97,6 +115,26 @@ final readonly class SettingsController {
 				'default'           => $this->get_default_user_agent(),
 			]
 		);
+
+		\register_setting(
+			'orbis-monitoring',
+			'orbis_monitoring_failure_threshold',
+			[
+				'type'              => 'integer',
+				'sanitize_callback' => fn( $value ) => \max( 1, (int) $value ),
+				'default'           => 3,
+			]
+		);
+
+		\register_setting(
+			'orbis-monitoring',
+			'orbis_monitoring_reminder_interval',
+			[
+				'type'              => 'integer',
+				'sanitize_callback' => fn( $value ) => \max( 0, (int) $value ),
+				'default'           => 0,
+			]
+		);
 	}
 
 	/**
@@ -120,6 +158,35 @@ final readonly class SettingsController {
 			'orbis_monitoring_general',
 			[
 				'label_for' => 'orbis_monitoring_user_agent',
+			]
+		);
+
+		\add_settings_section(
+			'orbis_monitoring_notifications',
+			\__( 'Notifications', 'orbis-monitoring' ),
+			'__return_false',
+			'orbis-monitoring'
+		);
+
+		\add_settings_field(
+			'orbis_monitoring_failure_threshold',
+			\__( 'Failure Threshold', 'orbis-monitoring' ),
+			$this->field_failure_threshold( ... ),
+			'orbis-monitoring',
+			'orbis_monitoring_notifications',
+			[
+				'label_for' => 'orbis_monitoring_failure_threshold',
+			]
+		);
+
+		\add_settings_field(
+			'orbis_monitoring_reminder_interval',
+			\__( 'Reminder Interval', 'orbis-monitoring' ),
+			$this->field_reminder_interval( ... ),
+			'orbis-monitoring',
+			'orbis_monitoring_notifications',
+			[
+				'label_for' => 'orbis_monitoring_reminder_interval',
 			]
 		);
 	}
@@ -220,6 +287,43 @@ final readonly class SettingsController {
 			</p>
 
 		<?php endif; ?>
+		<?php
+	}
+
+	/**
+	 * Failure threshold field.
+	 *
+	 * @return void
+	 */
+	private function field_failure_threshold(): void {
+		\printf(
+			'<input id="orbis_monitoring_failure_threshold" name="orbis_monitoring_failure_threshold" value="%s" type="number" min="1" step="1" class="small-text" />',
+			\esc_attr( (string) $this->get_failure_threshold() )
+		);
+
+		?>
+		<p class="description">
+			<?php \esc_html_e( 'The number of failed checks in a row before a monitor is considered down and a notification is sent. Monitors are checked every minute, so a single hiccup does not trigger a notification.', 'orbis-monitoring' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Reminder interval field.
+	 *
+	 * @return void
+	 */
+	private function field_reminder_interval(): void {
+		\printf(
+			'<input id="orbis_monitoring_reminder_interval" name="orbis_monitoring_reminder_interval" value="%s" type="number" min="0" step="1" class="small-text" /> %s',
+			\esc_attr( (string) $this->get_reminder_interval() ),
+			\esc_html__( 'minutes', 'orbis-monitoring' )
+		);
+
+		?>
+		<p class="description">
+			<?php \esc_html_e( 'Send a reminder while a monitor is still down. Use 0 to only send a notification when a monitor goes down and when it is up again.', 'orbis-monitoring' ); ?>
+		</p>
 		<?php
 	}
 }

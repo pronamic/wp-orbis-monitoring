@@ -47,13 +47,15 @@ final class Plugin {
 		public readonly string $file
 	) {
 		$settings_controller = new SettingsController( $file );
-		$monitor_controller  = new MonitorController( $settings_controller );
+		$incident_controller = new IncidentController( $settings_controller );
+		$monitor_controller  = new MonitorController( $settings_controller, $incident_controller );
 
 		( new InstallController() )->setup();
 		( new PostTypesController() )->setup();
 		$settings_controller->setup();
+		$incident_controller->setup();
 		$monitor_controller->setup();
-		( new AdminController( $file, $monitor_controller ) )->setup();
+		( new AdminController( $file, $monitor_controller, $incident_controller ) )->setup();
 		( new SlackController() )->setup();
 		( new TemplateController( $file ) )->setup();
 	}

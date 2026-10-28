@@ -46,20 +46,29 @@ final class SlackController {
 		 */
 		$can_translate = ( \did_action( 'init' ) || \doing_action( 'init' ) );
 
-		$problem_description = 'When a Orbis monitor problem was detected.';
-		$checked_description = 'When a Orbis monitor was checked.';
+		$down_description       = 'When a Orbis monitor is down.';
+		$still_down_description = 'When a Orbis monitor is still down (reminder).';
+		$up_description         = 'When a Orbis monitor is up again.';
 
 		if ( $can_translate ) {
-			$problem_description = \__( 'When a Orbis monitor problem was detected.', 'orbis-monitoring' );
-			$checked_description = \__( 'When a Orbis monitor was checked.', 'orbis-monitoring' );
+			$down_description       = \__( 'When a Orbis monitor is down.', 'orbis-monitoring' );
+			$still_down_description = \__( 'When a Orbis monitor is still down (reminder).', 'orbis-monitoring' );
+			$up_description         = \__( 'When a Orbis monitor is up again.', 'orbis-monitoring' );
 		}
 
-		$events['orbis_monitor_problem'] = [
-			'action'      => 'orbis_monitor_problem',
-			'description' => $problem_description,
-			'message'     => function ( $post, $response, $extra ) {
-				$message = \sprintf(
-					\__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+		/*
+		 * These events only fire when the status of a monitor changes, not for
+		 * every check, so a Slack channel is not flooded during an outage.
+		 *
+		 * @see IncidentController
+		 */
+		$events['orbis_monitor_down'] = [
+			'action'      => 'orbis_monitor_down',
+			'description' => $down_description,
+			'message'     => function ( $post, $response ) {
+				$message = ':red_circle: ' . \sprintf(
+					/* translators: 1: monitor permalink, 2: monitor title, 3: response code, 4: monitor URL */
+					\__( 'Orbis monitor <%1$s|%2$s> is down, response code was `%3$s` » %4$s.', 'orbis-monitoring' ),
 					\get_permalink( $post ),
 					\get_the_title( $post ),
 					\get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
@@ -71,23 +80,33 @@ final class SlackController {
 					$message .= $response->get_error_message();
 				}
 
-				if ( ! empty( $extra ) ) {
-					$message .= "\n";
-					$message .= $extra;
-				}
-
 				return $message;
 			},
 		];
 
-		$events['orbis_monitor_checked'] = [
-			'action'      => 'orbis_monitor_checked',
-			'description' => $checked_description,
-			'message'     => fn( $post ) => \sprintf(
-				\__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+		$events['orbis_monitor_still_down'] = [
+			'action'      => 'orbis_monitor_still_down',
+			'description' => $still_down_description,
+			'message'     => fn( $post, $response, $incident ) => ':red_circle: ' . \sprintf(
+				/* translators: 1: monitor permalink, 2: monitor title, 3: duration, 4: response code, 5: monitor URL */
+				\__( 'Orbis monitor <%1$s|%2$s> is still down for %3$s, response code was `%4$s` » %5$s.', 'orbis-monitoring' ),
 				\get_permalink( $post ),
 				\get_the_title( $post ),
+				\human_time_diff( (int) \strtotime( $incident->started_at . ' UTC' ) ),
 				\get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
+				\get_post_meta( $post->ID, '_orbis_monitor_url', true )
+			),
+		];
+
+		$events['orbis_monitor_up'] = [
+			'action'      => 'orbis_monitor_up',
+			'description' => $up_description,
+			'message'     => fn( $post, $incident ) => ':white_check_mark: ' . \sprintf(
+				/* translators: 1: monitor permalink, 2: monitor title, 3: duration, 4: monitor URL */
+				\__( 'Orbis monitor <%1$s|%2$s> is up again after %3$s » %4$s.', 'orbis-monitoring' ),
+				\get_permalink( $post ),
+				\get_the_title( $post ),
+				\human_time_diff( (int) \strtotime( $incident->started_at . ' UTC' ), (int) \strtotime( $incident->resolved_at . ' UTC' ) ),
 				\get_post_meta( $post->ID, '_orbis_monitor_url', true )
 			),
 		];

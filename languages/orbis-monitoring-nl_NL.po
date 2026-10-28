@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2026-10-28T14:30:28+00:00\n"
+"PO-Revision-Date: 2026-10-28T15:31:33+00:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -16,8 +16,12 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: orbis-monitoring.php:11
-#: psr-4/SettingsController.php:80
-#: psr-4/SettingsController.php:81
+#: build/orbis-monitoring/psr-4/SettingsController.php:77
+#: build/orbis-monitoring/psr-4/SettingsController.php:78
+#: build/stage-1/psr-4/SettingsController.php:77
+#: build/stage-1/psr-4/SettingsController.php:78
+#: psr-4/SettingsController.php:95
+#: psr-4/SettingsController.php:96
 msgid "Orbis Monitoring"
 msgstr "Orbis Monitoring"
 
@@ -42,264 +46,492 @@ msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
 #: admin/meta-box-monitor-details.php:26
+#: build/orbis-monitoring/admin/meta-box-monitor-details.php:26
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:30
+#: build/orbis-monitoring/templates/monitor-details.php:25
+#: build/stage-1/admin/meta-box-monitor-details.php:26
+#: build/stage-1/templates/archive-orbis_monitor.php:30
+#: build/stage-1/templates/monitor-details.php:25
 #: templates/archive-orbis_monitor.php:30
 #: templates/monitor-details.php:25
 msgid "URL"
 msgstr "URL"
 
 #: admin/meta-box-monitor-details.php:34
+#: build/orbis-monitoring/admin/meta-box-monitor-details.php:34
+#: build/orbis-monitoring/templates/monitor-details.php:34
+#: build/stage-1/admin/meta-box-monitor-details.php:34
+#: build/stage-1/templates/monitor-details.php:34
 #: templates/monitor-details.php:34
 msgid "Required Response Code"
 msgstr "Vereiste antwoordcode"
 
 #: admin/meta-box-monitor-details.php:42
+#: build/orbis-monitoring/admin/meta-box-monitor-details.php:42
+#: build/orbis-monitoring/templates/monitor-details.php:39
+#: build/stage-1/admin/meta-box-monitor-details.php:42
+#: build/stage-1/templates/monitor-details.php:39
 #: templates/monitor-details.php:39
 msgid "Required Location"
 msgstr "Vereiste locatie"
 
 #: admin/meta-box-monitor-details.php:50
+#: build/orbis-monitoring/admin/meta-box-monitor-details.php:50
+#: build/stage-1/admin/meta-box-monitor-details.php:50
 msgid "cURL"
 msgstr "cURL"
 
-#: admin/meta-box-monitor-responses.php:35
+#: admin/meta-box-monitor-responses.php:38
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:38
+#: build/stage-1/admin/meta-box-monitor-responses.php:38
 msgid "ID"
 msgstr "ID"
 
-#: admin/meta-box-monitor-responses.php:36
-#: templates/monitor-responses.php:72
+#: admin/meta-box-monitor-responses.php:39
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:39
+#: build/orbis-monitoring/templates/monitor-responses.php:75
+#: build/stage-1/admin/meta-box-monitor-responses.php:39
+#: build/stage-1/templates/monitor-responses.php:75
+#: templates/monitor-responses.php:75
 msgid "Date"
 msgstr "Datum"
 
-#: admin/meta-box-monitor-responses.php:37
-#: psr-4/AdminController.php:134
-#: templates/monitor-responses.php:73
+#: admin/meta-box-monitor-responses.php:40
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:40
+#: build/orbis-monitoring/psr-4/AdminController.php:134
+#: build/orbis-monitoring/templates/monitor-responses.php:76
+#: build/stage-1/admin/meta-box-monitor-responses.php:40
+#: build/stage-1/psr-4/AdminController.php:134
+#: build/stage-1/templates/monitor-responses.php:76
+#: psr-4/AdminController.php:137
+#: templates/monitor-responses.php:76
 msgid "Duration"
 msgstr "Duur"
 
-#: admin/meta-box-monitor-responses.php:38
-#: templates/monitor-responses.php:74
+#: admin/meta-box-monitor-responses.php:41
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:41
+#: build/orbis-monitoring/templates/monitor-responses.php:77
+#: build/stage-1/admin/meta-box-monitor-responses.php:41
+#: build/stage-1/templates/monitor-responses.php:77
+#: templates/monitor-responses.php:77
 msgid "Code"
 msgstr "Code"
 
-#: admin/meta-box-monitor-responses.php:39
-#: templates/monitor-responses.php:75
+#: admin/meta-box-monitor-responses.php:42
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:42
+#: build/orbis-monitoring/templates/monitor-responses.php:78
+#: build/stage-1/admin/meta-box-monitor-responses.php:42
+#: build/stage-1/templates/monitor-responses.php:78
+#: templates/monitor-responses.php:78
 msgid "Message"
 msgstr "Bericht"
 
-#: admin/meta-box-monitor-responses.php:40
-#: templates/monitor-responses.php:76
+#: admin/meta-box-monitor-responses.php:43
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:43
+#: build/orbis-monitoring/templates/monitor-responses.php:79
+#: build/stage-1/admin/meta-box-monitor-responses.php:43
+#: build/stage-1/templates/monitor-responses.php:79
+#: templates/monitor-responses.php:79
 msgid "Content Length"
 msgstr "Content Length"
 
-#: admin/meta-box-monitor-responses.php:41
+#: admin/meta-box-monitor-responses.php:44
+#: build/orbis-monitoring/admin/meta-box-monitor-responses.php:44
+#: build/stage-1/admin/meta-box-monitor-responses.php:44
 msgid "Content Type"
 msgstr "Content Type"
 
-#: psr-4/AdminController.php:53
+#: build/orbis-monitoring/psr-4/AdminController.php:53
+#: build/orbis-monitoring/templates/monitor-details.php:21
+#: build/stage-1/psr-4/AdminController.php:53
+#: build/stage-1/templates/monitor-details.php:21
+#: psr-4/AdminController.php:55
 #: templates/monitor-details.php:21
 msgid "Monitor Details"
 msgstr "Monitor details"
 
-#: psr-4/AdminController.php:62
+#: build/orbis-monitoring/psr-4/AdminController.php:62
+#: build/stage-1/psr-4/AdminController.php:62
+#: psr-4/AdminController.php:64
 msgid "Monitor Responses"
 msgstr "Monitor antwoorden"
 
-#: psr-4/AdminController.php:135
+#: build/orbis-monitoring/psr-4/AdminController.php:135
+#: build/stage-1/psr-4/AdminController.php:135
+#: psr-4/AdminController.php:138
 msgid "Last Response Code"
 msgstr "Laatste antwoordcode"
 
-#: psr-4/AdminController.php:136
+#: build/orbis-monitoring/psr-4/AdminController.php:136
+#: build/stage-1/psr-4/AdminController.php:136
+#: psr-4/AdminController.php:139
 msgid "Last Response Message"
 msgstr "Laatste antwoordbericht"
 
-#: psr-4/AdminController.php:137
+#: build/orbis-monitoring/psr-4/AdminController.php:137
+#: build/stage-1/psr-4/AdminController.php:137
+#: psr-4/AdminController.php:140
 msgid "Last Content Length"
 msgstr "Laatste Content Length"
 
-#: psr-4/AdminController.php:138
+#: build/orbis-monitoring/psr-4/AdminController.php:138
+#: build/stage-1/psr-4/AdminController.php:138
+#: psr-4/AdminController.php:141
 msgid "Last Content Type"
 msgstr "Laatste Content Type"
 
-#: psr-4/AdminController.php:139
+#: build/orbis-monitoring/psr-4/AdminController.php:139
+#: build/stage-1/psr-4/AdminController.php:139
+#: psr-4/AdminController.php:142
 msgid "Last Check"
 msgstr "Laatste controle"
 
-#: psr-4/AdminController.php:182
+#: build/orbis-monitoring/psr-4/AdminController.php:182
+#: build/stage-1/psr-4/AdminController.php:182
+#: psr-4/AdminController.php:189
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:38
+#: build/stage-1/psr-4/PostTypesController.php:38
 #: psr-4/PostTypesController.php:38
 msgctxt "post type general name"
 msgid "Monitors"
 msgstr "Monitors"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:39
+#: build/stage-1/psr-4/PostTypesController.php:39
 #: psr-4/PostTypesController.php:39
 msgctxt "post type singular name"
 msgid "Monitor"
 msgstr "Monitor"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:40
+#: build/stage-1/psr-4/PostTypesController.php:40
 #: psr-4/PostTypesController.php:40
 msgctxt "admin menu"
 msgid "Monitors"
 msgstr "Monitors"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:41
+#: build/stage-1/psr-4/PostTypesController.php:41
 #: psr-4/PostTypesController.php:41
 msgctxt "add new on admin bar"
 msgid "Monitor"
 msgstr "Monitor"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:42
+#: build/stage-1/psr-4/PostTypesController.php:42
 #: psr-4/PostTypesController.php:42
 msgctxt "monitor"
 msgid "Add New"
 msgstr "Nieuwe monitor"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:43
+#: build/stage-1/psr-4/PostTypesController.php:43
 #: psr-4/PostTypesController.php:43
 msgid "Add New Monitor"
 msgstr "Nieuwe monitor toevoegen"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:44
+#: build/stage-1/psr-4/PostTypesController.php:44
 #: psr-4/PostTypesController.php:44
 msgid "New Monitor"
 msgstr "Nieuwe monitor"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:45
+#: build/stage-1/psr-4/PostTypesController.php:45
 #: psr-4/PostTypesController.php:45
 msgid "Edit Monitor"
 msgstr "Monitor bewerken"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:46
+#: build/stage-1/psr-4/PostTypesController.php:46
 #: psr-4/PostTypesController.php:46
 msgid "View Monitor"
 msgstr "Monitor bekijken"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:47
+#: build/stage-1/psr-4/PostTypesController.php:47
 #: psr-4/PostTypesController.php:47
 msgid "All Monitors"
 msgstr "Alle monitors"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:48
+#: build/stage-1/psr-4/PostTypesController.php:48
 #: psr-4/PostTypesController.php:48
 msgid "Search Monitors"
 msgstr "Monitors zoeken"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:49
+#: build/stage-1/psr-4/PostTypesController.php:49
 #: psr-4/PostTypesController.php:49
 msgid "Parent Monitor:"
 msgstr "Bovenliggende monitor:"
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:50
+#: build/stage-1/psr-4/PostTypesController.php:50
 #: psr-4/PostTypesController.php:50
 msgid "No monitors found."
 msgstr "Geen monitors gevonden."
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:51
+#: build/stage-1/psr-4/PostTypesController.php:51
 #: psr-4/PostTypesController.php:51
 msgid "No monitors found in Trash."
 msgstr "Geen monitors gevonden in prullenbak."
 
+#: build/orbis-monitoring/psr-4/PostTypesController.php:53
+#: build/stage-1/psr-4/PostTypesController.php:53
 #: psr-4/PostTypesController.php:53
 msgid "Websites and URLs that are periodically checked for availability and response."
 msgstr "Websites en URL's die periodiek worden gecontroleerd op beschikbaarheid en reactie."
 
-#: psr-4/SettingsController.php:113
+#: build/orbis-monitoring/psr-4/SettingsController.php:110
+#: build/stage-1/psr-4/SettingsController.php:110
+#: psr-4/SettingsController.php:148
 msgid "General"
 msgstr "Algemeen"
 
-#: psr-4/SettingsController.php:120
+#: build/orbis-monitoring/psr-4/SettingsController.php:117
+#: build/stage-1/psr-4/SettingsController.php:117
+#: psr-4/SettingsController.php:155
 msgid "User Agent"
 msgstr "User agent"
 
-#: psr-4/SettingsController.php:140
+#: build/orbis-monitoring/psr-4/SettingsController.php:137
+#: build/stage-1/psr-4/SettingsController.php:137
+#: psr-4/SettingsController.php:204
 msgid "Settings"
 msgstr "Instellingen"
 
 #. translators: %s: default user agent
-#: psr-4/SettingsController.php:193
+#: build/orbis-monitoring/psr-4/SettingsController.php:190
+#: build/stage-1/psr-4/SettingsController.php:190
+#: psr-4/SettingsController.php:257
 #, php-format
 msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
 msgstr "De user agent die gebruikt wordt voor de monitorverzoeken. Laat leeg om de standaard user agent te gebruiken: %s"
 
 #. translators: %s: link to list of the latest browser user agents
-#: psr-4/SettingsController.php:204
+#: build/orbis-monitoring/psr-4/SettingsController.php:201
+#: build/stage-1/psr-4/SettingsController.php:201
+#: psr-4/SettingsController.php:268
 #, php-format
 msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
 msgstr "Tip: sommige websites of firewalls blokkeren onbekende bots of behandelen ze anders. Je kunt ook simuleren dat je een veelgebruikte webbrowser bent, zie bijvoorbeeld %s."
 
-#: psr-4/SettingsController.php:205
+#: build/orbis-monitoring/psr-4/SettingsController.php:202
+#: build/stage-1/psr-4/SettingsController.php:202
+#: psr-4/SettingsController.php:269
 msgid "the latest user agents"
 msgstr "de nieuwste user agents"
 
 #. translators: %s: user agent of the current visitor
-#: psr-4/SettingsController.php:218
+#: build/orbis-monitoring/psr-4/SettingsController.php:215
+#: build/stage-1/psr-4/SettingsController.php:215
+#: psr-4/SettingsController.php:282
 #, php-format
 msgid "Your current user agent is: %s"
 msgstr "Je huidige user agent is: %s"
 
-#: psr-4/SlackController.php:53
+#: build/orbis-monitoring/psr-4/SlackController.php:53
+#: build/stage-1/psr-4/SlackController.php:53
 msgid "When a Orbis monitor problem was detected."
 msgstr "Zodra een Orbis probleem wordt gedetecteerd."
 
-#: psr-4/SlackController.php:54
+#: build/orbis-monitoring/psr-4/SlackController.php:54
+#: build/stage-1/psr-4/SlackController.php:54
 msgid "When a Orbis monitor was checked."
 msgstr "Zodra een Orbis monitor wordt gecontroleerd."
 
-#: psr-4/SlackController.php:62
-#: psr-4/SlackController.php:87
+#: build/orbis-monitoring/psr-4/SlackController.php:62
+#: build/orbis-monitoring/psr-4/SlackController.php:87
+#: build/stage-1/psr-4/SlackController.php:62
+#: build/stage-1/psr-4/SlackController.php:87
 #, php-format
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr "Orbis monitor <%s|%s> werd zojuist gecontroleerd, antwoordcode was `%s` » %s."
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:29
+#: build/stage-1/templates/archive-orbis_monitor.php:29
 #: templates/archive-orbis_monitor.php:29
 msgid "Title"
 msgstr "Titel"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:31
+#: build/stage-1/templates/archive-orbis_monitor.php:31
 #: templates/archive-orbis_monitor.php:31
 msgid "Required response code"
 msgstr "Vereiste antwoordcode"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:32
+#: build/stage-1/templates/archive-orbis_monitor.php:32
 #: templates/archive-orbis_monitor.php:32
 msgid "Last response code"
 msgstr "Laatste antwoordcode"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:33
+#: build/stage-1/templates/archive-orbis_monitor.php:33
 #: templates/archive-orbis_monitor.php:33
 msgid "Last response message"
 msgstr "Laatste antwoordbericht"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:34
+#: build/stage-1/templates/archive-orbis_monitor.php:34
 #: templates/archive-orbis_monitor.php:34
 msgid "Last response duration"
 msgstr "Laatste antwoordduur"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:35
+#: build/stage-1/templates/archive-orbis_monitor.php:35
 #: templates/archive-orbis_monitor.php:35
 msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
+#: build/orbis-monitoring/templates/archive-orbis_monitor.php:79
+#: build/orbis-monitoring/templates/monitor-responses.php:89
+#: build/stage-1/templates/archive-orbis_monitor.php:79
+#: build/stage-1/templates/monitor-responses.php:89
 #: templates/archive-orbis_monitor.php:79
-#: templates/monitor-responses.php:86
+#: templates/monitor-responses.php:89
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
 
+#: build/orbis-monitoring/templates/monitor-graph.php:20
+#: build/stage-1/templates/monitor-graph.php:20
 #: templates/monitor-graph.php:20
 msgid "Day"
 msgstr "Dag"
 
+#: build/orbis-monitoring/templates/monitor-graph.php:21
+#: build/stage-1/templates/monitor-graph.php:21
 #: templates/monitor-graph.php:21
 msgid "Week"
 msgstr "Week"
 
+#: build/orbis-monitoring/templates/monitor-graph.php:22
+#: build/stage-1/templates/monitor-graph.php:22
 #: templates/monitor-graph.php:22
 msgid "Month"
 msgstr "Maand"
 
-#: templates/monitor-graph.php:82
+#: build/orbis-monitoring/templates/monitor-graph.php:85
+#: build/stage-1/templates/monitor-graph.php:85
+#: templates/monitor-graph.php:85
 msgid "Average response time (seconds)"
 msgstr "Gemiddelde responstijd (seconden)"
 
-#: templates/monitor-graph.php:110
+#: build/orbis-monitoring/templates/monitor-graph.php:113
+#: build/stage-1/templates/monitor-graph.php:113
+#: templates/monitor-graph.php:113
 msgid "Seconds"
 msgstr "Seconden"
 
-#: templates/monitor-graph.php:130
+#: build/orbis-monitoring/templates/monitor-graph.php:133
+#: build/stage-1/templates/monitor-graph.php:133
+#: templates/monitor-graph.php:133
 msgid "Average Response Time"
 msgstr "Gemiddelde responstijd"
 
-#: templates/monitor-graph.php:142
+#: build/orbis-monitoring/templates/monitor-graph.php:145
+#: build/stage-1/templates/monitor-graph.php:145
+#: templates/monitor-graph.php:145
 msgid "Average response time chart"
 msgstr "Grafiek gemiddelde responstijd"
 
 #. translators: %d: number of responses.
-#: templates/monitor-responses.php:52
+#: build/orbis-monitoring/templates/monitor-responses.php:55
+#: build/stage-1/templates/monitor-responses.php:55
+#: templates/monitor-responses.php:55
 #, php-format
 msgid "Last %d Responses"
 msgstr "Laatste %d antwoorden"
+
+#: psr-4/AdminController.php:136
+msgid "Status"
+msgstr "Status"
+
+#: psr-4/AdminController.php:211
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: psr-4/AdminController.php:212
+msgid "Up"
+msgstr "Up"
+
+#: psr-4/AdminController.php:213
+msgid "Pending"
+msgstr "In afwachting"
+
+#: psr-4/AdminController.php:214
+msgid "Down"
+msgstr "Down"
+
+#. translators: %d: number of failed checks in a row
+#: psr-4/AdminController.php:230
+#, php-format
+msgid "(%d failed check)"
+msgid_plural "(%d failed checks)"
+msgstr[0] "(%d mislukte controle)"
+msgstr[1] "(%d mislukte controles)"
+
+#. translators: %s: human readable time difference
+#: psr-4/AdminController.php:239
+#, php-format
+msgid "for %s"
+msgstr "al %s"
+
+#: psr-4/SettingsController.php:166
+msgid "Notifications"
+msgstr "Notificaties"
+
+#: psr-4/SettingsController.php:173
+msgid "Failure Threshold"
+msgstr "Foutdrempel"
+
+#: psr-4/SettingsController.php:184
+msgid "Reminder Interval"
+msgstr "Herinneringsinterval"
+
+#: psr-4/SettingsController.php:306
+msgid "The number of failed checks in a row before a monitor is considered down and a notification is sent. Monitors are checked every minute, so a single hiccup does not trigger a notification."
+msgstr "Het aantal mislukte controles op rij voordat een monitor als down wordt beschouwd en er een notificatie wordt verstuurd. Monitors worden elke minuut gecontroleerd, dus één enkele hapering leidt niet tot een notificatie."
+
+#: psr-4/SettingsController.php:320
+msgid "minutes"
+msgstr "minuten"
+
+#: psr-4/SettingsController.php:325
+msgid "Send a reminder while a monitor is still down. Use 0 to only send a notification when a monitor goes down and when it is up again."
+msgstr "Verstuur een herinnering zolang een monitor nog down is. Gebruik 0 om alleen een notificatie te versturen wanneer een monitor down gaat en wanneer hij weer up is."
+
+#: psr-4/SlackController.php:54
+msgid "When a Orbis monitor is down."
+msgstr "Wanneer een Orbis-monitor down is."
+
+#: psr-4/SlackController.php:55
+msgid "When a Orbis monitor is still down (reminder)."
+msgstr "Wanneer een Orbis-monitor nog steeds down is (herinnering)."
+
+#: psr-4/SlackController.php:56
+msgid "When a Orbis monitor is up again."
+msgstr "Wanneer een Orbis-monitor weer up is."
+
+#. translators: 1: monitor permalink, 2: monitor title, 3: response code, 4: monitor URL
+#: psr-4/SlackController.php:71
+#, php-format
+msgid "Orbis monitor <%1$s|%2$s> is down, response code was `%3$s` » %4$s."
+msgstr "Orbis monitor <%1$s|%2$s> is down, antwoordcode was `%3$s` » %4$s."
+
+#. translators: 1: monitor permalink, 2: monitor title, 3: duration, 4: response code, 5: monitor URL
+#: psr-4/SlackController.php:92
+#, php-format
+msgid "Orbis monitor <%1$s|%2$s> is still down for %3$s, response code was `%4$s` » %5$s."
+msgstr "Orbis monitor <%1$s|%2$s> is al %3$s down, antwoordcode was `%4$s` » %5$s."
+
+#. translators: 1: monitor permalink, 2: monitor title, 3: duration, 4: monitor URL
+#: psr-4/SlackController.php:106
+#, php-format
+msgid "Orbis monitor <%1$s|%2$s> is up again after %3$s » %4$s."
+msgstr "Orbis monitor <%1$s|%2$s> is weer up na %3$s » %4$s."

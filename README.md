@@ -32,13 +32,13 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 |---|---|
 | ⏱️ **Checked every minute** | Each published monitor is checked every 60 seconds, reliably queued through [Action Scheduler](https://actionscheduler.org/) instead of flaky WP-Cron. |
 | 🎯 **More than "is it up?"** | Set the status code you expect (`200`, `301`, `410`, …) and, for redirects, the exact `Location` it should point to. A wrong redirect counts as a problem too. |
-| 🔔 **Slack alerts** | Get a message in your channel the moment a monitor fails, with a direct link to the monitor and the response code. |
+| 🔔 **Slack alerts without the noise** | A monitor is only considered down after a number of failed checks in a row (default 3). You get one message when it goes down and one when it is up again, with the duration of the outage. Reminders while it stays down are optional. |
 | 📈 **Response time graphs** | See how fast a site responded over the past year, grouped per day, week or month, with [Chart.js](https://www.chartjs.org/). |
 | 🗂️ **Full history** | Every check is stored: duration, status code, message, content type and content length. Spot trends, prove SLAs, find out when it started. |
 | 📋 **Overview at a glance** | The admin list shows the last response code, response time, content type and check time of all monitors. |
 | 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
-| 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitor_problem` and `orbis_monitor_checked` actions. |
+| 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitor_down`, `orbis_monitor_up` and other actions. |
 | 🇳🇱 **Translated** | Ships with Dutch translations, ready for more. |
 
 ## 🔄 How it works
@@ -49,14 +49,18 @@ flowchart LR
     B --> C[🌐 Request URL]
     C --> D[(💾 Store response<br/>& timing)]
     D --> E{Expected status<br/>and location?}
-    E -- ✅ yes --> F[orbis_monitor_checked]
-    E -- ❌ no --> G[orbis_monitor_problem]
-    G --> H[🔔 Slack alert]
+    E -- ✅ yes --> F{Was it down?}
+    F -- yes --> G[orbis_monitor_up]
+    E -- ❌ no --> H{Failed checks in a row<br/>reached threshold?}
+    H -- no --> I[🟠 Pending]
+    H -- yes, first time --> J[orbis_monitor_down]
+    G --> K[🔔 Slack alert]
+    J --> K
 ```
 
 1. **Add a monitor**: give it a title and a URL, and optionally the status code and redirect location you expect.
 2. **Sit back**: Action Scheduler queues one check per monitor every minute. Checks are unique per monitor, so a slow site never piles up a backlog.
-3. **Get notified**: when the response doesn't match, the `orbis_monitor_problem` action fires and your team gets a Slack message.
+3. **Get notified**: when the response doesn't match a number of times in a row, the monitor goes down, the `orbis_monitor_down` action fires and your team gets one Slack message. When it recovers, `orbis_monitor_up` fires. The threshold and an optional reminder interval are set under **Settings → Orbis Monitoring**.
 4. **Dig in**: open the monitor to see its response history and response time graph.
 
 > [!TIP]
@@ -73,10 +77,14 @@ flowchart LR
 
 ### Slack alerts
 
-Install the [Slack](https://wordpress.org/plugins/slack/) plugin and add an integration. Orbis Monitoring adds two events you can choose from:
+Install the [Slack](https://wordpress.org/plugins/slack/) plugin and add an integration. Orbis Monitoring adds three events you can choose from:
 
-- **When an Orbis monitor problem was detected**: only the failures, for your alert channel.
-- **When an Orbis monitor was checked**: every check, for when you really want to know everything.
+- **When an Orbis monitor is down**: once, when a monitor goes down.
+- **When an Orbis monitor is still down (reminder)**: only when a reminder interval is set.
+- **When an Orbis monitor is up again**: once, when a monitor recovers, with the duration of the outage.
+
+> [!NOTE]
+> Earlier versions had Slack events that fired for every check. These events are removed, so select the new events in your Slack integration after updating.
 
 ## 🧩 For developers
 
@@ -84,20 +92,23 @@ Orbis Monitoring is built to be extended. Hook into the checks to send alerts an
 
 ```php
 add_action(
-	'orbis_monitor_problem',
-	function ( WP_Post $post, array|WP_Error $response ): void {
+	'orbis_monitor_down',
+	function ( WP_Post $post, array|WP_Error $response, object $incident ): void {
 		$url = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 
 		// Create a ticket, send an SMS, page the on-call engineer…
 	},
 	10,
-	2
+	3
 );
 ```
 
 | Hook | When | Arguments |
 |---|---|---|
-| `orbis_monitor_problem` | The response code or `Location` header doesn't match | `$post`, `$response`, `$message` |
+| `orbis_monitor_down` | A monitor goes down: the threshold of failed checks in a row is reached | `$post`, `$response`, `$incident` |
+| `orbis_monitor_still_down` | A monitor is still down and the reminder interval has passed | `$post`, `$response`, `$incident` |
+| `orbis_monitor_up` | A monitor that was down is up again | `$post`, `$incident` |
+| `orbis_monitor_problem` | Every check where the response code or `Location` header doesn't match | `$post`, `$response`, `$message` |
 | `orbis_monitor_checked` | After every check | `$post`, `$response` |
 
 Want a different look? Add an `archive-orbis_monitor.php` to your theme and it is used instead of the template in this plugin.
