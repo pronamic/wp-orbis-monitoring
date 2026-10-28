@@ -9,40 +9,40 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-28T16:05:55+00:00\n"
+"POT-Creation-Date: 2026-10-28T19:39:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
 
 #. Plugin Name of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:11
 #: psr-4/SettingsController.php:95
 #: psr-4/SettingsController.php:96
 msgid "Orbis Monitoring"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:12
 msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
 msgstr ""
 
 #. Description of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:13
 msgid "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites."
 msgstr ""
 
 #. Author of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:17
 msgid "Pronamic"
 msgstr ""
 
 #. Author URI of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:18
 msgid "https://www.pronamic.eu/"
 msgstr ""
 
 #: admin/meta-box-monitor-details.php:26
-#: templates/archive-orbis_monitor.php:37
+#: templates/archive-orbis_monitor.php:35
 #: templates/monitor-details.php:53
 msgid "URL"
 msgstr ""
@@ -126,18 +126,20 @@ msgstr ""
 msgid "Monitor Details"
 msgstr ""
 
+#: psr-4/AdminController.php:64
+#: psr-4/AdminController.php:176
+#: templates/archive-orbis_monitor.php:33
+#: templates/monitor-details.php:28
+#: templates/search-form.php:30
+msgid "Status"
+msgstr ""
+
 #: psr-4/AdminController.php:73
 msgid "Monitor Incidents"
 msgstr ""
 
 #: psr-4/AdminController.php:82
 msgid "Monitor Responses"
-msgstr ""
-
-#: psr-4/AdminController.php:176
-#: templates/archive-orbis_monitor.php:35
-#: templates/monitor-details.php:28
-msgid "Status"
 msgstr ""
 
 #: psr-4/AdminController.php:178
@@ -355,31 +357,31 @@ msgstr ""
 msgid "response code `%s`"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:36
+#: templates/archive-orbis_monitor.php:34
 msgid "Title"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:38
+#: templates/archive-orbis_monitor.php:36
 msgid "Required response code"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:39
+#: templates/archive-orbis_monitor.php:37
 msgid "Last response code"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:40
+#: templates/archive-orbis_monitor.php:38
 msgid "Last response message"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:41
+#: templates/archive-orbis_monitor.php:39
 msgid "Last response duration"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:42
+#: templates/archive-orbis_monitor.php:40
 msgid "Last time checked"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:90
+#: templates/archive-orbis_monitor.php:88
 #: templates/monitor-details.php:41
 #: templates/monitor-incidents.php:65
 #: templates/monitor-incidents.php:71
@@ -433,4 +435,18 @@ msgstr ""
 #: templates/monitor-responses.php:55
 #, php-format
 msgid "Last %d Responses"
+msgstr ""
+
+#: templates/search-form.php:22
+#: templates/search-form.php:24
+#: templates/search-form.php:26
+msgid "Search"
+msgstr ""
+
+#: templates/search-form.php:33
+msgid "— Select Status —"
+msgstr ""
+
+#: templates/search-form.php:42
+msgid "Filter"
 msgstr ""

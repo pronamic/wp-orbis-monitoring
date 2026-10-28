@@ -22,9 +22,7 @@ $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_q
 
 ?>
 <div class="card">
-	<div class="card-block">
-		<?php get_template_part( 'templates/search_form' ); ?>
-	</div>
+	<?php require __DIR__ . '/search-form.php'; ?>
 
 	<?php if ( have_posts() ) : ?>
 

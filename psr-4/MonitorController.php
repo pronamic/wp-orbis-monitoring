@@ -38,6 +38,30 @@ final readonly class MonitorController {
 		\add_action( 'orbis_monitoring_schedule_checks', $this->schedule_checks( ... ) );
 		\add_action( 'orbis_monitoring_check_monitor', $this->check_monitor( ... ) );
 		\add_action( 'wp_after_insert_post', $this->sync_monitor( ... ), 10, 2 );
+
+		/**
+		 * Action Scheduler high volume.
+		 *
+		 * Each published monitor adds one action every minute, so Action Scheduler
+		 * has to process more actions than its defaults allow for.
+		 *
+		 * @link https://actionscheduler.org/perf/
+		 * @link https://github.com/pronamic/lookup-action-scheduler-high-volume
+		 */
+		\add_filter(
+			'action_scheduler_queue_runner_batch_size',
+			fn( $batch_size ) => \max( (int) $batch_size, 100 )
+		);
+
+		\add_filter(
+			'action_scheduler_queue_runner_concurrent_batches',
+			fn( $concurrent_batches ) => \max( (int) $concurrent_batches, 3 )
+		);
+
+		\add_filter(
+			'action_scheduler_retention_period',
+			fn( $retention_period ) => \min( (int) $retention_period, 3 * DAY_IN_SECONDS )
+		);
 	}
 
 	/**

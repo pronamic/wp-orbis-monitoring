@@ -86,7 +86,17 @@ By default Action Scheduler runs its queue on WP-Cron, which only fires when som
 
 - `--group=orbis-monitoring` only runs the actions of Orbis Monitoring, so other plugins can't slow down the checks.
 - `--batch-size=500 --batches=1` runs up to 500 actions per minute. Each published monitor adds one check per minute, so keep the batch size above the number of monitors.
-- `--quiet` keeps the output out of your cron mail.
+- `--quiet` keeps the output out of your cron mail. Errors are still sent.
+
+Each published monitor adds an action every minute, so Orbis Monitoring tunes Action Scheduler for a high volume of actions:
+
+| Setting | Default | Orbis Monitoring |
+|---|---|---|
+| Batch size (`action_scheduler_queue_runner_batch_size`) | 25 | at least 100 |
+| Concurrent batches (`action_scheduler_queue_runner_concurrent_batches`) | 1 | at least 3 |
+| Retention period of completed actions (`action_scheduler_retention_period`) | 30 days | at most 3 days |
+
+With only one concurrent batch, the server cron fails with `Error: There are too many concurrent batches.` whenever WP-Cron or another plugin is already processing its queue.
 
 > [!TIP]
 > Also run the queue of other plugins with a separate cron line without `--group`, or keep WP-Cron enabled for them.

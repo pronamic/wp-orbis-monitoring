@@ -61,6 +61,7 @@ final class Plugin {
 
 		( new InstallController() )->setup();
 		( new PostTypesController() )->setup();
+		( new QueryController() )->setup();
 		$settings_controller->setup();
 		$incident_controller->setup();
 		$monitor_controller->setup();
