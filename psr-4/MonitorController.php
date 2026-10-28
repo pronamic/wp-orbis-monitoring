@@ -252,7 +252,7 @@ final readonly class MonitorController {
 
 		\do_action( 'orbis_monitor_checked', $post, $response );
 
-		// Status changes trigger the `orbis_monitor_down`, `orbis_monitor_still_down` and `orbis_monitor_up` actions.
+		// Opens, reminds about and resolves incidents, see the `orbis_monitoring_incident_*` actions.
 		$this->incident_controller->process( $post, $response, $is_up, $monitor_id );
 	}
 }

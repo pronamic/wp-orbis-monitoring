@@ -16,10 +16,12 @@ namespace Pronamic\Orbis\Monitoring;
  * Incident controller class
  *
  * Keeps track of the status of each monitor (`unknown`, `up`, `pending` or
- * `down`) and of the incidents. A monitor is only considered down after a
- * number of failed checks in a row, and the `orbis_monitor_down`,
- * `orbis_monitor_still_down` and `orbis_monitor_up` actions only fire when
- * the status changes, so notifications are not sent for every check.
+ * `down`) and of the incidents. An incident is only opened after a number
+ * of failed checks in a row. The `orbis_monitoring_incident_opened` and
+ * `orbis_monitoring_incident_resolved` actions fire when an incident is
+ * opened or resolved, and the `orbis_monitoring_incident_reminder` action
+ * fires at the reminder interval while an incident is open, so
+ * notifications are not sent for every check.
  *
  * @link https://github.com/louislam/uptime-kuma
  */
@@ -80,7 +82,7 @@ final readonly class IncidentController {
 
 			$incident->resolved_at = $now;
 
-			\do_action( 'orbis_monitor_up', $post, $incident );
+			\do_action( 'orbis_monitoring_incident_resolved', $post, $incident );
 
 			return;
 		}
@@ -108,7 +110,7 @@ final readonly class IncidentController {
 
 		$this->update_monitor( $monitor_id, 'down', $failure_count, $started_at );
 
-		\do_action( 'orbis_monitor_down', $post, $response, $incident );
+		\do_action( 'orbis_monitoring_incident_opened', $post, $response, $incident );
 	}
 
 	/**
@@ -143,7 +145,7 @@ final readonly class IncidentController {
 
 		$incident->last_notified_at = $now;
 
-		\do_action( 'orbis_monitor_still_down', $post, $response, $incident );
+		\do_action( 'orbis_monitoring_incident_reminder', $post, $response, $incident );
 	}
 
 	/**

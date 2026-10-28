@@ -38,7 +38,7 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 | 📋 **Overview at a glance** | The admin list shows the last response code, response time, content type and check time of all monitors. |
 | 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
-| 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitor_down`, `orbis_monitor_up` and other actions. |
+| 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitoring_incident_opened`, `orbis_monitoring_incident_resolved` and other actions. |
 | 🇳🇱 **Translated** | Ships with Dutch translations, ready for more. |
 
 ## 🔄 How it works
@@ -50,17 +50,17 @@ flowchart LR
     C --> D[(💾 Store response<br/>& timing)]
     D --> E{Expected status<br/>and location?}
     E -- ✅ yes --> F{Was it down?}
-    F -- yes --> G[orbis_monitor_up]
+    F -- yes --> G[orbis_monitoring_incident_resolved]
     E -- ❌ no --> H{Failed checks in a row<br/>reached threshold?}
     H -- no --> I[🟠 Pending]
-    H -- yes, first time --> J[orbis_monitor_down]
+    H -- yes, first time --> J[orbis_monitoring_incident_opened]
     G --> K[🔔 Slack alert]
     J --> K
 ```
 
 1. **Add a monitor**: give it a title and a URL, and optionally the status code and redirect location you expect.
 2. **Sit back**: Action Scheduler queues one check per monitor every minute. Checks are unique per monitor, so a slow site never piles up a backlog.
-3. **Get notified**: when the response doesn't match a number of times in a row, the monitor goes down, the `orbis_monitor_down` action fires and your team gets one Slack message. When it recovers, `orbis_monitor_up` fires. The threshold and an optional reminder interval are set under **Settings → Orbis Monitoring**.
+3. **Get notified**: when the response doesn't match a number of times in a row, an incident is opened, the `orbis_monitoring_incident_opened` action fires and your team gets one Slack message. When it recovers, the incident is resolved and `orbis_monitoring_incident_resolved` fires. The threshold and an optional reminder interval are set under **Settings → Orbis Monitoring**.
 4. **Dig in**: open the monitor to see its response history and response time graph.
 
 > [!TIP]
@@ -79,9 +79,9 @@ flowchart LR
 
 Install the [Slack](https://wordpress.org/plugins/slack/) plugin and add an integration. Orbis Monitoring adds three events you can choose from:
 
-- **When an Orbis monitor is down**: once, when a monitor goes down.
-- **When an Orbis monitor is still down (reminder)**: only when a reminder interval is set.
-- **When an Orbis monitor is up again**: once, when a monitor recovers, with the duration of the outage.
+- **When a monitor detects an outage**: once, when a monitor goes down.
+- **When a monitor detects that an outage continues (reminder)**: only when a reminder interval is set.
+- **When a monitor detects a recovery**: once, when a monitor is up again, with the duration of the outage.
 
 > [!NOTE]
 > Earlier versions had Slack events that fired for every check. These events are removed, so select the new events in your Slack integration after updating.
@@ -92,7 +92,7 @@ Orbis Monitoring is built to be extended. Hook into the checks to send alerts an
 
 ```php
 add_action(
-	'orbis_monitor_down',
+	'orbis_monitoring_incident_opened',
 	function ( WP_Post $post, array|WP_Error $response, object $incident ): void {
 		$url = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 
@@ -105,9 +105,9 @@ add_action(
 
 | Hook | When | Arguments |
 |---|---|---|
-| `orbis_monitor_down` | A monitor goes down: the threshold of failed checks in a row is reached | `$post`, `$response`, `$incident` |
-| `orbis_monitor_still_down` | A monitor is still down and the reminder interval has passed | `$post`, `$response`, `$incident` |
-| `orbis_monitor_up` | A monitor that was down is up again | `$post`, `$incident` |
+| `orbis_monitoring_incident_opened` | An incident is opened: the threshold of failed checks in a row is reached | `$post`, `$response`, `$incident` |
+| `orbis_monitoring_incident_reminder` | An incident is still open and the reminder interval has passed | `$post`, `$response`, `$incident` |
+| `orbis_monitoring_incident_resolved` | An incident is resolved: a check succeeds again | `$post`, `$incident` |
 | `orbis_monitor_problem` | Every check where the response code or `Location` header doesn't match | `$post`, `$response`, `$message` |
 | `orbis_monitor_checked` | After every check | `$post`, `$response` |
 
