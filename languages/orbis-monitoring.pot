@@ -9,13 +9,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-28T14:21:25+00:00\n"
+"POT-Creation-Date: 2026-10-28T14:30:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
 
 #. Plugin Name of the plugin
 #: orbis-monitoring.php:11
+#: psr-4/SettingsController.php:80
+#: psr-4/SettingsController.php:81
 msgid "Orbis Monitoring"
 msgstr ""
 
@@ -189,6 +191,40 @@ msgstr ""
 
 #: psr-4/PostTypesController.php:53
 msgid "Websites and URLs that are periodically checked for availability and response."
+msgstr ""
+
+#: psr-4/SettingsController.php:113
+msgid "General"
+msgstr ""
+
+#: psr-4/SettingsController.php:120
+msgid "User Agent"
+msgstr ""
+
+#: psr-4/SettingsController.php:140
+msgid "Settings"
+msgstr ""
+
+#. translators: %s: default user agent
+#: psr-4/SettingsController.php:193
+#, php-format
+msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
+msgstr ""
+
+#. translators: %s: link to list of the latest browser user agents
+#: psr-4/SettingsController.php:204
+#, php-format
+msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
+msgstr ""
+
+#: psr-4/SettingsController.php:205
+msgid "the latest user agents"
+msgstr ""
+
+#. translators: %s: user agent of the current visitor
+#: psr-4/SettingsController.php:218
+#, php-format
+msgid "Your current user agent is: %s"
 msgstr ""
 
 #: psr-4/SlackController.php:53

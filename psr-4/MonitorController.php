@@ -15,7 +15,17 @@ namespace Pronamic\Orbis\Monitoring;
 /**
  * Monitor controller class
  */
-final class MonitorController {
+final readonly class MonitorController {
+	/**
+	 * Construct.
+	 *
+	 * @param SettingsController $settings_controller Settings controller.
+	 */
+	public function __construct(
+		private SettingsController $settings_controller
+	) {
+	}
+
 	/**
 	 * Setup.
 	 *
@@ -103,14 +113,8 @@ final class MonitorController {
 			[
 				'timeout'     => 30,
 				'redirection' => 0,
-				/**
-				 * We pretend to be a widely used web browser.
-				 *
-				 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/10
-				 * @link http://www.browser-info.net/useragents
-				 * @link https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
-				 */
-				'user-agent'  => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36',
+				// @link https://github.com/pronamic/wp-orbis-monitoring/issues/10
+				'user-agent'  => $this->settings_controller->get_user_agent(),
 			]
 		);
 

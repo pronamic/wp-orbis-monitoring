@@ -46,10 +46,12 @@ final class Plugin {
 		 */
 		public readonly string $file
 	) {
-		$monitor_controller = new MonitorController();
+		$settings_controller = new SettingsController( $file );
+		$monitor_controller  = new MonitorController( $settings_controller );
 
 		( new InstallController() )->setup();
 		( new PostTypesController() )->setup();
+		$settings_controller->setup();
 		$monitor_controller->setup();
 		( new AdminController( $file, $monitor_controller ) )->setup();
 		( new SlackController() )->setup();
