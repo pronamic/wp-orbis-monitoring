@@ -64,10 +64,7 @@ final readonly class SettingsController {
 	private function get_default_user_agent(): string {
 		$data = \get_file_data( $this->file, [ 'Version' => 'Version' ] );
 
-		return \sprintf(
-			'OrbisMonitoring/%s (+https://www.pronamic.eu/plugins/orbis-monitoring/)',
-			$data['Version']
-		);
+		return 'OrbisMonitoring/' . $data['Version'];
 	}
 
 	/**
