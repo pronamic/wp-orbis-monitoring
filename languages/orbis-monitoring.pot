@@ -126,10 +126,6 @@ msgstr ""
 msgid "Monitor Details"
 msgstr ""
 
-#: psr-4/AdminController.php:64
-msgid "Monitor Status"
-msgstr ""
-
 #: psr-4/AdminController.php:73
 msgid "Monitor Incidents"
 msgstr ""
@@ -170,7 +166,7 @@ msgstr ""
 
 #. translators: %d: number of failed checks in a row
 #: psr-4/AdminController.php:256
-#: templates/monitor-status-badge.php:26
+#: templates/availability-badge.php:26
 #, php-format
 msgid "(%d failed check)"
 msgid_plural "(%d failed checks)"
@@ -179,24 +175,24 @@ msgstr[1] ""
 
 #. translators: %s: human readable time difference
 #: psr-4/AdminController.php:265
-#: templates/monitor-status-badge.php:38
+#: templates/availability-badge.php:38
 #, php-format
 msgid "for %s"
 msgstr ""
 
-#: psr-4/MonitorStatus.php:50
+#: psr-4/Availability.php:50
 msgid "Unknown"
 msgstr ""
 
-#: psr-4/MonitorStatus.php:51
+#: psr-4/Availability.php:51
 msgid "Online"
 msgstr ""
 
-#: psr-4/MonitorStatus.php:52
+#: psr-4/Availability.php:52
 msgid "Pending"
 msgstr ""
 
-#: psr-4/MonitorStatus.php:53
+#: psr-4/Availability.php:53
 msgid "Offline"
 msgstr ""
 
@@ -312,7 +308,7 @@ msgid "Your current user agent is: %s"
 msgstr ""
 
 #: psr-4/SettingsController.php:306
-msgid "The number of failed checks in a row before a monitor is considered offline and a notification is sent. Monitors are checked every minute, so a single hiccup does not trigger a notification."
+msgid "The number of failed checks in a row before the monitored URL is considered offline and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification."
 msgstr ""
 
 #: psr-4/SettingsController.php:320
@@ -320,7 +316,7 @@ msgid "minutes"
 msgstr ""
 
 #: psr-4/SettingsController.php:325
-msgid "Send a reminder while a monitor is still offline. Use 0 to only send a notification when a monitor goes offline and when it is back online."
+msgid "Send a reminder while the monitored URL is still offline. Use 0 to only send a notification when the URL goes offline and when it is back online."
 msgstr ""
 
 #: psr-4/SlackController.php:54

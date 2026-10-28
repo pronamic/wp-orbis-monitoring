@@ -1,6 +1,6 @@
 <?php
 /**
- * Monitor status
+ * Availability
  *
  * @author    Pronamic
  * @copyright 2026 Pronamic
@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Pronamic\Orbis\Monitoring;
 
 /**
- * Monitor status enum
+ * Availability enum
  *
- * The value is stored in the `status` column of the monitors table.
+ * The availability of the monitored URL. The value is stored in the `status` column of the monitors table.
  *
  * phpcs:disable PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext -- False positive, `$this` is the enum case.
  */
-enum MonitorStatus: string {
+enum Availability: string {
 	/**
 	 * Not checked yet, or the monitor is not published.
 	 */

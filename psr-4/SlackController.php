@@ -57,7 +57,7 @@ final class SlackController {
 		}
 
 		/*
-		 * These events only fire when the status of a monitor changes, not for
+		 * These events only fire when the status of the monitored URL changes, not for
 		 * every check, so a Slack channel is not flooded during an outage.
 		 *
 		 * @see IncidentController

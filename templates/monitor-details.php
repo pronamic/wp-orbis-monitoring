@@ -16,8 +16,8 @@ $url      = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
 $code     = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( get_the_ID(), '_orbis_monitor_required_location', true );
 
-$monitor_status = $incident_controller->get_status( (int) get_the_ID() );
-$incident       = ( null !== $monitor_status && \Pronamic\Orbis\Monitoring\MonitorStatus::Offline === $monitor_status->status ) ? $incident_controller->get_open_incident( (int) $monitor_status->id ) : null;
+$monitor  = $incident_controller->get_monitor_by_post_id( (int) get_the_ID() );
+$incident = ( null !== $monitor && \Pronamic\Orbis\Monitoring\Availability::Offline === $monitor->availability ) ? $incident_controller->get_open_incident( (int) $monitor->id ) : null;
 
 ?>
 <div class="card mb-3">
@@ -27,7 +27,7 @@ $incident       = ( null !== $monitor_status && \Pronamic\Orbis\Monitoring\Monit
 			<dl>
 				<dt><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></dt>
 				<dd>
-					<?php require __DIR__ . '/monitor-status-badge.php'; ?>
+					<?php require __DIR__ . '/availability-badge.php'; ?>
 				</dd>
 
 				<?php if ( null !== $incident ) : ?>

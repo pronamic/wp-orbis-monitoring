@@ -28,6 +28,9 @@ phpunit.xml.dist
 
 rector.php
 
+/AGENTS.md
+/CLAUDE.md
+
 phpstan.neon
 
 psalm.xml

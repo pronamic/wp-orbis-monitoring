@@ -240,19 +240,19 @@ final readonly class MonitorController {
 		// Add custom message.
 		$message = null;
 
-		$is_online = (
+		$check_succeeded = (
 			( $required_response_code === $response_code )
 				&&
 			( empty( $required_location ) || \wp_remote_retrieve_header( $response, 'location' ) === $required_location )
 		);
 
-		if ( ! $is_online ) {
+		if ( ! $check_succeeded ) {
 			\do_action( 'orbis_monitor_problem', $post, $response, $message );
 		}
 
 		\do_action( 'orbis_monitor_checked', $post, $response );
 
 		// Opens, reminds about and resolves incidents, see the `orbis_monitoring_incident_*` actions.
-		$this->incident_controller->process( $post, $response, $is_online, $monitor_id );
+		$this->incident_controller->process( $post, $response, $check_succeeded, $monitor_id );
 	}
 }
