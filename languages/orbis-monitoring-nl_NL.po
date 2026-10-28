@@ -15,29 +15,29 @@ msgstr ""
 "X-Generator: Poedit 3.10\n"
 
 #. Plugin Name of the plugin
-#: orbis-monitoring.php:11
+#: orbis-monitoring.php
 #: psr-4/SettingsController.php:95
 #: psr-4/SettingsController.php:96
 msgid "Orbis Monitoring"
 msgstr "Orbis Monitoring"
 
 #. Plugin URI of the plugin
-#: orbis-monitoring.php:12
+#: orbis-monitoring.php
 msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
 msgstr "https://www.pronamic.eu/plugins/orbis-monitoring/"
 
 #. Description of the plugin
-#: orbis-monitoring.php:13
+#: orbis-monitoring.php
 msgid "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites."
 msgstr "De Orbis monitors plugin breidt je Orbis omgeving uit met de optie om website te monitoren."
 
 #. Author of the plugin
-#: orbis-monitoring.php:17
+#: orbis-monitoring.php
 msgid "Pronamic"
 msgstr "Pronamic"
 
 #. Author URI of the plugin
-#: orbis-monitoring.php:18
+#: orbis-monitoring.php
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
@@ -169,8 +169,8 @@ msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
 #. translators: %d: number of failed checks in a row
-#: psr-4/AdminController.php:263
-#: templates/monitor-status-badge.php:33
+#: psr-4/AdminController.php:256
+#: templates/monitor-status-badge.php:26
 #, php-format
 msgid "(%d failed check)"
 msgid_plural "(%d failed checks)"
@@ -178,27 +178,27 @@ msgstr[0] "(%d mislukte controle)"
 msgstr[1] "(%d mislukte controles)"
 
 #. translators: %s: human readable time difference
-#: psr-4/AdminController.php:272
-#: templates/monitor-status-badge.php:45
+#: psr-4/AdminController.php:265
+#: templates/monitor-status-badge.php:38
 #, php-format
 msgid "for %s"
 msgstr "al %s"
 
-#: psr-4/IncidentController.php:287
+#: psr-4/MonitorStatus.php:50
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: psr-4/IncidentController.php:288
-msgid "Up"
-msgstr "Up"
+#: psr-4/MonitorStatus.php:51
+msgid "Online"
+msgstr "Online"
 
-#: psr-4/IncidentController.php:289
+#: psr-4/MonitorStatus.php:52
 msgid "Pending"
 msgstr "In afwachting"
 
-#: psr-4/IncidentController.php:290
-msgid "Down"
-msgstr "Down"
+#: psr-4/MonitorStatus.php:53
+msgid "Offline"
+msgstr "Offline"
 
 #: psr-4/PostTypesController.php:38
 msgctxt "post type general name"
@@ -312,16 +312,16 @@ msgid "Your current user agent is: %s"
 msgstr "Je huidige user agent is: %s"
 
 #: psr-4/SettingsController.php:306
-msgid "The number of failed checks in a row before a monitor is considered down and a notification is sent. Monitors are checked every minute, so a single hiccup does not trigger a notification."
-msgstr "Het aantal mislukte controles op rij voordat een monitor als down wordt beschouwd en er een notificatie wordt verstuurd. Monitors worden elke minuut gecontroleerd, dus één enkele hapering leidt niet tot een notificatie."
+msgid "The number of failed checks in a row before a monitor is considered offline and a notification is sent. Monitors are checked every minute, so a single hiccup does not trigger a notification."
+msgstr "Het aantal mislukte controles op rij voordat een monitor als offline wordt beschouwd en er een notificatie wordt verstuurd. Monitors worden elke minuut gecontroleerd, dus één enkele hapering leidt niet tot een notificatie."
 
 #: psr-4/SettingsController.php:320
 msgid "minutes"
 msgstr "minuten"
 
 #: psr-4/SettingsController.php:325
-msgid "Send a reminder while a monitor is still down. Use 0 to only send a notification when a monitor goes down and when it is up again."
-msgstr "Verstuur een herinnering zolang een monitor nog down is. Gebruik 0 om alleen een notificatie te versturen wanneer een monitor down gaat en wanneer hij weer up is."
+msgid "Send a reminder while a monitor is still offline. Use 0 to only send a notification when a monitor goes offline and when it is back online."
+msgstr "Verstuur een herinnering zolang een monitor nog offline is. Gebruik 0 om alleen een notificatie te versturen wanneer een monitor offline gaat en wanneer hij weer online is."
 
 #: psr-4/SlackController.php:54
 msgid "When a monitor detects an outage."
@@ -338,20 +338,20 @@ msgstr "Wanneer een monitor een herstel detecteert."
 #. translators: %s: monitor link
 #: psr-4/SlackController.php:70
 #, php-format
-msgid "%s is down."
-msgstr "%s is down."
+msgid "%s is offline."
+msgstr "%s is offline."
 
 #. translators: 1: monitor link, 2: duration
 #: psr-4/SlackController.php:80
 #, php-format
-msgid "%1$s is still down for %2$s."
-msgstr "%1$s is al %2$s down."
+msgid "%1$s is still offline for %2$s."
+msgstr "%1$s is al %2$s offline."
 
 #. translators: 1: monitor link, 2: duration
 #: psr-4/SlackController.php:91
 #, php-format
-msgid "%1$s is up again after %2$s."
-msgstr "%1$s is weer up na %2$s."
+msgid "%1$s is back online after %2$s."
+msgstr "%1$s is weer online na %2$s."
 
 #. translators: %s: response code
 #: psr-4/SlackController.php:138

@@ -2,7 +2,7 @@
 /**
  * Monitor status badge
  *
- * Expects `$monitor_status` (object or null) and `$incident_controller`.
+ * Expects `$monitor_status` (object or null).
  *
  * @author    Pronamic
  * @copyright 2026 Pronamic
@@ -14,18 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$status_key = ( null === $monitor_status ) ? 'unknown' : $monitor_status->status;
-
-$badge_class = match ( $status_key ) {
-	'up'      => 'text-bg-success',
-	'pending' => 'text-bg-warning',
-	'down'    => 'text-bg-danger',
-	default   => 'text-bg-secondary',
-};
+$badge_status = ( null === $monitor_status ) ? \Pronamic\Orbis\Monitoring\MonitorStatus::Unknown : $monitor_status->status;
 
 ?>
-<span class="badge <?php echo esc_attr( $badge_class ); ?>"><?php echo esc_html( $incident_controller->get_status_label( $status_key ) ); ?></span>
-<?php if ( null !== $monitor_status && 'pending' === $monitor_status->status ) : ?>
+<span class="badge <?php echo esc_attr( $badge_status->badge_class() ); ?>"><?php echo esc_html( $badge_status->label() ); ?></span>
+<?php if ( null !== $monitor_status && \Pronamic\Orbis\Monitoring\MonitorStatus::Pending === $badge_status ) : ?>
 	<small class="text-muted">
 		<?php
 		printf(
@@ -36,7 +29,7 @@ $badge_class = match ( $status_key ) {
 		?>
 	</small>
 <?php endif; ?>
-<?php if ( null !== $monitor_status && null !== $monitor_status->status_changed_at && 'unknown' !== $monitor_status->status ) : ?>
+<?php if ( null !== $monitor_status && null !== $monitor_status->status_changed_at && \Pronamic\Orbis\Monitoring\MonitorStatus::Unknown !== $badge_status ) : ?>
 	<br />
 	<small class="text-muted">
 		<?php

@@ -17,7 +17,7 @@ $code     = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code'
 $location = get_post_meta( get_the_ID(), '_orbis_monitor_required_location', true );
 
 $monitor_status = $incident_controller->get_status( (int) get_the_ID() );
-$incident       = ( null !== $monitor_status && 'down' === $monitor_status->status ) ? $incident_controller->get_open_incident( (int) $monitor_status->id ) : null;
+$incident       = ( null !== $monitor_status && \Pronamic\Orbis\Monitoring\MonitorStatus::Offline === $monitor_status->status ) ? $incident_controller->get_open_incident( (int) $monitor_status->id ) : null;
 
 ?>
 <div class="card mb-3">

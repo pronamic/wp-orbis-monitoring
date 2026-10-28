@@ -15,8 +15,8 @@ namespace Pronamic\Orbis\Monitoring;
 /**
  * Incident controller class
  *
- * Keeps track of the status of each monitor (`unknown`, `up`, `pending` or
- * `down`) and of the incidents. An incident is only opened after a number
+ * Keeps track of the status of each monitor (see `MonitorStatus`) and of
+ * the incidents. An incident is only opened after a number
  * of failed checks in a row. The `orbis_monitoring_incident_opened` and
  * `orbis_monitoring_incident_resolved` actions fire when an incident is
  * opened or resolved, and the `orbis_monitoring_incident_reminder` action
@@ -50,11 +50,11 @@ final readonly class IncidentController {
 	 *
 	 * @param \WP_Post                       $post       Post.
 	 * @param array<string, mixed>|\WP_Error $response   Response.
-	 * @param bool                           $is_up      Whether the check succeeded.
+	 * @param bool                           $is_online  Whether the check succeeded.
 	 * @param int                            $monitor_id Monitor ID.
 	 * @return void
 	 */
-	public function process( \WP_Post $post, $response, bool $is_up, int $monitor_id ): void {
+	public function process( \WP_Post $post, $response, bool $is_online, int $monitor_id ): void {
 		$monitor = $this->get_monitor( $monitor_id );
 
 		if ( null === $monitor ) {
@@ -63,16 +63,16 @@ final readonly class IncidentController {
 
 		$now = \current_time( 'mysql', true );
 
-		if ( $is_up ) {
-			if ( 'down' !== $monitor->status ) {
-				$this->update_monitor( $monitor_id, 'up', 0, ( 'up' === $monitor->status ) ? $monitor->status_changed_at : $now );
+		if ( $is_online ) {
+			if ( MonitorStatus::Offline !== $monitor->status ) {
+				$this->update_monitor( $monitor_id, MonitorStatus::Online, 0, ( MonitorStatus::Online === $monitor->status ) ? $monitor->status_changed_at : $now );
 
 				return;
 			}
 
 			$incident = $this->get_open_incident( $monitor_id );
 
-			$this->update_monitor( $monitor_id, 'up', 0, $now );
+			$this->update_monitor( $monitor_id, MonitorStatus::Online, 0, $now );
 
 			if ( null === $incident ) {
 				return;
@@ -89,8 +89,8 @@ final readonly class IncidentController {
 
 		$failure_count = (int) $monitor->failure_count + 1;
 
-		if ( 'down' === $monitor->status ) {
-			$this->update_monitor( $monitor_id, 'down', $failure_count, $monitor->status_changed_at );
+		if ( MonitorStatus::Offline === $monitor->status ) {
+			$this->update_monitor( $monitor_id, MonitorStatus::Offline, $failure_count, $monitor->status_changed_at );
 
 			$this->maybe_remind( $post, $response, $monitor_id, $now );
 
@@ -98,23 +98,23 @@ final readonly class IncidentController {
 		}
 
 		if ( $failure_count < $this->settings_controller->get_failure_threshold() ) {
-			$this->update_monitor( $monitor_id, 'pending', $failure_count, ( 'pending' === $monitor->status ) ? $monitor->status_changed_at : $now );
+			$this->update_monitor( $monitor_id, MonitorStatus::Pending, $failure_count, ( MonitorStatus::Pending === $monitor->status ) ? $monitor->status_changed_at : $now );
 
 			return;
 		}
 
 		// The incident started with the first failed check.
-		$started_at = ( 'pending' === $monitor->status && null !== $monitor->status_changed_at ) ? $monitor->status_changed_at : $now;
+		$started_at = ( MonitorStatus::Pending === $monitor->status && null !== $monitor->status_changed_at ) ? $monitor->status_changed_at : $now;
 
 		$incident = $this->open_incident( $monitor_id, $response, $started_at, $now );
 
-		$this->update_monitor( $monitor_id, 'down', $failure_count, $started_at );
+		$this->update_monitor( $monitor_id, MonitorStatus::Offline, $failure_count, $started_at );
 
 		\do_action( 'orbis_monitoring_incident_opened', $post, $response, $incident );
 	}
 
 	/**
-	 * Maybe send a reminder for a monitor that is still down.
+	 * Maybe send a reminder for a monitor that is still offline.
 	 *
 	 * @param \WP_Post                       $post       Post.
 	 * @param array<string, mixed>|\WP_Error $response   Response.
@@ -184,14 +184,14 @@ final readonly class IncidentController {
 			$this->update_incident( (int) $incident->id, [ 'resolved_at' => $now ] );
 		}
 
-		$this->update_monitor( $monitor_id, 'unknown', 0, $now );
+		$this->update_monitor( $monitor_id, MonitorStatus::Unknown, 0, $now );
 	}
 
 	/**
 	 * Get the status of a monitor post.
 	 *
 	 * @param int $post_id Post ID.
-	 * @return object{id: string, status: string, failure_count: string, status_changed_at: string|null}|null
+	 * @return object{id: string, status: MonitorStatus, failure_count: string, status_changed_at: string|null}|null
 	 */
 	public function get_status( $post_id ): ?object {
 		global $wpdb;
@@ -203,14 +203,14 @@ final readonly class IncidentController {
 			)
 		);
 
-		return $status ?? null;
+		return ( null === $status ) ? null : $this->hydrate( $status );
 	}
 
 	/**
 	 * Get the statuses of monitor posts.
 	 *
 	 * @param int[] $post_ids Post IDs.
-	 * @return array<int, object{id: string, post_id: string, status: string, failure_count: string, status_changed_at: string|null}> Statuses keyed by post ID.
+	 * @return array<int, object{id: string, post_id: string, status: MonitorStatus, failure_count: string, status_changed_at: string|null}> Statuses keyed by post ID.
 	 */
 	public function get_statuses( array $post_ids ): array {
 		global $wpdb;
@@ -235,7 +235,7 @@ final readonly class IncidentController {
 		$statuses = [];
 
 		foreach ( $rows as $row ) {
-			$statuses[ (int) $row->post_id ] = $row;
+			$statuses[ (int) $row->post_id ] = $this->hydrate( $row );
 		}
 
 		return $statuses;
@@ -278,30 +278,6 @@ final readonly class IncidentController {
 	}
 
 	/**
-	 * Get the status labels.
-	 *
-	 * @return array<string, string>
-	 */
-	public function get_status_labels(): array {
-		return [
-			'unknown' => \__( 'Unknown', 'orbis-monitoring' ),
-			'up'      => \__( 'Up', 'orbis-monitoring' ),
-			'pending' => \__( 'Pending', 'orbis-monitoring' ),
-			'down'    => \__( 'Down', 'orbis-monitoring' ),
-		];
-	}
-
-	/**
-	 * Get the label of a status.
-	 *
-	 * @param string $status Status.
-	 * @return string
-	 */
-	public function get_status_label( string $status ): string {
-		return $this->get_status_labels()[ $status ] ?? $status;
-	}
-
-	/**
 	 * Get the human readable duration of an incident.
 	 *
 	 * Ongoing incidents are measured until now.
@@ -320,7 +296,7 @@ final readonly class IncidentController {
 	 * Get monitor.
 	 *
 	 * @param int $monitor_id Monitor ID.
-	 * @return object{status: string, failure_count: string, status_changed_at: string|null}|null
+	 * @return object{status: MonitorStatus, failure_count: string, status_changed_at: string|null}|null
 	 */
 	private function get_monitor( int $monitor_id ): ?object {
 		global $wpdb;
@@ -332,25 +308,37 @@ final readonly class IncidentController {
 			)
 		);
 
-		return $monitor ?? null;
+		return ( null === $monitor ) ? null : $this->hydrate( $monitor );
+	}
+
+	/**
+	 * Hydrate a monitor row, the `status` column is converted to a `MonitorStatus`.
+	 *
+	 * @param object $row Row.
+	 * @return object
+	 */
+	private function hydrate( object $row ): object {
+		$row->status = MonitorStatus::tryFrom( (string) $row->status ) ?? MonitorStatus::Unknown;
+
+		return $row;
 	}
 
 	/**
 	 * Update monitor.
 	 *
-	 * @param int         $monitor_id        Monitor ID.
-	 * @param string      $status            Status.
-	 * @param int         $failure_count     Number of failed checks in a row.
-	 * @param string|null $status_changed_at GMT date the status changed.
+	 * @param int           $monitor_id        Monitor ID.
+	 * @param MonitorStatus $status            Status.
+	 * @param int           $failure_count     Number of failed checks in a row.
+	 * @param string|null   $status_changed_at GMT date the status changed.
 	 * @return void
 	 */
-	private function update_monitor( int $monitor_id, string $status, int $failure_count, ?string $status_changed_at ): void {
+	private function update_monitor( int $monitor_id, MonitorStatus $status, int $failure_count, ?string $status_changed_at ): void {
 		global $wpdb;
 
 		$wpdb->update(
 			$wpdb->orbis_monitors,
 			[
-				'status'            => $status,
+				'status'            => $status->value,
 				'failure_count'     => $failure_count,
 				'status_changed_at' => $status_changed_at,
 				'updated_at'        => \current_time( 'mysql', true ),

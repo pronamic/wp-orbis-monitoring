@@ -51,7 +51,7 @@ final class InstallController {
 	 * @return void
 	 */
 	private function maybe_install(): void {
-		if ( '1.3.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
+		if ( '1.4.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
 			return;
 		}
 
@@ -59,10 +59,12 @@ final class InstallController {
 
 		$this->add_foreign_keys();
 
+		$this->migrate_statuses();
+
 		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules -- Only once after activation or an update.
 		\flush_rewrite_rules();
 
-		\update_option( 'orbis_monitoring_db_version', '1.3.0' );
+		\update_option( 'orbis_monitoring_db_version', '1.4.0' );
 	}
 
 	/**
@@ -123,6 +125,33 @@ final class InstallController {
 
 		// Monitors are checked through Action Scheduler, remove the legacy WP-Cron event.
 		\wp_clear_scheduled_hook( 'orbis_monitor' );
+	}
+
+	/**
+	 * Migrate statuses.
+	 *
+	 * The `up` and `down` statuses are renamed to `online` and `offline`.
+	 *
+	 * @return void
+	 */
+	private function migrate_statuses(): void {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only the table name is interpolated.
+		$wpdb->query(
+			<<<SQL
+			UPDATE
+				$wpdb->orbis_monitors
+			SET
+				status = CASE status
+					WHEN 'up' THEN 'online'
+					WHEN 'down' THEN 'offline'
+				END
+			WHERE
+				status IN ( 'up', 'down' )
+			;
+			SQL
+		);
 	}
 
 	/**

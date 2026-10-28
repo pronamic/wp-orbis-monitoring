@@ -247,16 +247,9 @@ final readonly class AdminController {
 			return;
 		}
 
-		$icons = [
-			'unknown' => '⚪',
-			'up'      => '🟢',
-			'pending' => '🟠',
-			'down'    => '🔴',
-		];
+		echo \esc_html( $status->status->icon() . ' ' . $status->status->label() );
 
-		echo \esc_html( ( $icons[ $status->status ] ?? '' ) . ' ' . $this->incident_controller->get_status_label( $status->status ) );
-
-		if ( 'pending' === $status->status ) {
+		if ( MonitorStatus::Pending === $status->status ) {
 			echo ' ';
 			\printf(
 				/* translators: %d: number of failed checks in a row */
@@ -265,7 +258,7 @@ final readonly class AdminController {
 			);
 		}
 
-		if ( null !== $status->status_changed_at && 'unknown' !== $status->status ) {
+		if ( null !== $status->status_changed_at && MonitorStatus::Unknown !== $status->status ) {
 			echo '<br />';
 			\printf(
 				/* translators: %s: human readable time difference */

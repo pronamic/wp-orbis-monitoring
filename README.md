@@ -31,11 +31,11 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 | | |
 |---|---|
 | ⏱️ **Checked every minute** | Each published monitor is checked every 60 seconds, reliably queued through [Action Scheduler](https://actionscheduler.org/) instead of flaky WP-Cron. |
-| 🎯 **More than "is it up?"** | Set the status code you expect (`200`, `301`, `410`, …) and, for redirects, the exact `Location` it should point to. A wrong redirect counts as a problem too. |
-| 🔔 **Slack alerts without the noise** | A monitor is only considered down after a number of failed checks in a row (default 3). You get one message when it goes down and one when it is up again, with the duration of the outage. Reminders while it stays down are optional. |
+| 🎯 **More than "is it online?"** | Set the status code you expect (`200`, `301`, `410`, …) and, for redirects, the exact `Location` it should point to. A wrong redirect counts as a problem too. |
+| 🔔 **Slack alerts without the noise** | A monitor is only considered offline after a number of failed checks in a row (default 3). You get one message when it goes offline and one when it is back online, with the duration of the outage. Reminders while it stays offline are optional. |
 | 📈 **Response time graphs** | See how fast a site responded over the past year, grouped per day, week or month, with [Chart.js](https://www.chartjs.org/). |
 | 🗂️ **Full history** | Every check is stored: duration, status code, message, content type and content length. Spot trends, prove SLAs, find out when it started. |
-| 📋 **Overview at a glance** | See the status (up, pending or down) of all monitors in one list, together with the last response code, response time and check time. |
+| 📋 **Overview at a glance** | See the status (online, pending or offline) of all monitors in one list, together with the last response code, response time and check time. |
 | 🚨 **Incident history** | Every outage is stored as an incident, with start, end, duration and the error. Open a monitor to see its incidents, including the one that is still ongoing. |
 | 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status and incident history. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
@@ -50,7 +50,7 @@ flowchart LR
     B --> C[🌐 Request URL]
     C --> D[(💾 Store response<br/>& timing)]
     D --> E{Expected status<br/>and location?}
-    E -- ✅ yes --> F{Was it down?}
+    E -- ✅ yes --> F{Was it offline?}
     F -- yes --> G[orbis_monitoring_incident_resolved]
     E -- ❌ no --> H{Failed checks in a row<br/>reached threshold?}
     H -- no --> I[🟠 Pending]
@@ -80,9 +80,9 @@ flowchart LR
 
 Install the [Slack](https://wordpress.org/plugins/slack/) plugin and add an integration. Orbis Monitoring adds three events you can choose from:
 
-- **When a monitor detects an outage**: once, when a monitor goes down.
+- **When a monitor detects an outage**: once, when a monitor goes offline.
 - **When a monitor detects that an outage continues (reminder)**: only when a reminder interval is set.
-- **When a monitor detects a recovery**: once, when a monitor is up again, with the duration of the outage.
+- **When a monitor detects a recovery**: once, when a monitor is back online, with the duration of the outage.
 
 > [!NOTE]
 > Earlier versions had Slack events that fired for every check. These events are removed, so select the new events in your Slack integration after updating.
