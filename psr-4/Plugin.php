@@ -49,7 +49,6 @@ final class Plugin {
 		self::register_tables();
 
 		// General hooks.
-		\add_action( 'init', $this->load_plugin_textdomain( ... ), 0 );
 		\add_action( 'init', $this->init( ... ) );
 		\add_action( 'init', $this->maybe_install( ... ), 20 );
 		\add_filter( 'cron_schedules', $this->cron_schedules( ... ) ); // phpcs:ignore WordPress.WP.CronInterval.CronSchedulesInterval
@@ -256,20 +255,6 @@ final class Plugin {
 		}
 
 		$this->monitor_post( $post_id );
-	}
-
-	/**
-	 * Load plugin text domain.
-	 *
-	 * Translations must not be loaded before the `init` action, WordPress 6.7 and
-	 * higher will trigger a `_load_textdomain_just_in_time` notice otherwise.
-	 *
-	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/21
-	 * @link https://make.wordpress.org/core/2024/10/21/i18n-improvements-6-7/
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		\load_plugin_textdomain( 'orbis-monitoring', false, \dirname( \plugin_basename( $this->file ) ) . '/languages/' );
 	}
 
 	/**
