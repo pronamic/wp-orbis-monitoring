@@ -43,7 +43,8 @@
 		"allow-plugins": {
 			"automattic/jetpack-autoloader": true,
 			"composer/installers": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"roots/wordpress-core-installer": true
 		},
 		"platform": {
 			"php": "8.3"
@@ -52,10 +53,11 @@
 		"sort-packages": true
 	},
 	"require-dev": {
+		"deployer/deployer": "^7.5",
 		"pronamic/wp-coding-standards": "^2.1",
+		"roots/wordpress-no-content": "^7.1",
 		"wp-cli/dist-archive-command": "*",
-		"wp-cli/wp-cli-bundle": "*",
-		"deployer/deployer": "^7.5"
+		"wp-cli/wp-cli-bundle": "*"
 	},
 	"extra": {
 		"installer-paths": {

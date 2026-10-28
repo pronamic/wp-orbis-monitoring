@@ -1,5 +1,4 @@
-# Bower
-/bower_components/
+.DS_Store
 
 # Build
 /build/
@@ -10,14 +9,9 @@
 # Deploy
 /deploy/
 
-# Eclipse
-/.externalToolBuilders/
-/.settings/
-/.buildpath
-/.project
-
-# Node
+# Node.js
 /node_modules/
+/package-lock.json
 
-# Composer installers
-/packages/
+# WordPress
+/wordpress/

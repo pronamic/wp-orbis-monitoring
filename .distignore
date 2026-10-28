@@ -43,3 +43,6 @@ psalm.xml
 /package.json
 /package-lock.json
 
+
+# WordPress
+/wordpress/
