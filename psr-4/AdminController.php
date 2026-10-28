@@ -117,7 +117,7 @@ final class AdminController {
 	 */
 	private function save_monitor( $post_id ): void {
 		if ( isset( $_POST['_orbis_monitor_check'] ) ) {
-			$this->save_monitor_check();
+			$this->save_monitor_check( $post_id );
 			return;
 		}
 
@@ -154,18 +154,27 @@ final class AdminController {
 	/**
 	 * Save monitor check.
 	 *
+	 * @param int $post_id The ID of the post being saved.
 	 * @return void
 	 */
-	private function save_monitor_check(): void {
-		global $post;
+	private function save_monitor_check( $post_id ): void {
+		// Nonce.
+		if ( ! isset( $_POST['orbis_monitor_check_details_meta_box_nonce'] ) ) {
+			return;
+		}
 
-		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Existing behaviour, the check meta box has no nonce.
+		\check_admin_referer( 'orbis_save_monitor_check_details', 'orbis_monitor_check_details_meta_box_nonce' );
+
+		// If this is an autosave, our form has not been submitted, so we don't want to do anything.
+		if ( \defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
 		$required_string = isset( $_POST['_orbis_monitor_check_required_string'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_monitor_check_required_string'] ) ) : '';
 		$should_contain  = isset( $_POST['_orbis_monitor_check_should_contain'] ) ? \absint( $_POST['_orbis_monitor_check_should_contain'] ) : 0;
-		// phpcs:enable
 
-		\update_post_meta( $post->ID, '_orbis_monitor_check_required_string', $required_string );
-		\update_post_meta( $post->ID, '_orbis_monitor_check_should_contain', $should_contain );
+		\update_post_meta( $post_id, '_orbis_monitor_check_required_string', $required_string );
+		\update_post_meta( $post_id, '_orbis_monitor_check_should_contain', $should_contain );
 	}
 
 	/**

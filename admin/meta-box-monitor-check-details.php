@@ -13,6 +13,8 @@ global $post;
 $required_string = get_post_meta( $post->ID, '_orbis_monitor_check_required_string', true );
 $should_contain  = get_post_meta( $post->ID, '_orbis_monitor_check_should_contain', true );
 
+wp_nonce_field( 'orbis_save_monitor_check_details', 'orbis_monitor_check_details_meta_box_nonce' );
+
 ?>
 <table class="form-table">
 	<tr valign="top">
