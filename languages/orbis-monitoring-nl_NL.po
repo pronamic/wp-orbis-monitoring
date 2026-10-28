@@ -2,17 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
+"POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
+"PO-Revision-Date: 2026-10-28 15:22+0100\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2026-10-28T14:15:11+00:00\n"
-"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 3.10\n"
 
 #. Plugin Name of the plugin
 #: orbis-monitoring.php:11
@@ -39,19 +39,16 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-monitor-details.php:26
-#: templates/archive-orbis_monitor.php:30
+#: admin/meta-box-monitor-details.php:26 templates/archive-orbis_monitor.php:30
 #: templates/monitor-details.php:25
 msgid "URL"
 msgstr "URL"
 
-#: admin/meta-box-monitor-details.php:34
-#: templates/monitor-details.php:34
+#: admin/meta-box-monitor-details.php:34 templates/monitor-details.php:34
 msgid "Required Response Code"
 msgstr "Vereiste antwoordcode"
 
-#: admin/meta-box-monitor-details.php:42
-#: templates/monitor-details.php:39
+#: admin/meta-box-monitor-details.php:42 templates/monitor-details.php:39
 msgid "Required Location"
 msgstr "Vereiste locatie"
 
@@ -63,28 +60,24 @@ msgstr "cURL"
 msgid "ID"
 msgstr "ID"
 
-#: admin/meta-box-monitor-responses.php:36
-#: templates/monitor-responses.php:72
+#: admin/meta-box-monitor-responses.php:36 templates/monitor-responses.php:72
 msgid "Date"
 msgstr "Datum"
 
-#: admin/meta-box-monitor-responses.php:37
+#: admin/meta-box-monitor-responses.php:37 psr-4/AdminController.php:134
 #: templates/monitor-responses.php:73
 msgid "Duration"
 msgstr "Duur"
 
-#: admin/meta-box-monitor-responses.php:38
-#: templates/monitor-responses.php:74
+#: admin/meta-box-monitor-responses.php:38 templates/monitor-responses.php:74
 msgid "Code"
 msgstr "Code"
 
-#: admin/meta-box-monitor-responses.php:39
-#: templates/monitor-responses.php:75
+#: admin/meta-box-monitor-responses.php:39 templates/monitor-responses.php:75
 msgid "Message"
 msgstr "Bericht"
 
-#: admin/meta-box-monitor-responses.php:40
-#: templates/monitor-responses.php:76
+#: admin/meta-box-monitor-responses.php:40 templates/monitor-responses.php:76
 msgid "Content Length"
 msgstr "Content Length"
 
@@ -92,14 +85,33 @@ msgstr "Content Length"
 msgid "Content Type"
 msgstr "Content Type"
 
-#: psr-4/AdminController.php:53
-#: templates/monitor-details.php:21
+#: psr-4/AdminController.php:53 templates/monitor-details.php:21
 msgid "Monitor Details"
 msgstr "Monitor details"
 
 #: psr-4/AdminController.php:62
 msgid "Monitor Responses"
 msgstr "Monitor antwoorden"
+
+#: psr-4/AdminController.php:135
+msgid "Last Response Code"
+msgstr "Laatste antwoordcode"
+
+#: psr-4/AdminController.php:136
+msgid "Last Response Message"
+msgstr "Laatste antwoordbericht"
+
+#: psr-4/AdminController.php:137
+msgid "Last Content Length"
+msgstr "Laatste Content Length"
+
+#: psr-4/AdminController.php:138
+msgid "Last Content Type"
+msgstr "Laatste Content Type"
+
+#: psr-4/AdminController.php:139
+msgid "Last Check"
+msgstr "Laatste controle"
 
 #: psr-4/AdminController.php:182
 msgid "D j M Y \\a\\t H:i:s"
@@ -178,8 +190,7 @@ msgstr "Zodra een Orbis probleem wordt gedetecteerd."
 msgid "When a Orbis monitor was checked."
 msgstr "Zodra een Orbis monitor wordt gecontroleerd."
 
-#: psr-4/SlackController.php:62
-#: psr-4/SlackController.php:87
+#: psr-4/SlackController.php:62 psr-4/SlackController.php:87
 #, php-format
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr "Orbis monitor <%s|%s> werd zojuist gecontroleerd, antwoordcode was `%s` » %s."
@@ -208,8 +219,7 @@ msgstr "Laatste antwoordduur"
 msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
-#: templates/archive-orbis_monitor.php:79
-#: templates/monitor-responses.php:86
+#: templates/archive-orbis_monitor.php:79 templates/monitor-responses.php:86
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
 

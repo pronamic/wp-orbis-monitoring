@@ -131,12 +131,12 @@ final readonly class AdminController {
 	 * @return array<string, string>
 	 */
 	private function columns( $columns ) {
-		$columns['orbis_monitor_duration']                = 'Duration';
-		$columns['orbis_monitor_response_code']           = 'Last Response Code';
-		$columns['orbis_monitor_response_message']        = 'Last Response Message';
-		$columns['orbis_monitor_response_content_length'] = 'Last Content Length';
-		$columns['orbis_monitor_response_content_type']   = 'Last Content Type';
-		$columns['orbis_monitor_modified_date']           = 'Last Check';
+		$columns['orbis_monitor_duration']                = \__( 'Duration', 'orbis-monitoring' );
+		$columns['orbis_monitor_response_code']           = \__( 'Last Response Code', 'orbis-monitoring' );
+		$columns['orbis_monitor_response_message']        = \__( 'Last Response Message', 'orbis-monitoring' );
+		$columns['orbis_monitor_response_content_length'] = \__( 'Last Content Length', 'orbis-monitoring' );
+		$columns['orbis_monitor_response_content_type']   = \__( 'Last Content Type', 'orbis-monitoring' );
+		$columns['orbis_monitor_modified_date']           = \__( 'Last Check', 'orbis-monitoring' );
 
 		return $columns;
 	}

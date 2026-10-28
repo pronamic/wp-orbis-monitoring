@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-28T14:15:11+00:00\n"
+"POT-Creation-Date: 2026-10-28T14:21:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
@@ -69,6 +69,7 @@ msgid "Date"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:37
+#: psr-4/AdminController.php:134
 #: templates/monitor-responses.php:73
 msgid "Duration"
 msgstr ""
@@ -99,6 +100,26 @@ msgstr ""
 
 #: psr-4/AdminController.php:62
 msgid "Monitor Responses"
+msgstr ""
+
+#: psr-4/AdminController.php:135
+msgid "Last Response Code"
+msgstr ""
+
+#: psr-4/AdminController.php:136
+msgid "Last Response Message"
+msgstr ""
+
+#: psr-4/AdminController.php:137
+msgid "Last Content Length"
+msgstr ""
+
+#: psr-4/AdminController.php:138
+msgid "Last Content Type"
+msgstr ""
+
+#: psr-4/AdminController.php:139
+msgid "Last Check"
 msgstr ""
 
 #: psr-4/AdminController.php:182
