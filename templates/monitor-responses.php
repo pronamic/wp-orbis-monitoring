@@ -95,7 +95,7 @@ $responses = $wpdb->get_results(
 							<?php echo esc_html( $response->response_code ); ?>
 						</td>
 						<td>
-							<?php echo esc_html( $response->response_message ); ?>
+							<?php echo esc_html( empty( $response->error_message ) ? get_status_header_desc( (int) $response->response_code ) : $response->error_message ); ?>
 						</td>
 						<td>
 							<?php echo esc_html( $response->response_content_length ); ?>

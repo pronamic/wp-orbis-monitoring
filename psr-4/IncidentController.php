@@ -242,11 +242,52 @@ final readonly class IncidentController {
 	}
 
 	/**
+	 * Count the published monitors per availability of the monitored URL.
+	 *
+	 * Monitors without a row in the monitors table have not been checked yet, so they count as unknown.
+	 *
+	 * @return array<string, int> Number of monitors keyed by availability value.
+	 */
+	public function get_availability_counts(): array {
+		global $wpdb;
+
+		$rows = $wpdb->get_results(
+			<<<SQL
+			SELECT
+				COALESCE( orbis_monitor.status, 'unknown' ) AS availability,
+				COUNT( post.ID ) AS count
+			FROM
+				$wpdb->posts AS post
+					LEFT JOIN
+				$wpdb->orbis_monitors AS orbis_monitor
+						ON post.ID = orbis_monitor.post_id
+			WHERE
+				post.post_type = 'orbis_monitor'
+					AND
+				post.post_status = 'publish'
+			GROUP BY
+				availability
+			;
+			SQL
+		);
+
+		$counts = \array_fill_keys( \array_column( Availability::cases(), 'value' ), 0 );
+
+		foreach ( $rows as $row ) {
+			if ( \array_key_exists( $row->availability, $counts ) ) {
+				$counts[ $row->availability ] = (int) $row->count;
+			}
+		}
+
+		return $counts;
+	}
+
+	/**
 	 * Get the incidents of a monitor post, newest first.
 	 *
 	 * @param int $post_id Post ID.
 	 * @param int $limit   Maximum number of incidents.
-	 * @return array<object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, response_message: string|null}>
+	 * @return array<object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, error_message: string|null}>
 	 */
 	public function get_incidents( int $post_id, int $limit = 10 ): array {
 		global $wpdb;
@@ -362,7 +403,7 @@ final readonly class IncidentController {
 	 * Get the open incident of a monitor.
 	 *
 	 * @param int $monitor_id Monitor ID.
-	 * @return object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, response_message: string|null}|null
+	 * @return object{id: string, monitor_id: string, started_at: string, resolved_at: string|null, last_notified_at: string|null, response_code: string|null, error_message: string|null}|null
 	 */
 	public function get_open_incident( int $monitor_id ): ?object {
 		global $wpdb;
@@ -398,20 +439,20 @@ final readonly class IncidentController {
 	 * @param array<string, mixed>|\WP_Error $response   Response.
 	 * @param string                         $started_at GMT date the incident started.
 	 * @param string                         $now        Current GMT date.
-	 * @return object{id: int, monitor_id: int, started_at: string, resolved_at: null, last_notified_at: string, response_code: string, response_message: string}
+	 * @return object{id: int, monitor_id: int, started_at: string, resolved_at: null, last_notified_at: string, response_code: string, error_message: string|null}
 	 */
 	private function open_incident( int $monitor_id, $response, string $started_at, string $now ): object {
 		global $wpdb;
 
-		$response_code    = (string) \wp_remote_retrieve_response_code( $response );
-		$response_message = \is_wp_error( $response ) ? $response->get_error_message() : \wp_remote_retrieve_response_message( $response );
+		$response_code = (string) \wp_remote_retrieve_response_code( $response );
+		$error_message = \is_wp_error( $response ) ? \mb_substr( $response->get_error_message(), 0, 255 ) : null;
 
 		$data = [
 			'monitor_id'       => $monitor_id,
 			'started_at'       => $started_at,
 			'last_notified_at' => $now,
 			'response_code'    => $response_code,
-			'response_message' => \mb_substr( $response_message, 0, 255 ),
+			'error_message'    => $error_message,
 		];
 
 		$wpdb->insert(

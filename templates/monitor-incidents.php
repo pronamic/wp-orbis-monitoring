@@ -78,7 +78,13 @@ $incidents = $incident_controller->get_incidents( (int) get_the_ID(), $amount );
 								<?php echo empty( $incident->response_code ) ? '—' : esc_html( $incident->response_code ); ?>
 							</td>
 							<td>
-								<?php echo empty( $incident->response_message ) ? '—' : esc_html( $incident->response_message ); ?>
+								<?php
+
+								$message = empty( $incident->error_message ) ? get_status_header_desc( (int) $incident->response_code ) : $incident->error_message;
+
+								echo empty( $message ) ? '—' : esc_html( $message );
+
+								?>
 							</td>
 						</tr>
 

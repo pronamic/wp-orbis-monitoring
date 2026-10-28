@@ -41,9 +41,11 @@ $incident = ( null !== $monitor && \Pronamic\Orbis\Monitoring\Availability::Offl
 							esc_html( wp_date( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) strtotime( $incident->started_at . ' UTC' ) ) )
 						);
 
-						if ( ! empty( $incident->response_code ) || ! empty( $incident->response_message ) ) {
+						$message = empty( $incident->error_message ) ? get_status_header_desc( (int) $incident->response_code ) : $incident->error_message;
+
+						if ( ! empty( $incident->response_code ) || ! empty( $message ) ) {
 							echo '<br />';
-							echo esc_html( trim( $incident->response_code . ' ' . $incident->response_message ) );
+							echo esc_html( trim( $incident->response_code . ' ' . $message ) );
 						}
 
 						?>

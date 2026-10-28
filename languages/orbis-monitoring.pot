@@ -3,57 +3,57 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Monitoring 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-orbis-monitoring\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-28T19:39:17+00:00\n"
+"POT-Creation-Date: 2026-10-28T20:40:47+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
 
 #. Plugin Name of the plugin
-#: orbis-monitoring.php:11
-#: psr-4/SettingsController.php:95
-#: psr-4/SettingsController.php:96
+#: orbis-monitoring.php
+#: psr-4/SettingsController.php:104
+#: psr-4/SettingsController.php:105
 msgid "Orbis Monitoring"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: orbis-monitoring.php:12
+#: orbis-monitoring.php
 msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
 msgstr ""
 
 #. Description of the plugin
-#: orbis-monitoring.php:13
+#: orbis-monitoring.php
 msgid "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites."
 msgstr ""
 
 #. Author of the plugin
-#: orbis-monitoring.php:17
+#: orbis-monitoring.php
 msgid "Pronamic"
 msgstr ""
 
 #. Author URI of the plugin
-#: orbis-monitoring.php:18
+#: orbis-monitoring.php
 msgid "https://www.pronamic.eu/"
 msgstr ""
 
 #: admin/meta-box-monitor-details.php:26
-#: templates/archive-orbis_monitor.php:35
-#: templates/monitor-details.php:53
+#: templates/archive-orbis_monitor.php:42
+#: templates/monitor-details.php:55
 msgid "URL"
 msgstr ""
 
 #: admin/meta-box-monitor-details.php:34
-#: templates/monitor-details.php:62
+#: templates/monitor-details.php:64
 msgid "Required Response Code"
 msgstr ""
 
 #: admin/meta-box-monitor-details.php:42
-#: templates/monitor-details.php:67
+#: templates/monitor-details.php:69
 msgid "Required Location"
 msgstr ""
 
@@ -128,7 +128,7 @@ msgstr ""
 
 #: psr-4/AdminController.php:64
 #: psr-4/AdminController.php:176
-#: templates/archive-orbis_monitor.php:33
+#: templates/archive-orbis_monitor.php:39
 #: templates/monitor-details.php:28
 #: templates/search-form.php:30
 msgid "Status"
@@ -147,7 +147,7 @@ msgid "Last Response Code"
 msgstr ""
 
 #: psr-4/AdminController.php:179
-msgid "Last Response Message"
+msgid "Last Message"
 msgstr ""
 
 #: psr-4/AdminController.php:180
@@ -162,12 +162,12 @@ msgstr ""
 msgid "Last Check"
 msgstr ""
 
-#: psr-4/AdminController.php:229
+#: psr-4/AdminController.php:231
 msgid "D j M Y \\a\\t H:i:s"
 msgstr ""
 
 #. translators: %d: number of failed checks in a row
-#: psr-4/AdminController.php:256
+#: psr-4/AdminController.php:258
 #: templates/availability-badge.php:26
 #, php-format
 msgid "(%d failed check)"
@@ -176,7 +176,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: human readable time difference
-#: psr-4/AdminController.php:265
+#: psr-4/AdminController.php:267
 #: templates/availability-badge.php:38
 #, php-format
 msgid "for %s"
@@ -263,62 +263,78 @@ msgstr ""
 msgid "Websites and URLs that are periodically checked for availability and response."
 msgstr ""
 
-#: psr-4/SettingsController.php:148
+#: psr-4/SettingsController.php:167
 msgid "General"
 msgstr ""
 
-#: psr-4/SettingsController.php:155
+#: psr-4/SettingsController.php:174
 msgid "User Agent"
 msgstr ""
 
-#: psr-4/SettingsController.php:166
+#: psr-4/SettingsController.php:185
 msgid "Notifications"
 msgstr ""
 
-#: psr-4/SettingsController.php:173
+#: psr-4/SettingsController.php:192
 msgid "Failure Threshold"
 msgstr ""
 
-#: psr-4/SettingsController.php:184
+#: psr-4/SettingsController.php:203
 msgid "Reminder Interval"
 msgstr ""
 
-#: psr-4/SettingsController.php:204
+#: psr-4/SettingsController.php:214
+msgid "Data"
+msgstr ""
+
+#: psr-4/SettingsController.php:221
+msgid "Response Retention"
+msgstr ""
+
+#: psr-4/SettingsController.php:241
 msgid "Settings"
 msgstr ""
 
 #. translators: %s: default user agent
-#: psr-4/SettingsController.php:257
+#: psr-4/SettingsController.php:294
 #, php-format
 msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
 msgstr ""
 
 #. translators: %s: link to list of the latest browser user agents
-#: psr-4/SettingsController.php:268
+#: psr-4/SettingsController.php:305
 #, php-format
 msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
 msgstr ""
 
-#: psr-4/SettingsController.php:269
+#: psr-4/SettingsController.php:306
 msgid "the latest user agents"
 msgstr ""
 
 #. translators: %s: user agent of the current visitor
-#: psr-4/SettingsController.php:282
+#: psr-4/SettingsController.php:319
 #, php-format
 msgid "Your current user agent is: %s"
 msgstr ""
 
-#: psr-4/SettingsController.php:306
+#: psr-4/SettingsController.php:343
 msgid "The number of failed checks in a row before the monitored URL is considered offline and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification."
 msgstr ""
 
-#: psr-4/SettingsController.php:320
+#: psr-4/SettingsController.php:357
 msgid "minutes"
 msgstr ""
 
-#: psr-4/SettingsController.php:325
+#: psr-4/SettingsController.php:362
 msgid "Send a reminder while the monitored URL is still offline. Use 0 to only send a notification when the URL goes offline and when it is back online."
+msgstr ""
+
+#: psr-4/SettingsController.php:376
+msgid "days"
+msgstr ""
+
+#: psr-4/SettingsController.php:381
+msgid "The number of days to keep the response of each individual check. Hourly summaries of the response times are kept indefinitely."
 msgstr ""
 
 #: psr-4/SlackController.php:54
@@ -357,36 +373,75 @@ msgstr ""
 msgid "response code `%s`"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:34
+#: templates/archive-orbis_monitor.php:40
+#: templates/monitor-checks-bar.php:28
+msgid "Recent checks"
+msgstr ""
+
+#: templates/archive-orbis_monitor.php:41
 msgid "Title"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:36
+#: templates/archive-orbis_monitor.php:43
 msgid "Required response code"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:37
+#: templates/archive-orbis_monitor.php:44
 msgid "Last response code"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:38
+#: templates/archive-orbis_monitor.php:45
 msgid "Last response message"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:39
+#: templates/archive-orbis_monitor.php:46
 msgid "Last response duration"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:40
+#: templates/archive-orbis_monitor.php:47
 msgid "Last time checked"
 msgstr ""
 
-#: templates/archive-orbis_monitor.php:88
+#: templates/archive-orbis_monitor.php:99
 #: templates/monitor-details.php:41
 #: templates/monitor-incidents.php:65
 #: templates/monitor-incidents.php:71
 #: templates/monitor-responses.php:89
 msgid "d-m-Y H:i"
+msgstr ""
+
+#: templates/availability-stats.php:29
+msgid "All"
+msgstr ""
+
+#: templates/monitor-checks-bar.php:44
+msgid "Check succeeded"
+msgstr ""
+
+#: templates/monitor-checks-bar.php:44
+msgid "Check failed"
+msgstr ""
+
+#: templates/monitor-checks-bar.php:45
+msgid "d-m-Y H:i:s"
+msgstr ""
+
+#. translators: %s: duration in seconds
+#: templates/monitor-checks-bar.php:49
+#, php-format
+msgid "%s seconds"
+msgstr ""
+
+#. translators: %d: number of checks.
+#: templates/monitor-checks.php:34
+#, php-format
+msgid "Last %d Checks"
+msgstr ""
+
+#. translators: %s: percentage of succeeded checks.
+#: templates/monitor-checks.php:48
+#, php-format
+msgid "%s%% succeeded"
 msgstr ""
 
 #: templates/monitor-details.php:34

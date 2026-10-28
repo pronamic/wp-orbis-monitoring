@@ -1,0 +1,49 @@
+/**
+ * Orbis Monitoring
+ *
+ * Check bars, one pill per check, newest on the right.
+ */
+
+.orbis-monitor-checks {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.orbis-monitor-check {
+	flex: 1 1 0;
+	min-width: 3px;
+	max-width: 10px;
+	height: 28px;
+	border-radius: 50rem;
+	background-color: var( --bs-secondary-bg, #e9ecef );
+	transition: transform 0.1s ease-in-out;
+}
+
+.orbis-monitor-check--succeeded {
+	background-color: var( --bs-success, #198754 );
+}
+
+.orbis-monitor-check--failed {
+	background-color: var( --bs-danger, #dc3545 );
+}
+
+.orbis-monitor-check--succeeded:hover,
+.orbis-monitor-check--failed:hover {
+	transform: scale( 1.15 );
+}
+
+.orbis-monitor-checks--sm {
+	min-width: 150px;
+	gap: 1px;
+}
+
+.orbis-monitor-checks--sm .orbis-monitor-check {
+	min-width: 4px;
+	max-width: 6px;
+	height: 18px;
+}
+
+.orbis-monitor-check-tooltip .tooltip-inner {
+	white-space: pre-line;
+}

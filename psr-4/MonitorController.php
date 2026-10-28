@@ -215,19 +215,30 @@ final readonly class MonitorController {
 
 		$duration = $end - $start;
 
-		$response_code    = \wp_remote_retrieve_response_code( $response );
-		$response_message = \wp_remote_retrieve_response_message( $response );
-		$body             = \wp_remote_retrieve_body( $response );
-		$content_type     = \wp_remote_retrieve_header( $response, 'content-type' );
-		$date             = \wp_remote_retrieve_header( $response, 'date' );
+		$response_code = \wp_remote_retrieve_response_code( $response );
+		$error_message = \is_wp_error( $response ) ? \mb_substr( $response->get_error_message(), 0, 255 ) : null;
+		$body          = \wp_remote_retrieve_body( $response );
+		$content_type  = \wp_remote_retrieve_header( $response, 'content-type' );
+		$date          = \wp_remote_retrieve_header( $response, 'date' );
 
 		\update_post_meta( $post->ID, '_orbis_monitor_duration', $duration );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_code', $response_code );
-		\update_post_meta( $post->ID, '_orbis_monitor_response_message', $response_message );
+		\update_post_meta( $post->ID, '_orbis_monitor_error_message', $error_message );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_body', $body );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_content_length', \strlen( $body ) );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_content_type', $content_type );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_date', \strtotime( $date ) );
+
+		$required_response_code = \get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
+		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
+
+		$required_location = \get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
+
+		$check_succeeded = (
+			( $required_response_code === (string) $response_code )
+				&&
+			( empty( $required_location ) || \wp_remote_retrieve_header( $response, 'location' ) === $required_location )
+		);
 
 		$monitor_id = $this->get_monitor_id( $post->ID );
 
@@ -238,37 +249,25 @@ final readonly class MonitorController {
 				'monitored_date'          => \current_time( 'mysql' ),
 				'duration'                => $duration,
 				'response_code'           => $response_code,
-				'response_message'        => $response_message,
 				'response_content_length' => \strlen( $body ),
 				'response_content_type'   => $content_type,
+				'error_message'           => $error_message,
+				'check_succeeded'         => $check_succeeded ? 1 : 0,
 			],
 			[
 				'%d',
 				'%s',
 				'%f',
 				'%s',
-				'%s',
 				'%d',
 				'%s',
+				'%s',
+				'%d',
 			]
 		);
 
-		// Custom actions.
-		$required_response_code = \get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
-		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
-
-		$response_code = \get_post_meta( $post->ID, '_orbis_monitor_response_code', true );
-
-		$required_location = \get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
-
 		// Add custom message.
 		$message = null;
-
-		$check_succeeded = (
-			( $required_response_code === $response_code )
-				&&
-			( empty( $required_location ) || \wp_remote_retrieve_header( $response, 'location' ) === $required_location )
-		);
 
 		if ( ! $check_succeeded ) {
 			\do_action( 'orbis_monitor_problem', $post, $response, $message );

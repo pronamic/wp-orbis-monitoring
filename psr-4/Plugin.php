@@ -31,6 +31,13 @@ final class Plugin {
 	public readonly IncidentController $incident_controller;
 
 	/**
+	 * Response controller.
+	 *
+	 * @var ResponseController
+	 */
+	public readonly ResponseController $response_controller;
+
+	/**
 	 * Return instance of this class.
 	 *
 	 * @param string $file Plugin file.
@@ -56,8 +63,10 @@ final class Plugin {
 		$settings_controller = new SettingsController( $file );
 		$incident_controller = new IncidentController( $settings_controller );
 		$monitor_controller  = new MonitorController( $settings_controller, $incident_controller );
+		$response_controller = new ResponseController( $settings_controller );
 
 		$this->incident_controller = $incident_controller;
+		$this->response_controller = $response_controller;
 
 		( new InstallController() )->setup();
 		( new PostTypesController() )->setup();
@@ -65,8 +74,13 @@ final class Plugin {
 		$settings_controller->setup();
 		$incident_controller->setup();
 		$monitor_controller->setup();
+		$response_controller->setup();
 		( new AdminController( $file, $monitor_controller, $incident_controller ) )->setup();
 		( new SlackController() )->setup();
-		( new TemplateController( $file, $incident_controller ) )->setup();
+		( new TemplateController( $file, $incident_controller, $response_controller ) )->setup();
+
+		if ( \defined( 'WP_CLI' ) && \WP_CLI ) {
+			\WP_CLI::add_command( 'orbis-monitoring', new CliController( $response_controller ) );
+		}
 	}
 }

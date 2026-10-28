@@ -176,7 +176,7 @@ final readonly class AdminController {
 		$columns['orbis_monitor_availability']            = \__( 'Status', 'orbis-monitoring' );
 		$columns['orbis_monitor_duration']                = \__( 'Duration', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_code']           = \__( 'Last Response Code', 'orbis-monitoring' );
-		$columns['orbis_monitor_response_message']        = \__( 'Last Response Message', 'orbis-monitoring' );
+		$columns['orbis_monitor_message']                 = \__( 'Last Message', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_content_length'] = \__( 'Last Content Length', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_content_type']   = \__( 'Last Content Type', 'orbis-monitoring' );
 		$columns['orbis_monitor_modified_date']           = \__( 'Last Check', 'orbis-monitoring' );
@@ -213,8 +213,10 @@ final readonly class AdminController {
 				echo \esc_html( \get_post_meta( $post_id, '_orbis_monitor_response_code', true ) );
 
 				break;
-			case 'orbis_monitor_response_message':
-				echo \esc_html( \get_post_meta( $post_id, '_orbis_monitor_response_message', true ) );
+			case 'orbis_monitor_message':
+				$error_message = \get_post_meta( $post_id, '_orbis_monitor_error_message', true );
+
+				echo \esc_html( empty( $error_message ) ? \get_status_header_desc( (int) \get_post_meta( $post_id, '_orbis_monitor_response_code', true ) ) : $error_message );
 
 				break;
 			case 'orbis_monitor_response_content_length':

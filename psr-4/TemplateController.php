@@ -21,10 +21,12 @@ final readonly class TemplateController {
 	 *
 	 * @param string             $file                Plugin file.
 	 * @param IncidentController $incident_controller Incident controller.
+	 * @param ResponseController $response_controller Response controller.
 	 */
 	public function __construct(
 		private string $file,
-		private IncidentController $incident_controller
+		private IncidentController $incident_controller,
+		private ResponseController $response_controller
 	) {
 	}
 
@@ -39,6 +41,7 @@ final readonly class TemplateController {
 		\add_filter( 'template_include', $this->template_include( ... ) );
 
 		\add_action( 'orbis_before_side_content', $this->maybe_include_monitor_details( ... ) );
+		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_checks( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_graph( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_incidents( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_responses( ... ) );
@@ -57,6 +60,25 @@ final readonly class TemplateController {
 			[],
 			'4.6.1',
 			true
+		);
+
+		\wp_register_style(
+			'orbis-monitoring',
+			\plugins_url( 'assets/css/orbis-monitoring.css', $this->file ),
+			[],
+			(string) \filemtime( __DIR__ . '/../assets/css/orbis-monitoring.css' )
+		);
+
+		/**
+		 * Bootstrap tooltips for the check bars, the `title` attribute is the fallback.
+		 *
+		 * @link https://getbootstrap.com/docs/5.3/components/tooltips/
+		 */
+		\wp_register_script( 'orbis-monitoring-tooltips', false, [], '1.0.0', true );
+
+		\wp_add_inline_script(
+			'orbis-monitoring-tooltips',
+			'document.addEventListener( "DOMContentLoaded", () => { if ( window.bootstrap && window.bootstrap.Tooltip ) { document.querySelectorAll( ".orbis-monitor-checks [data-bs-toggle=tooltip]" ).forEach( ( element ) => window.bootstrap.Tooltip.getOrCreateInstance( element ) ); } } );'
 		);
 	}
 
@@ -89,6 +111,21 @@ final readonly class TemplateController {
 		$incident_controller = $this->incident_controller;
 
 		include __DIR__ . '/../templates/monitor-details.php';
+	}
+
+	/**
+	 * Maybe include monitor checks.
+	 *
+	 * @return void
+	 */
+	private function maybe_include_monitor_checks(): void {
+		if ( ! \is_singular( 'orbis_monitor' ) ) {
+			return;
+		}
+
+		$response_controller = $this->response_controller;
+
+		include __DIR__ . '/../templates/monitor-checks.php';
 	}
 
 	/**

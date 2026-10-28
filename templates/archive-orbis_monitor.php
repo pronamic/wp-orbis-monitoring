@@ -17,10 +17,18 @@ get_header();
 global $wp_query;
 
 $incident_controller = \Pronamic\Orbis\Monitoring\Plugin::instance()->incident_controller;
+$response_controller = \Pronamic\Orbis\Monitoring\Plugin::instance()->response_controller;
+
+$checks_limit     = 30;
+$checks_bar_class = 'orbis-monitor-checks--sm';
 
 $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_query->posts, 'ID' ) );
 
+$checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_list_pluck( $monitors, 'id' ), $checks_limit );
+
 ?>
+<?php require __DIR__ . '/availability-stats.php'; ?>
+
 <div class="card">
 	<?php require __DIR__ . '/search-form.php'; ?>
 
@@ -31,6 +39,7 @@ $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_q
 				<thead>
 					<tr>
 						<th><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></th>
+						<th><?php esc_html_e( 'Recent checks', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'Title', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'URL', 'orbis-monitoring' ); ?></th>
 						<th><?php esc_html_e( 'Required response code', 'orbis-monitoring' ); ?></th>
@@ -50,15 +59,19 @@ $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_q
 						$url           = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
 						$required_code = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
 						$code          = get_post_meta( get_the_ID(), '_orbis_monitor_response_code', true );
-						$message       = get_post_meta( get_the_ID(), '_orbis_monitor_response_message', true );
+						$error_message = get_post_meta( get_the_ID(), '_orbis_monitor_error_message', true );
 						$duration      = get_post_meta( get_the_ID(), '_orbis_monitor_duration', true );
 						$time          = get_post_meta( get_the_ID(), '_orbis_monitor_response_date', true );
 						$monitor       = $monitors[ get_the_ID() ] ?? null;
+						$checks        = ( null === $monitor ) ? [] : ( $checks_by_monitor[ (int) $monitor->id ] ?? [] );
 
 						?>
 						<tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 							<td>
 								<?php require __DIR__ . '/availability-badge.php'; ?>
+							</td>
+							<td>
+								<?php require __DIR__ . '/monitor-checks-bar.php'; ?>
 							</td>
 							<td>
 								<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
@@ -79,7 +92,7 @@ $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_q
 								<?php echo esc_html( $code ); ?>
 							</td>
 							<td>
-								<?php echo esc_html( $message ); ?>
+								<?php echo esc_html( empty( $error_message ) ? get_status_header_desc( (int) $code ) : $error_message ); ?>
 							</td>
 							<td>
 								<?php echo empty( $duration ) ? '—' : esc_html( number_format_i18n( (float) $duration, 2 ) ); ?>

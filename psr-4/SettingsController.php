@@ -74,6 +74,15 @@ final readonly class SettingsController {
 	}
 
 	/**
+	 * Get the number of days to keep individual check responses.
+	 *
+	 * @return int
+	 */
+	public function get_response_retention_days(): int {
+		return \max( 1, (int) \get_option( 'orbis_monitoring_response_retention_days', 30 ) );
+	}
+
+	/**
 	 * Get the default user agent, an honest product token identifying Orbis Monitoring.
 	 *
 	 * @link https://www.rfc-editor.org/rfc/rfc9110#name-user-agent
@@ -135,6 +144,16 @@ final readonly class SettingsController {
 				'default'           => 0,
 			]
 		);
+
+		\register_setting(
+			'orbis-monitoring',
+			'orbis_monitoring_response_retention_days',
+			[
+				'type'              => 'integer',
+				'sanitize_callback' => fn( $value ) => \max( 1, (int) $value ),
+				'default'           => 30,
+			]
+		);
 	}
 
 	/**
@@ -187,6 +206,24 @@ final readonly class SettingsController {
 			'orbis_monitoring_notifications',
 			[
 				'label_for' => 'orbis_monitoring_reminder_interval',
+			]
+		);
+
+		\add_settings_section(
+			'orbis_monitoring_data',
+			\__( 'Data', 'orbis-monitoring' ),
+			'__return_false',
+			'orbis-monitoring'
+		);
+
+		\add_settings_field(
+			'orbis_monitoring_response_retention_days',
+			\__( 'Response Retention', 'orbis-monitoring' ),
+			$this->field_response_retention_days( ... ),
+			'orbis-monitoring',
+			'orbis_monitoring_data',
+			[
+				'label_for' => 'orbis_monitoring_response_retention_days',
 			]
 		);
 	}
@@ -323,6 +360,25 @@ final readonly class SettingsController {
 		?>
 		<p class="description">
 			<?php \esc_html_e( 'Send a reminder while the monitored URL is still offline. Use 0 to only send a notification when the URL goes offline and when it is back online.', 'orbis-monitoring' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Response retention field.
+	 *
+	 * @return void
+	 */
+	private function field_response_retention_days(): void {
+		\printf(
+			'<input id="orbis_monitoring_response_retention_days" name="orbis_monitoring_response_retention_days" value="%s" type="number" min="1" step="1" class="small-text" /> %s',
+			\esc_attr( (string) $this->get_response_retention_days() ),
+			\esc_html__( 'days', 'orbis-monitoring' )
+		);
+
+		?>
+		<p class="description">
+			<?php \esc_html_e( 'The number of days to keep the response of each individual check. Hourly summaries of the response times are kept indefinitely.', 'orbis-monitoring' ); ?>
 		</p>
 		<?php
 	}

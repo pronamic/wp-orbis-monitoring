@@ -69,16 +69,26 @@ enum Availability: string {
 	}
 
 	/**
+	 * Get the Bootstrap theme color.
+	 *
+	 * @link https://getbootstrap.com/docs/5.3/customize/color/#theme-colors
+	 * @return string
+	 */
+	public function color(): string {
+		return match ( $this ) {
+			self::Unknown => 'secondary',
+			self::Online  => 'success',
+			self::Pending => 'warning',
+			self::Offline => 'danger',
+		};
+	}
+
+	/**
 	 * Get the Bootstrap badge class.
 	 *
 	 * @return string
 	 */
 	public function badge_class(): string {
-		return match ( $this ) {
-			self::Unknown => 'text-bg-secondary',
-			self::Online  => 'text-bg-success',
-			self::Pending => 'text-bg-warning',
-			self::Offline => 'text-bg-danger',
-		};
+		return 'text-bg-' . $this->color();
 	}
 }

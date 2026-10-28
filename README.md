@@ -172,17 +172,23 @@ Run `composer run build` to create the build version.
 
 ### Housekeeping
 
-Monitoring every minute adds up. To keep the database lean, clear old response bodies now and then:
+Monitoring every minute adds up: with 350 monitors that is over 500,000 responses a day. Orbis Monitoring keeps the database lean with two Action Scheduler jobs in the `orbis-monitoring` group:
 
-```sql
-UPDATE
-	orbis_monitor_responses
-SET
-	response_body = NULL
-WHERE
-	monitored_date < DATE_ADD( NOW(), INTERVAL -1 MONTH )
-;
-```
+| Action | Interval | Description |
+|---|---|---|
+| `orbis_monitoring_aggregate_responses` | Hourly | Summarizes the responses per monitor per hour in the `orbis_monitor_response_stats` table (number of checks, total, minimum and maximum duration). The response time graph uses these summaries. |
+| `orbis_monitoring_cleanup_responses` | Daily | Deletes responses older than the response retention period, only when they are summarized. |
+
+The response retention period defaults to 30 days and can be changed under **Settings → Orbis Monitoring → Data**. The hourly summaries are kept indefinitely.
+
+The summaries can also be managed with WP-CLI:
+
+| Command | Description |
+|---|---|
+| `wp orbis-monitoring aggregate-responses` | Summarize all responses that are not summarized yet, without the 31 day limit of the scheduled action. |
+| `wp orbis-monitoring aggregate-responses --rebuild` | Delete the summaries for the period that still has responses and summarize these responses again. |
+| `wp orbis-monitoring aggregate-responses --from=2026-10-01 --to=2026-10-08` | Summarize the responses in a period again. |
+| `wp orbis-monitoring verify-responses [--all]` | Compare the number of responses with the summaries per day. |
 
 ## 📄 License
 
