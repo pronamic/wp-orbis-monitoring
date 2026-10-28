@@ -22,88 +22,61 @@ final class MonitorController {
 	 * @return void
 	 */
 	public function setup(): void {
-		\add_filter( 'cron_schedules', $this->cron_schedules( ... ) ); // phpcs:ignore WordPress.WP.CronInterval.CronSchedulesInterval
-		\add_action( 'init', $this->schedule( ... ) );
-		\add_action( 'orbis_monitor', $this->monitor( ... ) );
+		\add_action( 'action_scheduler_init', $this->schedule( ... ) );
+		\add_action( 'orbis_monitoring_schedule_checks', $this->schedule_checks( ... ) );
+		\add_action( 'orbis_monitoring_check_monitor', $this->check_monitor( ... ) );
 	}
 
 	/**
-	 * Cron Schedules
+	 * Schedule the recurring action that schedules the monitor checks every minute.
 	 *
-	 * @see https://codex.wordpress.org/Function_Reference/wp_schedule_event
-	 * @see https://developer.wordpress.org/plugins/cron/understanding-wp-cron-scheduling/
-	 * @see http://stackoverflow.com/questions/14103262/customizing-the-wp-schedule-event
-	 * @see http://wordpress.stackexchange.com/questions/208135/how-to-run-a-function-every-5-minutes
-	 * @see http://shinephp.com/start-scheduled-task-with-wp-cron-more-often/
-	 *
-	 * @param array<string, array<string, mixed>> $schedules Schedules.
-	 * @return array<string, array<string, mixed>>
-	 */
-	private function cron_schedules( $schedules ) {
-		if ( ! isset( $schedules['every_5_minutes'] ) ) {
-			$display = 'Once Every 5 Minutes';
-
-			/*
-			 * Translation functions can only be used once the `init` action is running,
-			 * the `cron_schedules` filter can be applied earlier.
-			 *
-			 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/21
-			 */
-			if ( \did_action( 'init' ) || \doing_action( 'init' ) ) {
-				$display = \__( 'Once Every 5 Minutes', 'orbis-monitoring' );
-			}
-
-			$schedules['every_5_minutes'] = [
-				'interval' => 5 * MINUTE_IN_SECONDS,
-				'display'  => $display,
-			];
-		}
-
-		return $schedules;
-	}
-
-	/**
-	 * Schedule the monitor event.
-	 *
+	 * @link https://actionscheduler.org/api/
 	 * @return void
 	 */
 	private function schedule(): void {
-		if ( ! \wp_next_scheduled( 'orbis_monitor' ) ) {
-			\wp_schedule_event( \time(), 'every_5_minutes', 'orbis_monitor' );
+		if ( false === \as_has_scheduled_action( 'orbis_monitoring_schedule_checks' ) ) {
+			\as_schedule_recurring_action( \time(), MINUTE_IN_SECONDS, 'orbis_monitoring_schedule_checks', [], 'orbis-monitoring', true );
 		}
 	}
 
 	/**
-	 * Monitor.
+	 * Schedule a check for each published monitor.
+	 *
+	 * Checks are unique per monitor, so a slow check is not stacked up.
 	 *
 	 * @return void
 	 */
-	private function monitor(): void {
-		$query = new \WP_Query(
+	private function schedule_checks(): void {
+		$post_ids = \get_posts(
 			[
 				'post_type'      => 'orbis_monitor',
-				'posts_per_page' => 5,
-				'orderby'        => 'modified',
-				'order'          => 'ASC',
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'fields'         => 'ids',
 				'no_found_rows'  => true,
 			]
 		);
 
-		if ( $query->have_posts() ) {
-			while ( $query->have_posts() ) {
-				$query->the_post();
-
-				$this->monitor_post( \get_post() );
-
-				\wp_update_post(
-					[
-						'ID' => \get_the_ID(),
-					]
-				);
-			}
-
-			\wp_reset_postdata();
+		foreach ( $post_ids as $post_id ) {
+			\as_enqueue_async_action( 'orbis_monitoring_check_monitor', [ 'post_id' => $post_id ], 'orbis-monitoring', true );
 		}
+	}
+
+	/**
+	 * Check monitor.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	private function check_monitor( $post_id ): void {
+		$this->monitor_post( $post_id );
+
+		// Touch the modified date, the admin "Last Check" column shows this date.
+		\wp_update_post(
+			[
+				'ID' => $post_id,
+			]
+		);
 	}
 
 	/**

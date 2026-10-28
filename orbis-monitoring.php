@@ -38,6 +38,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 		require_once $autoload_path;
 	}
 
+	require_once __DIR__ . '/packages/woocommerce/action-scheduler/action-scheduler.php';
+
 	\register_activation_hook( __FILE__, [ InstallController::class, 'activate' ] );
 
 	Plugin::instance( __FILE__ );

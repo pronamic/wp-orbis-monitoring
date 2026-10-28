@@ -9,6 +9,9 @@
 # Deploy
 /deploy/
 
+# Composer packages
+/packages/
+
 # Node.js
 /node_modules/
 /package-lock.json
