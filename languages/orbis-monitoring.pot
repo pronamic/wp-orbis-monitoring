@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-28T13:17:07+00:00\n"
+"POT-Creation-Date: 2026-10-28T14:15:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
@@ -64,27 +64,27 @@ msgid "ID"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:36
-#: templates/monitor-responses.php:70
+#: templates/monitor-responses.php:72
 msgid "Date"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:37
-#: templates/monitor-responses.php:71
+#: templates/monitor-responses.php:73
 msgid "Duration"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:38
-#: templates/monitor-responses.php:72
+#: templates/monitor-responses.php:74
 msgid "Code"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:39
-#: templates/monitor-responses.php:73
+#: templates/monitor-responses.php:75
 msgid "Message"
 msgstr ""
 
 #: admin/meta-box-monitor-responses.php:40
-#: templates/monitor-responses.php:74
+#: templates/monitor-responses.php:76
 msgid "Content Length"
 msgstr ""
 
@@ -103,10 +103,6 @@ msgstr ""
 
 #: psr-4/AdminController.php:182
 msgid "D j M Y \\a\\t H:i:s"
-msgstr ""
-
-#: psr-4/MonitorController.php:53
-msgid "Once Every 5 Minutes"
 msgstr ""
 
 #: psr-4/PostTypesController.php:38
@@ -183,7 +179,7 @@ msgid "When a Orbis monitor was checked."
 msgstr ""
 
 #: psr-4/SlackController.php:62
-#: psr-4/SlackController.php:88
+#: psr-4/SlackController.php:87
 #, php-format
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr ""
@@ -213,7 +209,7 @@ msgid "Last time checked"
 msgstr ""
 
 #: templates/archive-orbis_monitor.php:79
-#: templates/monitor-responses.php:84
+#: templates/monitor-responses.php:86
 msgid "d-m-Y H:i"
 msgstr ""
 
@@ -229,10 +225,20 @@ msgstr ""
 msgid "Month"
 msgstr ""
 
-#. translators: %s: period, for example Day, Week or Month.
-#: templates/monitor-graph.php:115
-#, php-format
-msgid "Average Response Time Per %s"
+#: templates/monitor-graph.php:82
+msgid "Average response time (seconds)"
+msgstr ""
+
+#: templates/monitor-graph.php:110
+msgid "Seconds"
+msgstr ""
+
+#: templates/monitor-graph.php:130
+msgid "Average Response Time"
+msgstr ""
+
+#: templates/monitor-graph.php:142
+msgid "Average response time chart"
 msgstr ""
 
 #. translators: %d: number of responses.

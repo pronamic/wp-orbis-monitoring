@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2016-09-28 12:25:43+00:00\n"
-"PO-Revision-Date: 2026-10-28T13:17:07+00:00\n"
+"PO-Revision-Date: 2026-10-28T14:15:11+00:00\n"
 "Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -64,27 +64,27 @@ msgid "ID"
 msgstr "ID"
 
 #: admin/meta-box-monitor-responses.php:36
-#: templates/monitor-responses.php:70
+#: templates/monitor-responses.php:72
 msgid "Date"
 msgstr "Datum"
 
 #: admin/meta-box-monitor-responses.php:37
-#: templates/monitor-responses.php:71
+#: templates/monitor-responses.php:73
 msgid "Duration"
 msgstr "Duur"
 
 #: admin/meta-box-monitor-responses.php:38
-#: templates/monitor-responses.php:72
+#: templates/monitor-responses.php:74
 msgid "Code"
 msgstr "Code"
 
 #: admin/meta-box-monitor-responses.php:39
-#: templates/monitor-responses.php:73
+#: templates/monitor-responses.php:75
 msgid "Message"
 msgstr "Bericht"
 
 #: admin/meta-box-monitor-responses.php:40
-#: templates/monitor-responses.php:74
+#: templates/monitor-responses.php:76
 msgid "Content Length"
 msgstr "Content Length"
 
@@ -104,10 +104,6 @@ msgstr "Monitor antwoorden"
 #: psr-4/AdminController.php:182
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
-
-#: psr-4/MonitorController.php:53
-msgid "Once Every 5 Minutes"
-msgstr "Elke 5 minuten"
 
 #: psr-4/PostTypesController.php:38
 msgctxt "post type general name"
@@ -183,7 +179,7 @@ msgid "When a Orbis monitor was checked."
 msgstr "Zodra een Orbis monitor wordt gecontroleerd."
 
 #: psr-4/SlackController.php:62
-#: psr-4/SlackController.php:88
+#: psr-4/SlackController.php:87
 #, php-format
 msgid "Orbis monitor <%s|%s> was just checked, response code was `%s` » %s."
 msgstr "Orbis monitor <%s|%s> werd zojuist gecontroleerd, antwoordcode was `%s` » %s."
@@ -213,7 +209,7 @@ msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
 #: templates/archive-orbis_monitor.php:79
-#: templates/monitor-responses.php:84
+#: templates/monitor-responses.php:86
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
 
@@ -229,11 +225,21 @@ msgstr "Week"
 msgid "Month"
 msgstr "Maand"
 
-#. translators: %s: period, for example Day, Week or Month.
-#: templates/monitor-graph.php:115
-#, php-format
-msgid "Average Response Time Per %s"
-msgstr "Gemiddelde antwoordtijd per %s"
+#: templates/monitor-graph.php:82
+msgid "Average response time (seconds)"
+msgstr "Gemiddelde responstijd (seconden)"
+
+#: templates/monitor-graph.php:110
+msgid "Seconds"
+msgstr "Seconden"
+
+#: templates/monitor-graph.php:130
+msgid "Average Response Time"
+msgstr "Gemiddelde responstijd"
+
+#: templates/monitor-graph.php:142
+msgid "Average response time chart"
+msgstr "Grafiek gemiddelde responstijd"
 
 #. translators: %d: number of responses.
 #: templates/monitor-responses.php:52

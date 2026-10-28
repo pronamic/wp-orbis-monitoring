@@ -127,17 +127,7 @@ wp_add_inline_script(
 ?>
 <div class="card mb-3">
 	<div class="card-header">
-		<?php
-
-		echo esc_html(
-			sprintf(
-				/* translators: %s: period, for example Day, Week or Month. */
-				__( 'Average Response Time Per %s', 'orbis-monitoring' ),
-				$periods[ $period ]
-			)
-		);
-
-		?>
+		<?php esc_html_e( 'Average Response Time', 'orbis-monitoring' ); ?>
 		<div class="dropdown float-end">
 			<button class="btn btn-light dropdown-toggle m-0 p-0" type="button" id="orbis-monitor-graph-period" data-bs-toggle="dropdown" aria-expanded="false"><?php echo esc_html( $periods[ $period ] ); ?></button>
 			<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="orbis-monitor-graph-period">
