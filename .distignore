@@ -36,14 +36,8 @@ psalm.xml
 /deploy/
 /node_modules/
 
-# Travis CI
-.travis.yml
-
 # Deployer.org
 /deploy.php
-
-# Grunt
-/Gruntfile.js
 
 # Node.js
 /package.json

@@ -48,10 +48,9 @@
 	"scripts": {
 		"build": [
 			"rm -rf ./build/stage-1",
-			"rm -rf ./build/orbis-monitoring",
 			"rsync --recursive --verbose --exclude-from=.distignore --exclude=/vendor/ ./ ./build/stage-1/",
 			"composer install --no-dev --prefer-dist --optimize-autoloader --working-dir=./build/stage-1/",
-			"rsync --recursive --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-monitoring/",
+			"rsync --recursive --delete --delete-excluded --verbose --exclude-from=.distignore ./build/stage-1/ ./build/orbis-monitoring/",
 			"vendor/bin/wp i18n make-pot ./build/orbis-monitoring/ --slug=orbis-monitoring",
 			"vendor/bin/wp i18n make-mo ./build/orbis-monitoring/languages/",
 			"vendor/bin/wp dist-archive ./build/orbis-monitoring/ --plugin-dirname=orbis-monitoring --force"
