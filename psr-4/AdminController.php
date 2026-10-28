@@ -15,7 +15,7 @@ namespace Pronamic\Orbis\Monitoring;
 /**
  * Admin controller class
  */
-final class AdminController {
+final readonly class AdminController {
 	/**
 	 * Construct.
 	 *
@@ -23,8 +23,8 @@ final class AdminController {
 	 * @param MonitorController $monitor_controller Monitor controller.
 	 */
 	public function __construct(
-		private readonly string $file,
-		private readonly MonitorController $monitor_controller
+		private string $file,
+		private MonitorController $monitor_controller
 	) {
 	}
 

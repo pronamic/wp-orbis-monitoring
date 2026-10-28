@@ -26,6 +26,8 @@ phpmd.ruleset.xml
 
 phpunit.xml.dist
 
+rector.php
+
 phpstan.neon
 
 psalm.xml

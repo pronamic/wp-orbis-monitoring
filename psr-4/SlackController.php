@@ -83,15 +83,13 @@ final class SlackController {
 		$events['orbis_monitor_checked'] = [
 			'action'      => 'orbis_monitor_checked',
 			'description' => $checked_description,
-			'message'     => function ( $post ) {
-				return \sprintf(
-					\__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
-					\get_permalink( $post ),
-					\get_the_title( $post ),
-					\get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
-					\get_post_meta( $post->ID, '_orbis_monitor_url', true )
-				);
-			},
+			'message'     => fn( $post ) => \sprintf(
+				\__( 'Orbis monitor <%s|%s> was just checked, response code was `%s` » %s.', 'orbis-monitoring' ), // phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment, WordPress.WP.I18n.UnorderedPlaceholdersText
+				\get_permalink( $post ),
+				\get_the_title( $post ),
+				\get_post_meta( $post->ID, '_orbis_monitor_response_code', true ),
+				\get_post_meta( $post->ID, '_orbis_monitor_url', true )
+			),
 		];
 
 		return $events;

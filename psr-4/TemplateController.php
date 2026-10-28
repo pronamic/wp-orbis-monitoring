@@ -15,14 +15,14 @@ namespace Pronamic\Orbis\Monitoring;
 /**
  * Template controller class
  */
-final class TemplateController {
+final readonly class TemplateController {
 	/**
 	 * Construct.
 	 *
 	 * @param string $file Plugin file.
 	 */
 	public function __construct(
-		private readonly string $file
+		private string $file
 	) {
 	}
 
