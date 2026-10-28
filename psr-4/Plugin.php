@@ -53,6 +53,6 @@ final class Plugin {
 		$monitor_controller->setup();
 		( new AdminController( $file, $monitor_controller ) )->setup();
 		( new SlackController() )->setup();
-		( new TemplateController() )->setup();
+		( new TemplateController( $file ) )->setup();
 	}
 }

@@ -27,20 +27,25 @@ if ( ! array_key_exists( $period, $periods ) ) {
 }
 
 $group_by = match ( $period ) {
-	'd'     => 'DAY',
-	'm'     => 'MONTH',
-	default => 'WEEKOFYEAR',
+	'd'     => 'DATE( monitored_date )',
+	'm'     => 'EXTRACT( YEAR_MONTH FROM monitored_date )',
+	default => 'YEARWEEK( monitored_date, 3 )',
+};
+
+$label_format = match ( $period ) {
+	'm'     => 'M Y',
+	default => 'j M',
 };
 
 $last_year = new DateTimeImmutable( '1 year ago midnight', wp_timezone() );
 
-// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The group by function is one of a fixed set of values.
+// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The group by expression is one of a fixed set of values.
 $response_times = $wpdb->get_results(
 	$wpdb->prepare(
 		<<<SQL
 		SELECT
 			AVG( duration ) AS avg_duration,
-			monitored_date
+			MIN( monitored_date ) AS monitored_date
 		FROM
 			$wpdb->orbis_monitor_responses
 		WHERE
@@ -48,7 +53,7 @@ $response_times = $wpdb->get_results(
 				AND
 			monitored_date > %s
 		GROUP BY
-			$group_by( monitored_date )
+			$group_by
 		ORDER BY
 			monitored_date ASC
 		SQL,
@@ -58,49 +63,64 @@ $response_times = $wpdb->get_results(
 );
 // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 
-$average_durations = [];
+$labels = [];
+$data   = [];
 
 foreach ( $response_times as $response ) {
-	$average_durations[] = [
-		strtotime( $response->monitored_date ) * 1000,
-		(float) $response->avg_duration,
-	];
+	$monitored_date = new DateTimeImmutable( $response->monitored_date, wp_timezone() );
+
+	$labels[] = wp_date( $label_format, $monitored_date->getTimestamp() );
+	$data[]   = round( (float) $response->avg_duration, 3 );
 }
 
-$flot_options = [
-	'xaxis'  => [
-		'mode'       => 'time',
-		'timeformat' => '%d/%m',
-	],
-	'series' => [
-		'lines'      => [
-			'show'      => true,
-			'lineWidth' => 4,
+$chart_config = [
+	'type'    => 'line',
+	'data'    => [
+		'labels'   => $labels,
+		'datasets' => [
+			[
+				'label'            => __( 'Average response time (seconds)', 'orbis-monitoring' ),
+				'data'             => $data,
+				'borderColor'      => '#007bff',
+				'backgroundColor'  => '#007bff',
+				'borderWidth'      => 3,
+				'pointRadius'      => 3,
+				'pointHoverRadius' => 5,
+				'tension'          => 0.2,
+			],
 		],
-		'points'     => [
-			'show'      => true,
-			'fill'      => true,
-			'fillColor' => '#007bff',
-			'radius'    => 4,
+	],
+	'options' => [
+		'responsive'          => true,
+		'maintainAspectRatio' => false,
+		'interaction'         => [
+			'mode'      => 'index',
+			'intersect' => false,
 		],
-		'shadowSize' => 0,
+		'plugins'             => [
+			'legend' => [
+				'display' => false,
+			],
+		],
+		'scales'              => [
+			'y' => [
+				'beginAtZero' => true,
+				'title'       => [
+					'display' => true,
+					'text'    => __( 'Seconds', 'orbis-monitoring' ),
+				],
+			],
+		],
 	],
-	'grid'   => [
-		'color'       => '#BBB',
-		'borderWidth' => 0.5,
-	],
-	'colors' => [ '#007bff' ],
 ];
 
-wp_enqueue_script( 'flotcharts' );
-wp_enqueue_script( 'flotcharts-time' );
+wp_enqueue_script( 'orbis-monitoring-chartjs' );
 
 wp_add_inline_script(
-	'flotcharts-time',
+	'orbis-monitoring-chartjs',
 	sprintf(
-		'jQuery( function( $ ) { $.plot( "#orbis-monitor-graph", [ %s ], %s ); } );',
-		wp_json_encode( $average_durations ),
-		wp_json_encode( $flot_options )
+		'new Chart( document.getElementById( "orbis-monitor-graph" ), %s );',
+		wp_json_encode( $chart_config )
 	)
 );
 
@@ -126,6 +146,8 @@ wp_add_inline_script(
 		</div>
 	</div>
 	<div class="card-body">
-		<div id="orbis-monitor-graph" style="width: 100%; height: 300px;"></div>
+		<div style="position: relative; height: 300px;">
+			<canvas id="orbis-monitor-graph" role="img" aria-label="<?php esc_attr_e( 'Average response time chart', 'orbis-monitoring' ); ?>"></canvas>
+		</div>
 	</div>
 </div>

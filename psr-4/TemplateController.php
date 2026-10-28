@@ -17,16 +17,44 @@ namespace Pronamic\Orbis\Monitoring;
  */
 final class TemplateController {
 	/**
+	 * Construct.
+	 *
+	 * @param string $file Plugin file.
+	 */
+	public function __construct(
+		private readonly string $file
+	) {
+	}
+
+	/**
 	 * Setup.
 	 *
 	 * @return void
 	 */
 	public function setup(): void {
+		\add_action( 'wp_enqueue_scripts', $this->register_scripts( ... ) );
+
 		\add_filter( 'template_include', $this->template_include( ... ) );
 
 		\add_action( 'orbis_before_side_content', $this->maybe_include_monitor_details( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_graph( ... ) );
 		\add_action( 'orbis_before_main_content', $this->maybe_include_monitor_responses( ... ) );
+	}
+
+	/**
+	 * Register scripts.
+	 *
+	 * @link https://www.chartjs.org/
+	 * @return void
+	 */
+	private function register_scripts(): void {
+		\wp_register_script(
+			'orbis-monitoring-chartjs',
+			\plugins_url( 'assets/chart.js/chart.umd.min.js', $this->file ),
+			[],
+			'4.6.1',
+			true
+		);
 	}
 
 	/**
