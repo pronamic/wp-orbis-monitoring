@@ -84,6 +84,7 @@ final class InstallController {
 				PRIMARY KEY  (id),
 				UNIQUE KEY post_id (post_id)
 			) $charset_collate;
+
 			CREATE TABLE $wpdb->orbis_monitor_responses (
 				id BIGINT(16) UNSIGNED NOT NULL AUTO_INCREMENT,
 				monitor_id BIGINT(16) UNSIGNED NOT NULL,
