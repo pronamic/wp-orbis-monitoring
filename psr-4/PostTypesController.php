@@ -50,7 +50,7 @@ final class PostTypesController {
 					'not_found'          => \__( 'No monitors found.', 'orbis-monitoring' ),
 					'not_found_in_trash' => \__( 'No monitors found in Trash.', 'orbis-monitoring' ),
 				],
-				'description'        => \__( 'Websites and URLs that are periodically checked for availability and response.', 'orbis-monitoring' ),
+				'description'        => \__( 'Websites and URLs that are periodically checked for the expected response.', 'orbis-monitoring' ),
 				'public'             => true,
 				'publicly_queryable' => true,
 				'show_ui'            => true,

@@ -46,19 +46,19 @@ final class SlackController {
 		 */
 		$can_translate = ( \did_action( 'init' ) || \doing_action( 'init' ) );
 
-		$opened_description   = 'When a monitor detects an outage.';
-		$reminder_description = 'When a monitor detects that an outage continues (reminder).';
-		$resolved_description = 'When a monitor detects a recovery.';
+		$opened_description   = 'When a monitor raises an alert.';
+		$reminder_description = 'When an alert is still open (reminder).';
+		$resolved_description = 'When an alert is resolved.';
 
 		if ( $can_translate ) {
-			$opened_description   = \__( 'When a monitor detects an outage.', 'orbis-monitoring' );
-			$reminder_description = \__( 'When a monitor detects that an outage continues (reminder).', 'orbis-monitoring' );
-			$resolved_description = \__( 'When a monitor detects a recovery.', 'orbis-monitoring' );
+			$opened_description   = \__( 'When a monitor raises an alert.', 'orbis-monitoring' );
+			$reminder_description = \__( 'When an alert is still open (reminder).', 'orbis-monitoring' );
+			$resolved_description = \__( 'When an alert is resolved.', 'orbis-monitoring' );
 		}
 
 		/*
-		 * These events only fire when the status of the monitored URL changes, not for
-		 * every check, so a Slack channel is not flooded during an outage.
+		 * These events only fire when the status of the monitor changes, not for
+		 * every check, so a Slack channel is not flooded while an alert is open.
 		 *
 		 * @see IncidentController
 		 */
@@ -67,7 +67,7 @@ final class SlackController {
 			'description' => $opened_description,
 			'message'     => fn( $post, $response ) => ':red_circle: ' . \sprintf(
 				/* translators: %s: monitor link */
-				\__( '%s is offline.', 'orbis-monitoring' ),
+				\__( 'Alert: %s does not respond as expected.', 'orbis-monitoring' ),
 				$this->get_link( $post )
 			) . "\n" . $this->get_details( $post, $response ),
 		];
@@ -77,7 +77,7 @@ final class SlackController {
 			'description' => $reminder_description,
 			'message'     => fn( $post, $response, $incident ) => ':red_circle: ' . \sprintf(
 				/* translators: 1: monitor link, 2: duration */
-				\__( '%1$s is still offline for %2$s.', 'orbis-monitoring' ),
+				\__( 'Alert: %1$s still does not respond as expected, for %2$s.', 'orbis-monitoring' ),
 				$this->get_link( $post ),
 				\human_time_diff( (int) \strtotime( $incident->started_at . ' UTC' ) )
 			) . "\n" . $this->get_details( $post, $response ),
@@ -88,7 +88,7 @@ final class SlackController {
 			'description' => $resolved_description,
 			'message'     => fn( $post, $incident ) => ':white_check_mark: ' . \sprintf(
 				/* translators: 1: monitor link, 2: duration */
-				\__( '%1$s is back online after %2$s.', 'orbis-monitoring' ),
+				\__( 'OK: %1$s responds as expected again after %2$s.', 'orbis-monitoring' ),
 				$this->get_link( $post ),
 				\human_time_diff( (int) \strtotime( $incident->started_at . ' UTC' ), (int) \strtotime( $incident->resolved_at . ' UTC' ) )
 			) . "\n" . $this->get_details( $post ),

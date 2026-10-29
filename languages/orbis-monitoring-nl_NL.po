@@ -1,60 +1,59 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-orbis-"
-"monitoring\n"
-"POT-Creation-Date: 2026-10-28T20:40:47+00:00\n"
-"PO-Revision-Date: 2026-10-28T20:02:52+00:00\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-orbis-monitoring\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
-"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-28T20:40:47+00:00\n"
+"PO-Revision-Date: 2026-10-29T07:45:43+00:00\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.10\n"
 
 #. Plugin Name of the plugin
-#: orbis-monitoring.php psr-4/SettingsController.php:104
+#: orbis-monitoring.php:11
+#: psr-4/SettingsController.php:104
 #: psr-4/SettingsController.php:105
 msgid "Orbis Monitoring"
 msgstr "Orbis Monitoring"
 
 #. Plugin URI of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:12
 msgid "https://www.pronamic.eu/plugins/orbis-monitoring/"
 msgstr "https://www.pronamic.eu/plugins/orbis-monitoring/"
 
 #. Description of the plugin
-#: orbis-monitoring.php
-msgid ""
-"The Orbis Monitoring plugin extends your Orbis environment with the option "
-"to monitor websites."
-msgstr ""
-"De Orbis monitors plugin breidt je Orbis omgeving uit met de optie om "
-"website te monitoren."
+#: orbis-monitoring.php:13
+msgid "The Orbis Monitoring plugin extends your Orbis environment with the option to monitor websites."
+msgstr "De Orbis monitors plugin breidt je Orbis omgeving uit met de optie om website te monitoren."
 
 #. Author of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:17
 msgid "Pronamic"
 msgstr "Pronamic"
 
 #. Author URI of the plugin
-#: orbis-monitoring.php
+#: orbis-monitoring.php:18
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-monitor-details.php:26 templates/archive-orbis_monitor.php:42
+#: admin/meta-box-monitor-details.php:26
+#: templates/archive-orbis_monitor.php:44
 #: templates/monitor-details.php:55
 msgid "URL"
 msgstr "URL"
 
-#: admin/meta-box-monitor-details.php:34 templates/monitor-details.php:64
+#: admin/meta-box-monitor-details.php:34
+#: templates/monitor-details.php:64
 msgid "Required Response Code"
 msgstr "Vereiste antwoordcode"
 
-#: admin/meta-box-monitor-details.php:42 templates/monitor-details.php:69
+#: admin/meta-box-monitor-details.php:42
+#: templates/monitor-details.php:69
 msgid "Required Location"
 msgstr "Vereiste locatie"
 
@@ -62,37 +61,45 @@ msgstr "Vereiste locatie"
 msgid "cURL"
 msgstr "cURL"
 
-#: admin/meta-box-monitor-incidents.php:15 templates/monitor-incidents.php:42
+#: admin/meta-box-monitor-incidents.php:15
+#: templates/monitor-incidents.php:42
 msgid "No incidents."
 msgstr "Geen incidenten."
 
-#: admin/meta-box-monitor-incidents.php:26 templates/monitor-incidents.php:51
+#: admin/meta-box-monitor-incidents.php:26
+#: templates/monitor-incidents.php:51
 msgid "Started"
 msgstr "Gestart"
 
-#: admin/meta-box-monitor-incidents.php:27 templates/monitor-incidents.php:52
+#: admin/meta-box-monitor-incidents.php:27
+#: templates/monitor-incidents.php:52
 msgid "Resolved"
 msgstr "Opgelost"
 
 #: admin/meta-box-monitor-incidents.php:28
-#: admin/meta-box-monitor-responses.php:40 psr-4/AdminController.php:177
-#: templates/monitor-incidents.php:53 templates/monitor-responses.php:76
+#: admin/meta-box-monitor-responses.php:40
+#: psr-4/AdminController.php:177
+#: templates/monitor-incidents.php:53
+#: templates/monitor-responses.php:76
 msgid "Duration"
 msgstr "Duur"
 
 #: admin/meta-box-monitor-incidents.php:29
-#: admin/meta-box-monitor-responses.php:41 templates/monitor-incidents.php:54
+#: admin/meta-box-monitor-responses.php:41
+#: templates/monitor-incidents.php:54
 #: templates/monitor-responses.php:77
 msgid "Code"
 msgstr "Code"
 
 #: admin/meta-box-monitor-incidents.php:30
-#: admin/meta-box-monitor-responses.php:42 templates/monitor-incidents.php:55
+#: admin/meta-box-monitor-responses.php:42
+#: templates/monitor-incidents.php:55
 #: templates/monitor-responses.php:78
 msgid "Message"
 msgstr "Bericht"
 
-#: admin/meta-box-monitor-incidents.php:43 templates/monitor-incidents.php:69
+#: admin/meta-box-monitor-incidents.php:43
+#: templates/monitor-incidents.php:69
 msgid "Ongoing"
 msgstr "Lopend"
 
@@ -100,11 +107,13 @@ msgstr "Lopend"
 msgid "ID"
 msgstr "ID"
 
-#: admin/meta-box-monitor-responses.php:39 templates/monitor-responses.php:75
+#: admin/meta-box-monitor-responses.php:39
+#: templates/monitor-responses.php:75
 msgid "Date"
 msgstr "Datum"
 
-#: admin/meta-box-monitor-responses.php:43 templates/monitor-responses.php:79
+#: admin/meta-box-monitor-responses.php:43
+#: templates/monitor-responses.php:79
 msgid "Content Length"
 msgstr "Content Length"
 
@@ -112,12 +121,15 @@ msgstr "Content Length"
 msgid "Content Type"
 msgstr "Content Type"
 
-#: psr-4/AdminController.php:55 templates/monitor-details.php:24
+#: psr-4/AdminController.php:55
+#: templates/monitor-details.php:24
 msgid "Monitor Details"
 msgstr "Monitor details"
 
-#: psr-4/AdminController.php:64 psr-4/AdminController.php:176
-#: templates/archive-orbis_monitor.php:39 templates/monitor-details.php:28
+#: psr-4/AdminController.php:64
+#: psr-4/AdminController.php:176
+#: templates/archive-orbis_monitor.php:41
+#: templates/monitor-details.php:28
 #: templates/search-form.php:30
 msgid "Status"
 msgstr "Status"
@@ -155,7 +167,8 @@ msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
 #. translators: %d: number of failed checks in a row
-#: psr-4/AdminController.php:258 templates/availability-badge.php:26
+#: psr-4/AdminController.php:258
+#: templates/status-badge.php:26
 #, php-format
 msgid "(%d failed check)"
 msgid_plural "(%d failed checks)"
@@ -163,26 +176,11 @@ msgstr[0] "(%d mislukte controle)"
 msgstr[1] "(%d mislukte controles)"
 
 #. translators: %s: human readable time difference
-#: psr-4/AdminController.php:267 templates/availability-badge.php:38
+#: psr-4/AdminController.php:267
+#: templates/status-badge.php:38
 #, php-format
 msgid "for %s"
 msgstr "al %s"
-
-#: psr-4/Availability.php:50
-msgid "Unknown"
-msgstr "Onbekend"
-
-#: psr-4/Availability.php:51
-msgid "Online"
-msgstr "Online"
-
-#: psr-4/Availability.php:52
-msgid "Pending"
-msgstr "In afwachting"
-
-#: psr-4/Availability.php:53
-msgid "Offline"
-msgstr "Offline"
 
 #: psr-4/PostTypesController.php:38
 msgctxt "post type general name"
@@ -246,12 +244,8 @@ msgid "No monitors found in Trash."
 msgstr "Geen monitors gevonden in prullenbak."
 
 #: psr-4/PostTypesController.php:53
-msgid ""
-"Websites and URLs that are periodically checked for availability and "
-"response."
-msgstr ""
-"Websites en URL's die periodiek worden gecontroleerd op beschikbaarheid en "
-"reactie."
+msgid "Websites and URLs that are periodically checked for the expected response."
+msgstr "Websites en URL's die periodiek worden gecontroleerd op de verwachte reactie."
 
 #: psr-4/SettingsController.php:167
 msgid "General"
@@ -288,23 +282,14 @@ msgstr "Instellingen"
 #. translators: %s: default user agent
 #: psr-4/SettingsController.php:294
 #, php-format
-msgid ""
-"The user agent used for the monitor requests. Leave empty to use the default "
-"user agent: %s"
-msgstr ""
-"De user agent die gebruikt wordt voor de monitorverzoeken. Laat leeg om de "
-"standaard user agent te gebruiken: %s"
+msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
+msgstr "De user agent die gebruikt wordt voor de monitorverzoeken. Laat leeg om de standaard user agent te gebruiken: %s"
 
 #. translators: %s: link to list of the latest browser user agents
 #: psr-4/SettingsController.php:305
 #, php-format
-msgid ""
-"Tip: some websites or firewalls block or treat unknown bots differently. You "
-"can also simulate a widely used web browser, see for example %s."
-msgstr ""
-"Tip: sommige websites of firewalls blokkeren onbekende bots of behandelen ze "
-"anders. Je kunt ook simuleren dat je een veelgebruikte webbrowser bent, zie "
-"bijvoorbeeld %s."
+msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
+msgstr "Tip: sommige websites of firewalls blokkeren onbekende bots of behandelen ze anders. Je kunt ook simuleren dat je een veelgebruikte webbrowser bent, zie bijvoorbeeld %s."
 
 #: psr-4/SettingsController.php:306
 msgid "the latest user agents"
@@ -317,69 +302,54 @@ msgid "Your current user agent is: %s"
 msgstr "Je huidige user agent is: %s"
 
 #: psr-4/SettingsController.php:343
-msgid ""
-"The number of failed checks in a row before the monitored URL is considered "
-"offline and a notification is sent. Monitors check every minute, so a single "
-"hiccup does not trigger a notification."
-msgstr ""
-"Het aantal mislukte controles op rij voordat de gemonitorde URL als offline "
-"wordt beschouwd en er een notificatie wordt verstuurd. Monitors controleren "
-"elke minuut, dus één enkele hapering leidt niet tot een notificatie."
+msgid "The number of failed checks in a row before an alert is raised and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification."
+msgstr "Het aantal mislukte controles op rij voordat er alarm wordt geslagen en er een notificatie wordt verstuurd. Monitors controleren elke minuut, dus één enkele hapering leidt niet tot een notificatie."
 
 #: psr-4/SettingsController.php:357
 msgid "minutes"
 msgstr "minuten"
 
 #: psr-4/SettingsController.php:362
-msgid ""
-"Send a reminder while the monitored URL is still offline. Use 0 to only send "
-"a notification when the URL goes offline and when it is back online."
-msgstr ""
-"Verstuur een herinnering zolang de gemonitorde URL nog offline is. Gebruik 0 "
-"om alleen een notificatie te versturen wanneer de URL offline gaat en "
-"wanneer deze weer online is."
+msgid "Send a reminder while an alert is still open. Use 0 to only send a notification when the alert is raised and when it is resolved."
+msgstr "Verstuur een herinnering zolang een alarm nog openstaat. Gebruik 0 om alleen een notificatie te versturen wanneer er alarm wordt geslagen en wanneer het alarm is opgelost."
 
 #: psr-4/SettingsController.php:376
 msgid "days"
 msgstr "dagen"
 
 #: psr-4/SettingsController.php:381
-msgid ""
-"The number of days to keep the response of each individual check. Hourly "
-"summaries of the response times are kept indefinitely."
-msgstr ""
-"Het aantal dagen dat de response van elke afzonderlijke check wordt bewaard. "
-"Samenvattingen van de responstijden per uur worden onbeperkt bewaard."
+msgid "The number of days to keep the response of each individual check. Hourly summaries of the response times are kept indefinitely."
+msgstr "Het aantal dagen dat de response van elke afzonderlijke check wordt bewaard. Samenvattingen van de responstijden per uur worden onbeperkt bewaard."
 
 #: psr-4/SlackController.php:54
-msgid "When a monitor detects an outage."
-msgstr "Wanneer een monitor een storing detecteert."
+msgid "When a monitor raises an alert."
+msgstr "Wanneer een monitor alarm slaat."
 
 #: psr-4/SlackController.php:55
-msgid "When a monitor detects that an outage continues (reminder)."
-msgstr "Wanneer een monitor detecteert dat een storing aanhoudt (herinnering)."
+msgid "When an alert is still open (reminder)."
+msgstr "Wanneer een alarm nog openstaat (herinnering)."
 
 #: psr-4/SlackController.php:56
-msgid "When a monitor detects a recovery."
-msgstr "Wanneer een monitor een herstel detecteert."
+msgid "When an alert is resolved."
+msgstr "Wanneer een alarm is opgelost."
 
 #. translators: %s: monitor link
 #: psr-4/SlackController.php:70
 #, php-format
-msgid "%s is offline."
-msgstr "%s is offline."
+msgid "Alert: %s does not respond as expected."
+msgstr "Alarm: %s reageert niet zoals verwacht."
 
 #. translators: 1: monitor link, 2: duration
 #: psr-4/SlackController.php:80
 #, php-format
-msgid "%1$s is still offline for %2$s."
-msgstr "%1$s is al %2$s offline."
+msgid "Alert: %1$s still does not respond as expected, for %2$s."
+msgstr "Alarm: %1$s reageert al %2$s niet zoals verwacht."
 
 #. translators: 1: monitor link, 2: duration
 #: psr-4/SlackController.php:91
 #, php-format
-msgid "%1$s is back online after %2$s."
-msgstr "%1$s is weer online na %2$s."
+msgid "OK: %1$s responds as expected again after %2$s."
+msgstr "OK: %1$s reageert weer zoals verwacht na %2$s."
 
 #. translators: %s: response code
 #: psr-4/SlackController.php:138
@@ -387,43 +357,58 @@ msgstr "%1$s is weer online na %2$s."
 msgid "response code `%s`"
 msgstr "antwoordcode `%s`"
 
-#: templates/archive-orbis_monitor.php:40 templates/monitor-checks-bar.php:28
+#: psr-4/Status.php:52
+msgid "Unknown"
+msgstr "Onbekend"
+
+#: psr-4/Status.php:53
+msgid "OK"
+msgstr "OK"
+
+#: psr-4/Status.php:54
+msgid "Pending"
+msgstr "In afwachting"
+
+#: psr-4/Status.php:55
+msgid "Alert"
+msgstr "Alarm"
+
+#: templates/archive-orbis_monitor.php:42
+#: templates/monitor-checks-bar.php:28
 msgid "Recent checks"
 msgstr "Recente checks"
 
-#: templates/archive-orbis_monitor.php:41
+#: templates/archive-orbis_monitor.php:43
 msgid "Title"
 msgstr "Titel"
 
-#: templates/archive-orbis_monitor.php:43
+#: templates/archive-orbis_monitor.php:45
 msgid "Required response code"
 msgstr "Vereiste antwoordcode"
 
-#: templates/archive-orbis_monitor.php:44
+#: templates/archive-orbis_monitor.php:46
 msgid "Last response code"
 msgstr "Laatste antwoordcode"
 
-#: templates/archive-orbis_monitor.php:45
+#: templates/archive-orbis_monitor.php:47
 msgid "Last response message"
 msgstr "Laatste bericht"
 
-#: templates/archive-orbis_monitor.php:46
+#: templates/archive-orbis_monitor.php:48
 msgid "Last response duration"
 msgstr "Laatste antwoordduur"
 
-#: templates/archive-orbis_monitor.php:47
+#: templates/archive-orbis_monitor.php:49
 msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
-#: templates/archive-orbis_monitor.php:99 templates/monitor-details.php:41
-#: templates/monitor-incidents.php:65 templates/monitor-incidents.php:71
+#: templates/archive-orbis_monitor.php:101
+#: templates/monitor-details.php:41
+#: templates/monitor-incidents.php:65
+#: templates/monitor-incidents.php:71
 #: templates/monitor-responses.php:89
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
-
-#: templates/availability-stats.php:29
-msgid "All"
-msgstr "Alle"
 
 #: templates/monitor-checks-bar.php:44
 msgid "Check succeeded"
@@ -503,7 +488,8 @@ msgstr "Incidenten"
 msgid "Last %d Responses"
 msgstr "Laatste %d antwoorden"
 
-#: templates/search-form.php:22 templates/search-form.php:24
+#: templates/search-form.php:22
+#: templates/search-form.php:24
 #: templates/search-form.php:26
 msgid "Search"
 msgstr "Zoeken"
@@ -515,3 +501,7 @@ msgstr "— Selecteer status —"
 #: templates/search-form.php:42
 msgid "Filter"
 msgstr "Filteren"
+
+#: templates/status-stats.php:29
+msgid "All"
+msgstr "Alle"

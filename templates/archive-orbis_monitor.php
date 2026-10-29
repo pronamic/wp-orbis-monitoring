@@ -27,7 +27,7 @@ $monitors = $incident_controller->get_monitors_by_post_ids( wp_list_pluck( $wp_q
 $checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_list_pluck( $monitors, 'id' ), $checks_limit );
 
 ?>
-<?php require __DIR__ . '/availability-stats.php'; ?>
+<?php require __DIR__ . '/status-stats.php'; ?>
 
 <div class="card">
 	<?php require __DIR__ . '/search-form.php'; ?>
@@ -68,7 +68,7 @@ $checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_
 						?>
 						<tr id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 							<td>
-								<?php require __DIR__ . '/availability-badge.php'; ?>
+								<?php require __DIR__ . '/status-badge.php'; ?>
 							</td>
 							<td>
 								<?php require __DIR__ . '/monitor-checks-bar.php'; ?>

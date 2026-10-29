@@ -60,9 +60,9 @@ final readonly class AdminController {
 		);
 
 		\add_meta_box(
-			'orbis_monitor_availability',
+			'orbis_monitor_status',
 			\__( 'Status', 'orbis-monitoring' ),
-			$this->meta_box_availability( ... ),
+			$this->meta_box_status( ... ),
 			'orbis_monitor',
 			'side',
 			'high'
@@ -98,13 +98,13 @@ final readonly class AdminController {
 	}
 
 	/**
-	 * Meta box availability.
+	 * Meta box status.
 	 *
 	 * @param \WP_Post $post Post.
 	 * @return void
 	 */
-	private function meta_box_availability( $post ): void {
-		$this->column_availability( $post->ID );
+	private function meta_box_status( $post ): void {
+		$this->column_status( $post->ID );
 	}
 
 	/**
@@ -173,7 +173,7 @@ final readonly class AdminController {
 	 * @return array<string, string>
 	 */
 	private function columns( $columns ) {
-		$columns['orbis_monitor_availability']            = \__( 'Status', 'orbis-monitoring' );
+		$columns['orbis_monitor_status']                  = \__( 'Status', 'orbis-monitoring' );
 		$columns['orbis_monitor_duration']                = \__( 'Duration', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_code']           = \__( 'Last Response Code', 'orbis-monitoring' );
 		$columns['orbis_monitor_message']                 = \__( 'Last Message', 'orbis-monitoring' );
@@ -193,8 +193,8 @@ final readonly class AdminController {
 	 */
 	private function custom_columns( $column, $post_id ): void {
 		switch ( $column ) {
-			case 'orbis_monitor_availability':
-				$this->column_availability( $post_id );
+			case 'orbis_monitor_status':
+				$this->column_status( $post_id );
 
 				break;
 			case 'orbis_monitor_duration':
@@ -235,12 +235,12 @@ final readonly class AdminController {
 	}
 
 	/**
-	 * Availability column.
+	 * Status column.
 	 *
 	 * @param int $post_id Post ID.
 	 * @return void
 	 */
-	private function column_availability( $post_id ): void {
+	private function column_status( $post_id ): void {
 		$monitor = $this->incident_controller->get_monitor_by_post_id( $post_id );
 
 		if ( null === $monitor ) {
@@ -249,9 +249,9 @@ final readonly class AdminController {
 			return;
 		}
 
-		echo \esc_html( $monitor->availability->icon() . ' ' . $monitor->availability->label() );
+		echo \esc_html( $monitor->status->icon() . ' ' . $monitor->status->label() );
 
-		if ( Availability::Pending === $monitor->availability ) {
+		if ( Status::Pending === $monitor->status ) {
 			echo ' ';
 			\printf(
 				/* translators: %d: number of failed checks in a row */
@@ -260,12 +260,12 @@ final readonly class AdminController {
 			);
 		}
 
-		if ( null !== $monitor->availability_changed_at && Availability::Unknown !== $monitor->availability ) {
+		if ( null !== $monitor->status_changed_at && Status::Unknown !== $monitor->status ) {
 			echo '<br />';
 			\printf(
 				/* translators: %s: human readable time difference */
 				\esc_html__( 'for %s', 'orbis-monitoring' ),
-				\esc_html( \human_time_diff( (int) \strtotime( $monitor->availability_changed_at . ' UTC' ) ) )
+				\esc_html( \human_time_diff( (int) \strtotime( $monitor->status_changed_at . ' UTC' ) ) )
 			);
 		}
 	}

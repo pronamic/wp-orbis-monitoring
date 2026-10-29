@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$current_availability = get_query_var( 'orbis_monitor_availability' );
+$current_status = get_query_var( 'orbis_monitor_status' );
 
 ?>
 <div class="card-body">
@@ -27,14 +27,14 @@ $current_availability = get_query_var( 'orbis_monitor_availability' );
 			</div>
 
 			<div class="d-flex align-items-center gap-2">
-				<label for="orbis_monitor_availability" class="visually-hidden"><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></label>
+				<label for="orbis_monitor_status" class="visually-hidden"><?php esc_html_e( 'Status', 'orbis-monitoring' ); ?></label>
 
-				<select id="orbis_monitor_availability" name="orbis_monitor_availability" class="form-select">
+				<select id="orbis_monitor_status" name="orbis_monitor_status" class="form-select">
 					<option value=""><?php esc_html_e( '— Select Status —', 'orbis-monitoring' ); ?></option>
 
-					<?php foreach ( \Pronamic\Orbis\Monitoring\Availability::cases() as $availability ) : ?>
+					<?php foreach ( \Pronamic\Orbis\Monitoring\Status::cases() as $monitor_status ) : ?>
 
-						<option value="<?php echo esc_attr( $availability->value ); ?>" <?php selected( $availability->value, $current_availability ); ?>><?php echo esc_html( $availability->label() ); ?></option>
+						<option value="<?php echo esc_attr( $monitor_status->value ); ?>" <?php selected( $monitor_status->value, $current_status ); ?>><?php echo esc_html( $monitor_status->label() ); ?></option>
 
 					<?php endforeach; ?>
 				</select>

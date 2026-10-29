@@ -34,7 +34,7 @@ final class QueryController {
 	 * @return string[]
 	 */
 	private function query_vars( $query_vars ) {
-		$query_vars[] = 'orbis_monitor_availability';
+		$query_vars[] = 'orbis_monitor_status';
 
 		return $query_vars;
 	}
@@ -42,8 +42,8 @@ final class QueryController {
 	/**
 	 * Posts clauses.
 	 *
-	 * Filters monitors on the availability of the monitored URL. Monitors without
-	 * a row in the monitors table have not been checked yet, so they count as unknown.
+	 * Filters monitors on their status. Monitors without a row in the monitors
+	 * table have not been checked yet, so they count as unknown.
 	 *
 	 * @link https://developer.wordpress.org/reference/hooks/posts_clauses/
 	 * @param array<string, string> $clauses Clauses.
@@ -55,15 +55,15 @@ final class QueryController {
 			return $clauses;
 		}
 
-		$value = $query->get( 'orbis_monitor_availability' );
+		$value = $query->get( 'orbis_monitor_status' );
 
 		if ( ! \is_string( $value ) ) {
 			return $clauses;
 		}
 
-		$availability = Availability::tryFrom( $value );
+		$status = Status::tryFrom( $value );
 
-		if ( null === $availability ) {
+		if ( null === $status ) {
 			return $clauses;
 		}
 
@@ -75,9 +75,9 @@ final class QueryController {
 					ON $wpdb->posts.ID = orbis_monitor.post_id
 			SQL;
 
-		$clauses['where'] .= match ( $availability ) {
-			Availability::Unknown => $wpdb->prepare( ' AND ( orbis_monitor.status = %s OR orbis_monitor.id IS NULL )', $availability->value ),
-			default               => $wpdb->prepare( ' AND orbis_monitor.status = %s', $availability->value ),
+		$clauses['where'] .= match ( $status ) {
+			Status::Unknown      => $wpdb->prepare( ' AND ( orbis_monitor.status = %s OR orbis_monitor.id IS NULL )', $status->value ),
+			default              => $wpdb->prepare( ' AND orbis_monitor.status = %s', $status->value ),
 		};
 
 		return $clauses;

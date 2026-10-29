@@ -1,6 +1,6 @@
 <?php
 /**
- * Availability badge
+ * Status badge
  *
  * Expects `$monitor` (object or null).
  *
@@ -14,11 +14,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$availability = ( null === $monitor ) ? \Pronamic\Orbis\Monitoring\Availability::Unknown : $monitor->availability;
+$monitor_status = ( null === $monitor ) ? \Pronamic\Orbis\Monitoring\Status::Unknown : $monitor->status;
 
 ?>
-<span class="badge <?php echo esc_attr( $availability->badge_class() ); ?>"><?php echo esc_html( $availability->label() ); ?></span>
-<?php if ( null !== $monitor && \Pronamic\Orbis\Monitoring\Availability::Pending === $availability ) : ?>
+<span class="badge <?php echo esc_attr( $monitor_status->badge_class() ); ?>"><?php echo esc_html( $monitor_status->label() ); ?></span>
+<?php if ( null !== $monitor && \Pronamic\Orbis\Monitoring\Status::Pending === $monitor_status ) : ?>
 	<small class="text-muted">
 		<?php
 		printf(
@@ -29,14 +29,14 @@ $availability = ( null === $monitor ) ? \Pronamic\Orbis\Monitoring\Availability:
 		?>
 	</small>
 <?php endif; ?>
-<?php if ( null !== $monitor && null !== $monitor->availability_changed_at && \Pronamic\Orbis\Monitoring\Availability::Unknown !== $availability ) : ?>
+<?php if ( null !== $monitor && null !== $monitor->status_changed_at && \Pronamic\Orbis\Monitoring\Status::Unknown !== $monitor_status ) : ?>
 	<br />
 	<small class="text-muted">
 		<?php
 		printf(
 			/* translators: %s: human readable time difference */
 			esc_html__( 'for %s', 'orbis-monitoring' ),
-			esc_html( human_time_diff( (int) strtotime( $monitor->availability_changed_at . ' UTC' ) ) )
+			esc_html( human_time_diff( (int) strtotime( $monitor->status_changed_at . ' UTC' ) ) )
 		);
 		?>
 	</small>

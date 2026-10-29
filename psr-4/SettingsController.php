@@ -56,7 +56,7 @@ final readonly class SettingsController {
 	}
 
 	/**
-	 * Get the number of failed checks in a row before the monitored URL is considered offline.
+	 * Get the number of failed checks in a row before an alert is raised.
 	 *
 	 * @return int
 	 */
@@ -65,7 +65,7 @@ final readonly class SettingsController {
 	}
 
 	/**
-	 * Get the reminder interval in minutes while the monitored URL is offline, `0` disables reminders.
+	 * Get the reminder interval in minutes while an alert is open, `0` disables reminders.
 	 *
 	 * @return int
 	 */
@@ -340,7 +340,7 @@ final readonly class SettingsController {
 
 		?>
 		<p class="description">
-			<?php \esc_html_e( 'The number of failed checks in a row before the monitored URL is considered offline and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification.', 'orbis-monitoring' ); ?>
+			<?php \esc_html_e( 'The number of failed checks in a row before an alert is raised and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification.', 'orbis-monitoring' ); ?>
 		</p>
 		<?php
 	}
@@ -359,7 +359,7 @@ final readonly class SettingsController {
 
 		?>
 		<p class="description">
-			<?php \esc_html_e( 'Send a reminder while the monitored URL is still offline. Use 0 to only send a notification when the URL goes offline and when it is back online.', 'orbis-monitoring' ); ?>
+			<?php \esc_html_e( 'Send a reminder while an alert is still open. Use 0 to only send a notification when the alert is raised and when it is resolved.', 'orbis-monitoring' ); ?>
 		</p>
 		<?php
 	}

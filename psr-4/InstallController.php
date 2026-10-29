@@ -53,7 +53,7 @@ final class InstallController {
 	 * @return void
 	 */
 	private function maybe_install(): void {
-		if ( '1.7.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
+		if ( '1.8.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
 			return;
 		}
 
@@ -72,7 +72,7 @@ final class InstallController {
 		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules -- Only once after activation or an update.
 		\flush_rewrite_rules();
 
-		\update_option( 'orbis_monitoring_db_version', '1.7.0' );
+		\update_option( 'orbis_monitoring_db_version', '1.8.0' );
 	}
 
 	/**
@@ -180,7 +180,9 @@ final class InstallController {
 	/**
 	 * Migrate statuses.
 	 *
-	 * The `up` and `down` statuses are renamed to `online` and `offline`.
+	 * The old `up`/`online` and `down`/`offline` statuses are renamed to `ok`
+	 * and `alert`. A monitor checks whether the URL responds as expected, a
+	 * deviation is not necessarily an outage.
 	 *
 	 * @return void
 	 */
@@ -194,11 +196,13 @@ final class InstallController {
 				$wpdb->orbis_monitors
 			SET
 				status = CASE status
-					WHEN 'up' THEN 'online'
-					WHEN 'down' THEN 'offline'
+					WHEN 'up' THEN 'ok'
+					WHEN 'online' THEN 'ok'
+					WHEN 'down' THEN 'alert'
+					WHEN 'offline' THEN 'alert'
 				END
 			WHERE
-				status IN ( 'up', 'down' )
+				status IN ( 'up', 'online', 'down', 'offline' )
 			;
 			SQL
 		);

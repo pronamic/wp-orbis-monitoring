@@ -1,8 +1,8 @@
 <?php
 /**
- * Availability stats
+ * Status stats
  *
- * Shows the number of monitors per availability of the monitored URL, each linking to the filtered archive.
+ * Shows the number of monitors per status, each linking to the filtered archive.
  *
  * @author    Pronamic
  * @copyright 2026 Pronamic
@@ -10,15 +10,15 @@
  * @package   Pronamic\Orbis\Monitoring
  */
 
-use Pronamic\Orbis\Monitoring\Availability;
+use Pronamic\Orbis\Monitoring\Status;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$availability_counts  = \Pronamic\Orbis\Monitoring\Plugin::instance()->incident_controller->get_availability_counts();
-$current_availability = get_query_var( 'orbis_monitor_availability' );
-$archive_url          = get_post_type_archive_link( 'orbis_monitor' );
+$status_counts  = \Pronamic\Orbis\Monitoring\Plugin::instance()->incident_controller->get_status_counts();
+$current_status = get_query_var( 'orbis_monitor_status' );
+$archive_url    = get_post_type_archive_link( 'orbis_monitor' );
 
 if ( '' !== get_search_query() ) {
 	$archive_url = add_query_arg( 's', rawurlencode( get_search_query() ), $archive_url );
@@ -27,20 +27,20 @@ if ( '' !== get_search_query() ) {
 $stats = [
 	[
 		'label'  => __( 'All', 'orbis-monitoring' ),
-		'count'  => array_sum( $availability_counts ),
+		'count'  => array_sum( $status_counts ),
 		'color'  => 'primary',
 		'url'    => $archive_url,
-		'active' => '' === $current_availability,
+		'active' => '' === $current_status,
 	],
 ];
 
-foreach ( [ Availability::Online, Availability::Pending, Availability::Offline, Availability::Unknown ] as $availability ) {
+foreach ( [ Status::Ok, Status::Pending, Status::Alert, Status::Unknown ] as $monitor_status ) {
 	$stats[] = [
-		'label'  => $availability->label(),
-		'count'  => $availability_counts[ $availability->value ],
-		'color'  => $availability->color(),
-		'url'    => add_query_arg( 'orbis_monitor_availability', $availability->value, $archive_url ),
-		'active' => $availability->value === $current_availability,
+		'label'  => $monitor_status->label(),
+		'count'  => $status_counts[ $monitor_status->value ],
+		'color'  => $monitor_status->color(),
+		'url'    => add_query_arg( 'orbis_monitor_status', $monitor_status->value, $archive_url ),
+		'active' => $monitor_status->value === $current_status,
 	];
 }
 

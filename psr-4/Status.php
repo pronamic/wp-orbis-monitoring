@@ -1,6 +1,6 @@
 <?php
 /**
- * Availability
+ * Status
  *
  * @author    Pronamic
  * @copyright 2026 Pronamic
@@ -13,32 +13,34 @@ declare(strict_types=1);
 namespace Pronamic\Orbis\Monitoring;
 
 /**
- * Availability enum
+ * Status enum
  *
- * The availability of the monitored URL. The value is stored in the `status` column of the monitors table.
+ * The outcome of the checks of a monitor: does the monitored URL respond as
+ * expected? A deviation, such as an unexpected status code, is not necessarily
+ * an outage. The value is stored in the `status` column of the monitors table.
  *
  * phpcs:disable PHPCompatibility.Variables.ForbiddenThisUseContexts.OutsideObjectContext -- False positive, `$this` is the enum case.
  */
-enum Availability: string {
+enum Status: string {
 	/**
 	 * Not checked yet, or the monitor is not published.
 	 */
 	case Unknown = 'unknown';
 
 	/**
-	 * The last check succeeded.
+	 * The last check matched the expectations.
 	 */
-	case Online = 'online';
+	case Ok = 'ok';
 
 	/**
-	 * One or more checks failed, but not enough in a row to open an incident.
+	 * One or more checks failed, but not enough in a row to raise an alert.
 	 */
 	case Pending = 'pending';
 
 	/**
-	 * Enough checks failed in a row, an incident is open.
+	 * Enough checks failed in a row, an alert is raised and an incident is open.
 	 */
-	case Offline = 'offline';
+	case Alert = 'alert';
 
 	/**
 	 * Get the label.
@@ -48,9 +50,9 @@ enum Availability: string {
 	public function label(): string {
 		return match ( $this ) {
 			self::Unknown => \__( 'Unknown', 'orbis-monitoring' ),
-			self::Online  => \__( 'Online', 'orbis-monitoring' ),
+			self::Ok      => \__( 'OK', 'orbis-monitoring' ),
 			self::Pending => \__( 'Pending', 'orbis-monitoring' ),
-			self::Offline => \__( 'Offline', 'orbis-monitoring' ),
+			self::Alert   => \__( 'Alert', 'orbis-monitoring' ),
 		};
 	}
 
@@ -62,9 +64,9 @@ enum Availability: string {
 	public function icon(): string {
 		return match ( $this ) {
 			self::Unknown => '⚪',
-			self::Online  => '🟢',
+			self::Ok      => '🟢',
 			self::Pending => '🟠',
-			self::Offline => '🔴',
+			self::Alert   => '🔴',
 		};
 	}
 
@@ -77,9 +79,9 @@ enum Availability: string {
 	public function color(): string {
 		return match ( $this ) {
 			self::Unknown => 'secondary',
-			self::Online  => 'success',
+			self::Ok      => 'success',
 			self::Pending => 'warning',
-			self::Offline => 'danger',
+			self::Alert   => 'danger',
 		};
 	}
 
