@@ -2,9 +2,9 @@
 
 # 🛰️ Orbis Monitoring
 
-**Know when your websites go down or misbehave, before your clients do.**
+**Know when your websites don't respond as expected, before your clients do.**
 
-Uptime and response time monitoring built into your [Orbis](https://www.pronamic.eu/orbis/) environment.
+Status code, redirect and response time monitoring for WordPress, with optional [Orbis](https://www.pronamic.eu/orbis/) integration.
 Every site you manage, checked every minute, right inside WordPress.
 
 [![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php&logoColor=white)](https://www.php.net/)
@@ -20,7 +20,7 @@ Every site you manage, checked every minute, right inside WordPress.
 
 ## Why Orbis Monitoring?
 
-You already keep your clients, projects and subscriptions in Orbis. Why keep your uptime monitoring in yet another SaaS dashboard?
+You already run your work in WordPress, maybe even your clients, projects and subscriptions in Orbis. Why keep your website monitoring in yet another SaaS dashboard?
 
 Orbis Monitoring turns any URL into a **monitor**, a regular WordPress post that lives next to the rest of your work. Every minute it checks whether the site responds the way it should. If something is off, your team hears about it in Slack right away.
 
@@ -37,7 +37,7 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 | 🗂️ **Full history** | Every check is stored: duration, status code, message, content type and content length. Spot trends, prove SLAs, find out when it started. |
 | 📋 **Overview at a glance** | See the status (OK, pending, alert or unknown) of all monitors in one list, together with the last response code, response time and check time. |
 | 🚨 **Incident history** | Every alert is stored as an incident, with start, end, duration and the error. Open a monitor to see its incidents, including the one that is still ongoing. |
-| 🌐 **Front-end pages** | A `/monitors/` archive and detail pages fit right into the Orbis theme, so your whole team can see the status and incident history. |
+| 🌐 **Front-end pages** | A `/monitors/` archive and detail pages, which fit right into the Orbis theme when you use it, so your whole team can see the status and incident history. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
 | 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitoring_incident_opened`, `orbis_monitoring_incident_resolved` and other actions. |
 | 🇳🇱 **Translated** | Ships with Dutch translations, ready for more. |
@@ -69,7 +69,7 @@ flowchart LR
 
 ## 📦 Installation
 
-**Requirements:** WordPress 7.1+, PHP 8.3+ and an [Orbis](https://www.pronamic.eu/orbis/) environment.
+**Requirements:** WordPress 7.1+ and PHP 8.3+. An [Orbis](https://www.pronamic.eu/orbis/) environment is optional.
 
 1. Download the latest release, or build it yourself (see [Development](#-development)).
 2. Upload the `orbis-monitoring` folder to `wp-content/plugins/`.
