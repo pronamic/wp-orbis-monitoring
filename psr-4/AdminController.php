@@ -152,7 +152,7 @@ final readonly class AdminController {
 		$data = [
 			'_orbis_monitor_url'                    => isset( $_POST['_orbis_monitor_url'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_url'] ) ) : '',
 			'_orbis_monitor_required_response_code' => isset( $_POST['_orbis_monitor_required_response_code'] ) ? \absint( $_POST['_orbis_monitor_required_response_code'] ) : 0,
-			'_orbis_monitor_required_location'      => isset( $_POST['_orbis_monitor_required_location'] ) ? \sanitize_text_field( \wp_unslash( $_POST['_orbis_monitor_required_location'] ) ) : '',
+			'_orbis_monitor_required_location'      => isset( $_POST['_orbis_monitor_required_location'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_required_location'] ) ) : '',
 		];
 
 		foreach ( $data as $key => $value ) {
