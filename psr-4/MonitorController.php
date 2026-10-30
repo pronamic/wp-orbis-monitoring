@@ -55,7 +55,7 @@ final readonly class MonitorController {
 
 		\add_filter(
 			'action_scheduler_queue_runner_concurrent_batches',
-			fn( $concurrent_batches ) => \max( (int) $concurrent_batches, 3 )
+			fn( $concurrent_batches ) => \max( (int) $concurrent_batches, 5 )
 		);
 
 		\add_filter(
