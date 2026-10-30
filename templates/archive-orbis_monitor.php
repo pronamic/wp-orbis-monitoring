@@ -97,7 +97,7 @@ $checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_
 								<?php echo empty( $duration ) ? '—' : esc_html( number_format_i18n( (float) $duration, 2 ) ); ?>
 							</td>
 							<td>
-								<?php echo ( null === $monitor || null === $monitor->checked_at ) ? '—' : esc_html( wp_date( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) strtotime( $monitor->checked_at . ' UTC' ) ) ); ?>
+								<?php echo ( null === $monitor || null === $monitor->checked_at ) ? '—' : esc_html( wp_date( __( 'd-m-Y H:i:s', 'orbis-monitoring' ), (int) strtotime( $monitor->checked_at . ' UTC' ) ) ); ?>
 							</td>
 							<td>
 								<?php get_template_part( 'templates/table-cell-actions' ); ?>
