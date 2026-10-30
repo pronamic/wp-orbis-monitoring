@@ -153,8 +153,6 @@ final readonly class AdminController {
 			'_orbis_monitor_url'                    => isset( $_POST['_orbis_monitor_url'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_url'] ) ) : '',
 			'_orbis_monitor_required_response_code' => isset( $_POST['_orbis_monitor_required_response_code'] ) ? \absint( $_POST['_orbis_monitor_required_response_code'] ) : 0,
 			'_orbis_monitor_required_location'      => isset( $_POST['_orbis_monitor_required_location'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_required_location'] ) ) : '',
-			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in `sanitize_headers()`.
-			'_orbis_monitor_headers'                => isset( $_POST['_orbis_monitor_headers'] ) ? $this->sanitize_headers( \wp_unslash( $_POST['_orbis_monitor_headers'] ) ) : [],
 		];
 
 		foreach ( $data as $key => $value ) {
@@ -164,6 +162,11 @@ final readonly class AdminController {
 				\update_post_meta( $post_id, $key, $value );
 			}
 		}
+
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in `sanitize_headers()`.
+		$headers = isset( $_POST['_orbis_monitor_headers'] ) ? $this->sanitize_headers( \wp_unslash( $_POST['_orbis_monitor_headers'] ) ) : [];
+
+		$this->save_headers( $post_id, $headers );
 
 		$this->monitor_controller->monitor_post( $post_id );
 	}
@@ -177,7 +180,7 @@ final readonly class AdminController {
 	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/28
 	 * @link https://www.rfc-editor.org/rfc/rfc9110#name-tokens
 	 * @param mixed $input Input.
-	 * @return list<array{name: string, value: string}>
+	 * @return string[] Headers as `Name: Value` lines.
 	 */
 	private function sanitize_headers( $input ): array {
 		if ( ! \is_array( $input ) ) {
@@ -198,13 +201,32 @@ final readonly class AdminController {
 				continue;
 			}
 
-			$headers[] = [
-				'name'  => $name,
-				'value' => $value,
-			];
+			$headers[] = $name . ': ' . $value;
 		}
 
-		return $headers;
+		return \array_values( \array_unique( $headers ) );
+	}
+
+	/**
+	 * Save the custom HTTP headers, one `_orbis_monitor_header` meta row per header.
+	 *
+	 * Only headers that are new get added and only headers that are gone get
+	 * deleted, unchanged headers keep their meta row.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param string[] $headers Headers as `Name: Value` lines.
+	 * @return void
+	 */
+	private function save_headers( int $post_id, array $headers ): void {
+		$current = \get_post_meta( $post_id, '_orbis_monitor_header', false );
+
+		foreach ( \array_diff( $current, $headers ) as $header ) {
+			\delete_post_meta( $post_id, '_orbis_monitor_header', \wp_slash( $header ) );
+		}
+
+		foreach ( \array_diff( $headers, $current ) as $header ) {
+			\add_post_meta( $post_id, '_orbis_monitor_header', \wp_slash( $header ) );
+		}
 	}
 
 	/**

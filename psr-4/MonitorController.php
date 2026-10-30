@@ -186,20 +186,16 @@ final readonly class MonitorController {
 	 * @return array<string, string>
 	 */
 	public function get_headers( int $post_id ): array {
-		$rows = \get_post_meta( $post_id, '_orbis_monitor_headers', true );
-
-		if ( ! \is_array( $rows ) ) {
-			return [];
-		}
-
 		$headers = [];
 
-		foreach ( $rows as $row ) {
-			if ( ! \is_array( $row ) || empty( $row['name'] ) ) {
+		foreach ( \get_post_meta( $post_id, '_orbis_monitor_header', false ) as $header ) {
+			$parts = \explode( ':', (string) $header, 2 );
+
+			if ( 2 !== \count( $parts ) ) {
 				continue;
 			}
 
-			$headers[ (string) $row['name'] ] = (string) ( $row['value'] ?? '' );
+			$headers[ \trim( $parts[0] ) ] = \trim( $parts[1] );
 		}
 
 		return $headers;

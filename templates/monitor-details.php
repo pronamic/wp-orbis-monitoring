@@ -15,8 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 $url      = get_post_meta( get_the_ID(), '_orbis_monitor_url', true );
 $code     = get_post_meta( get_the_ID(), '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( get_the_ID(), '_orbis_monitor_required_location', true );
-$headers  = get_post_meta( get_the_ID(), '_orbis_monitor_headers', true );
-$headers  = is_array( $headers ) ? $headers : [];
+$headers  = get_post_meta( get_the_ID(), '_orbis_monitor_header', false );
 
 $monitor  = $incident_controller->get_monitor_by_post_id( (int) get_the_ID() );
 $incident = ( null !== $monitor && \Pronamic\Orbis\Monitoring\Status::Alert === $monitor->status ) ? $incident_controller->get_open_incident( (int) $monitor->id ) : null;
@@ -83,7 +82,7 @@ $incident = ( null !== $monitor && \Pronamic\Orbis\Monitoring\Status::Alert === 
 						—
 					<?php else : ?>
 						<?php foreach ( $headers as $header ) : ?>
-							<code><?php echo esc_html( $header['name'] . ': ' . $header['value'] ); ?></code><br />
+							<code><?php echo esc_html( $header ); ?></code><br />
 						<?php endforeach; ?>
 					<?php endif; ?>
 				</dd>

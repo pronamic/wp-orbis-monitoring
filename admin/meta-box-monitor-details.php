@@ -13,19 +13,28 @@ wp_nonce_field( 'orbis_save_monitor_details', 'orbis_monitor_details_meta_box_no
 $url      = get_post_meta( $post->ID, '_orbis_monitor_url', true );
 $code     = get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 $location = get_post_meta( $post->ID, '_orbis_monitor_required_location', true );
-$headers  = get_post_meta( $post->ID, '_orbis_monitor_headers', true );
-$headers  = is_array( $headers ) ? array_values( $headers ) : [];
+$headers  = get_post_meta( $post->ID, '_orbis_monitor_header', false );
 
 $curl = 'curl --head';
 
 foreach ( $headers as $header ) {
-	$curl .= ' -H ' . escapeshellarg( $header['name'] . ': ' . $header['value'] );
+	$curl .= ' -H ' . escapeshellarg( $header );
 }
 
 $curl .= ' ' . escapeshellarg( $url );
 
+$header_rows = [];
+
+foreach ( $headers as $header ) {
+	$parts = explode( ':', $header, 2 );
+
+	$header_rows[] = [
+		'name'  => trim( $parts[0] ),
+		'value' => trim( $parts[1] ?? '' ),
+	];
+}
+
 // Always offer an empty row, so a header can be added without JavaScript.
-$header_rows   = $headers;
 $header_rows[] = [
 	'name'  => '',
 	'value' => '',
@@ -34,14 +43,14 @@ $header_rows[] = [
 $header_row = function ( $index, $name, $value ) {
 	?>
 	<tr>
-		<td>
-			<input name="_orbis_monitor_headers[<?php echo esc_attr( $index ); ?>][name]" value="<?php echo esc_attr( $name ); ?>" type="text" class="widefat" placeholder="Authorization" aria-label="<?php esc_attr_e( 'Name', 'orbis-monitoring' ); ?>" />
+		<td class="name">
+			<input name="_orbis_monitor_headers[<?php echo esc_attr( $index ); ?>][name]" value="<?php echo esc_attr( $name ); ?>" type="text" aria-label="<?php esc_attr_e( 'Name', 'orbis-monitoring' ); ?>" />
+		</td>
+		<td class="value">
+			<input name="_orbis_monitor_headers[<?php echo esc_attr( $index ); ?>][value]" value="<?php echo esc_attr( $value ); ?>" type="text" aria-label="<?php esc_attr_e( 'Value', 'orbis-monitoring' ); ?>" />
 		</td>
 		<td>
-			<input name="_orbis_monitor_headers[<?php echo esc_attr( $index ); ?>][value]" value="<?php echo esc_attr( $value ); ?>" type="text" class="widefat" aria-label="<?php esc_attr_e( 'Value', 'orbis-monitoring' ); ?>" />
-		</td>
-		<td>
-			<button type="button" class="button-link button-link-delete orbis-monitor-header-remove"><?php esc_html_e( 'Remove', 'orbis-monitoring' ); ?></button>
+			<button type="button" class="button-link orbis-monitor-header-remove" title="<?php esc_attr_e( 'Remove', 'orbis-monitoring' ); ?>"><span class="dashicons dashicons-no-alt" aria-hidden="true"></span><span class="screen-reader-text"><?php esc_html_e( 'Remove', 'orbis-monitoring' ); ?></span></button>
 		</td>
 	</tr>
 	<?php
@@ -78,8 +87,57 @@ $header_row = function ( $index, $name, $value ) {
 			<?php esc_html_e( 'HTTP Headers', 'orbis-monitoring' ); ?>
 		</th>
 		<td>
+			<style>
+				#orbis-monitor-headers table {
+					border-collapse: collapse;
+				}
+
+				#orbis-monitor-headers th,
+				#orbis-monitor-headers td {
+					width: auto;
+					padding: 0 8px 6px 0;
+					vertical-align: middle;
+				}
+
+				#orbis-monitor-headers thead th {
+					padding-bottom: 4px;
+					color: #646970;
+					font-size: 12px;
+					font-weight: 400;
+				}
+
+				#orbis-monitor-headers .name input {
+					width: 14em;
+				}
+
+				#orbis-monitor-headers .value input {
+					width: 25em;
+				}
+
+				#orbis-monitor-headers .orbis-monitor-header-remove {
+					color: #a7aaad;
+					text-decoration: none;
+				}
+
+				#orbis-monitor-headers .orbis-monitor-header-remove:hover,
+				#orbis-monitor-headers .orbis-monitor-header-remove:focus {
+					color: #d63638;
+				}
+
+				#orbis-monitor-headers .orbis-monitor-header-add {
+					text-decoration: none;
+				}
+
+				#orbis-monitor-headers .orbis-monitor-header-add .dashicons {
+					font-size: 16px;
+					width: 16px;
+					height: 16px;
+					vertical-align: text-bottom;
+				}
+			</style>
+
 			<div id="orbis-monitor-headers">
-				<table class="widefat striped" style="max-width: 50em;">
+				<table>
 					<thead>
 						<tr>
 							<th scope="col"><?php esc_html_e( 'Name', 'orbis-monitoring' ); ?></th>
@@ -102,8 +160,8 @@ $header_row = function ( $index, $name, $value ) {
 					<?php $header_row( '__index__', '', '' ); ?>
 				</template>
 
-				<p>
-					<button type="button" class="button orbis-monitor-header-add"><?php esc_html_e( 'Add Header', 'orbis-monitoring' ); ?></button>
+				<p style="margin-top: 0;">
+					<button type="button" class="button-link orbis-monitor-header-add"><span class="dashicons dashicons-plus-alt2" aria-hidden="true"></span> <?php esc_html_e( 'Add Header', 'orbis-monitoring' ); ?></button>
 				</p>
 
 				<p class="description">
