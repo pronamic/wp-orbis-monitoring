@@ -56,6 +56,15 @@ final readonly class SettingsController {
 	}
 
 	/**
+	 * Get the number of seconds to wait for a response of a monitor request.
+	 *
+	 * @return int
+	 */
+	public function get_timeout(): int {
+		return \min( 60, \max( 1, (int) \get_option( 'orbis_monitoring_timeout', 10 ) ) );
+	}
+
+	/**
 	 * Get the number of failed checks in a row before an alert is raised.
 	 *
 	 * @return int
@@ -127,6 +136,16 @@ final readonly class SettingsController {
 
 		\register_setting(
 			'orbis-monitoring',
+			'orbis_monitoring_timeout',
+			[
+				'type'              => 'integer',
+				'sanitize_callback' => fn( $value ) => \min( 60, \max( 1, (int) $value ) ),
+				'default'           => 10,
+			]
+		);
+
+		\register_setting(
+			'orbis-monitoring',
 			'orbis_monitoring_failure_threshold',
 			[
 				'type'              => 'integer',
@@ -177,6 +196,17 @@ final readonly class SettingsController {
 			'orbis_monitoring_general',
 			[
 				'label_for' => 'orbis_monitoring_user_agent',
+			]
+		);
+
+		\add_settings_field(
+			'orbis_monitoring_timeout',
+			\__( 'Timeout', 'orbis-monitoring' ),
+			$this->field_timeout( ... ),
+			'orbis-monitoring',
+			'orbis_monitoring_general',
+			[
+				'label_for' => 'orbis_monitoring_timeout',
 			]
 		);
 
@@ -324,6 +354,25 @@ final readonly class SettingsController {
 			</p>
 
 		<?php endif; ?>
+		<?php
+	}
+
+	/**
+	 * Timeout field.
+	 *
+	 * @return void
+	 */
+	private function field_timeout(): void {
+		\printf(
+			'<input id="orbis_monitoring_timeout" name="orbis_monitoring_timeout" value="%s" type="number" min="1" max="60" step="1" class="small-text" /> %s',
+			\esc_attr( (string) $this->get_timeout() ),
+			\esc_html__( 'seconds', 'orbis-monitoring' )
+		);
+
+		?>
+		<p class="description">
+			<?php \esc_html_e( 'The maximum number of seconds to wait for a response. A check that takes longer counts as a failed check. A short timeout keeps the queue moving when a site responds slowly.', 'orbis-monitoring' ); ?>
+		</p>
 		<?php
 	}
 

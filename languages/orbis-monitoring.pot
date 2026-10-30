@@ -9,15 +9,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-29T07:45:43+00:00\n"
+"POT-Creation-Date: 2026-10-30T08:45:23+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: orbis-monitoring\n"
 
 #. Plugin Name of the plugin
 #: orbis-monitoring.php:11
-#: psr-4/SettingsController.php:104
-#: psr-4/SettingsController.php:105
+#: psr-4/SettingsController.php:113
+#: psr-4/SettingsController.php:114
 msgid "Orbis Monitoring"
 msgstr ""
 
@@ -247,77 +247,89 @@ msgstr ""
 msgid "Websites and URLs that are periodically checked for the expected response."
 msgstr ""
 
-#: psr-4/SettingsController.php:167
+#: psr-4/SettingsController.php:186
 msgid "General"
 msgstr ""
 
-#: psr-4/SettingsController.php:174
+#: psr-4/SettingsController.php:193
 msgid "User Agent"
 msgstr ""
 
-#: psr-4/SettingsController.php:185
+#: psr-4/SettingsController.php:204
+msgid "Timeout"
+msgstr ""
+
+#: psr-4/SettingsController.php:215
 msgid "Notifications"
 msgstr ""
 
-#: psr-4/SettingsController.php:192
+#: psr-4/SettingsController.php:222
 msgid "Failure Threshold"
 msgstr ""
 
-#: psr-4/SettingsController.php:203
+#: psr-4/SettingsController.php:233
 msgid "Reminder Interval"
 msgstr ""
 
-#: psr-4/SettingsController.php:214
+#: psr-4/SettingsController.php:244
 msgid "Data"
 msgstr ""
 
-#: psr-4/SettingsController.php:221
+#: psr-4/SettingsController.php:251
 msgid "Response Retention"
 msgstr ""
 
-#: psr-4/SettingsController.php:241
+#: psr-4/SettingsController.php:271
 msgid "Settings"
 msgstr ""
 
 #. translators: %s: default user agent
-#: psr-4/SettingsController.php:294
+#: psr-4/SettingsController.php:324
 #, php-format
 msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
 msgstr ""
 
 #. translators: %s: link to list of the latest browser user agents
-#: psr-4/SettingsController.php:305
+#: psr-4/SettingsController.php:335
 #, php-format
 msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
 msgstr ""
 
-#: psr-4/SettingsController.php:306
+#: psr-4/SettingsController.php:336
 msgid "the latest user agents"
 msgstr ""
 
 #. translators: %s: user agent of the current visitor
-#: psr-4/SettingsController.php:319
+#: psr-4/SettingsController.php:349
 #, php-format
 msgid "Your current user agent is: %s"
 msgstr ""
 
-#: psr-4/SettingsController.php:343
+#: psr-4/SettingsController.php:369
+msgid "seconds"
+msgstr ""
+
+#: psr-4/SettingsController.php:374
+msgid "The maximum number of seconds to wait for a response. A check that takes longer counts as a failed check. A short timeout keeps the queue moving when a site responds slowly."
+msgstr ""
+
+#: psr-4/SettingsController.php:392
 msgid "The number of failed checks in a row before an alert is raised and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification."
 msgstr ""
 
-#: psr-4/SettingsController.php:357
+#: psr-4/SettingsController.php:406
 msgid "minutes"
 msgstr ""
 
-#: psr-4/SettingsController.php:362
+#: psr-4/SettingsController.php:411
 msgid "Send a reminder while an alert is still open. Use 0 to only send a notification when the alert is raised and when it is resolved."
 msgstr ""
 
-#: psr-4/SettingsController.php:376
+#: psr-4/SettingsController.php:425
 msgid "days"
 msgstr ""
 
-#: psr-4/SettingsController.php:381
+#: psr-4/SettingsController.php:430
 msgid "The number of days to keep the response of each individual check. Hourly summaries of the response times are kept indefinitely."
 msgstr ""
 

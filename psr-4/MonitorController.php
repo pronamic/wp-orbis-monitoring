@@ -204,7 +204,7 @@ final readonly class MonitorController {
 		$response = \wp_remote_get(
 			$url,
 			[
-				'timeout'     => 30,
+				'timeout'     => $this->settings_controller->get_timeout(),
 				'redirection' => 0,
 				// @link https://github.com/pronamic/wp-orbis-monitoring/issues/10
 				'user-agent'  => $this->settings_controller->get_user_agent(),

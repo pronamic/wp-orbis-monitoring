@@ -81,12 +81,15 @@ flowchart LR
 By default Action Scheduler runs its queue on WP-Cron, which only fires when someone visits the site. For checks that really run every minute, let the server run the queue with [WP-CLI](https://wp-cli.org/). All actions of this plugin are in the `orbis-monitoring` group, so you can run just those:
 
 ```sh
-* * * * * wp action-scheduler run --group=orbis-monitoring --batch-size=500 --batches=1 --path=/path/to/wordpress --quiet
+* * * * * wp action-scheduler run --group=orbis-monitoring --batch-size=25 --batches=0 --path=/path/to/wordpress --quiet
 ```
 
 - `--group=orbis-monitoring` only runs the actions of Orbis Monitoring, so other plugins can't slow down the checks.
-- `--batch-size=500 --batches=1` runs up to 500 actions per minute. Each published monitor adds one check per minute, so keep the batch size above the number of monitors.
+- `--batch-size=25` claims 25 actions at a time. Action Scheduler never gives the same action to two runners, so small batches let a second runner pick up the remaining checks when a run takes longer than a minute.
+- `--batches=0` keeps running batches until no actions are due, then stops.
 - `--quiet` keeps the output out of your cron mail. Errors are still sent.
+
+Runs that overlap are fine, that's how checks run in parallel. Don't use a large batch size: one runner then claims all checks and works through them one by one, while the next runner finds nothing left to do. The **Timeout** under **Settings → Orbis Monitoring** (default 10 seconds) limits how long a single slow site can hold up a runner.
 
 Each published monitor adds an action every minute, so Orbis Monitoring tunes Action Scheduler for a high volume of actions:
 
@@ -96,7 +99,7 @@ Each published monitor adds an action every minute, so Orbis Monitoring tunes Ac
 | Concurrent batches (`action_scheduler_queue_runner_concurrent_batches`) | 1 | at least 3 |
 | Retention period of completed actions (`action_scheduler_retention_period`) | 30 days | at most 3 days |
 
-With only one concurrent batch, the server cron fails with `Error: There are too many concurrent batches.` whenever WP-Cron or another plugin is already processing its queue.
+The concurrent batches are shared by all runners, including the one WP-Cron starts with `wp cron event run --due-now`. When all of them are busy, a new run stops with `Error: There are too many concurrent batches.` and the next minute tries again. If you get this error often, raise the limit with the `action_scheduler_queue_runner_concurrent_batches` filter. Don't use `--force`, it removes the limit on the number of runners.
 
 > [!TIP]
 > Also run the queue of other plugins with a separate cron line without `--group`, or keep WP-Cron enabled for them.
