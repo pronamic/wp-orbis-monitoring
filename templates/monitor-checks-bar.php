@@ -42,7 +42,7 @@ $empty_count = max( 0, $checks_limit - count( $checks ) );
 			array_filter(
 				[
 					$check_succeeded ? __( 'Check succeeded', 'orbis-monitoring' ) : __( 'Check failed', 'orbis-monitoring' ),
-					mysql2date( __( 'd-m-Y H:i:s', 'orbis-monitoring' ), $check->monitored_date ),
+					wp_date( __( 'd-m-Y H:i:s', 'orbis-monitoring' ), (int) strtotime( $check->monitored_date . ' UTC' ) ),
 					trim( $check->response_code . ' ' . $check_message ),
 					empty( $check->duration ) ? '' : sprintf(
 						/* translators: %s: duration in seconds */

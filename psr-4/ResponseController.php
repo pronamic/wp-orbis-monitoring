@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Pronamic\Orbis\Monitoring;
 
 use DateTimeImmutable;
+use DateTimeZone;
 
 /**
  * Response controller class
@@ -109,6 +110,8 @@ final readonly class ResponseController {
 	/**
 	 * Get the date until which the responses are summarized.
 	 *
+	 * The option contains a UTC date.
+	 *
 	 * @return DateTimeImmutable|null
 	 */
 	public function get_aggregated_until(): ?DateTimeImmutable {
@@ -118,7 +121,7 @@ final readonly class ResponseController {
 			return null;
 		}
 
-		return new DateTimeImmutable( $value, \wp_timezone() );
+		return new DateTimeImmutable( $value, new DateTimeZone( 'UTC' ) );
 	}
 
 	/**
@@ -128,7 +131,7 @@ final readonly class ResponseController {
 	 * @return void
 	 */
 	public function set_aggregated_until( DateTimeImmutable $date ): void {
-		\update_option( 'orbis_monitoring_responses_aggregated_until', $date->format( 'Y-m-d H:i:s' ), false );
+		\update_option( 'orbis_monitoring_responses_aggregated_until', $date->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' ), false );
 	}
 
 	/**
@@ -145,7 +148,7 @@ final readonly class ResponseController {
 			return null;
 		}
 
-		return $this->start_of_hour( new DateTimeImmutable( $first_monitored_date, \wp_timezone() ) );
+		return $this->start_of_hour( new DateTimeImmutable( $first_monitored_date, new DateTimeZone( 'UTC' ) ) );
 	}
 
 	/**
@@ -154,20 +157,20 @@ final readonly class ResponseController {
 	 * @return DateTimeImmutable
 	 */
 	public function get_current_hour(): DateTimeImmutable {
-		return $this->start_of_hour( new DateTimeImmutable( 'now', \wp_timezone() ) );
+		return $this->start_of_hour( new DateTimeImmutable( 'now', new DateTimeZone( 'UTC' ) ) );
 	}
 
 	/**
 	 * Aggregate the responses in a period.
 	 *
-	 * Summarizes the responses per monitor per hour. Existing summaries in
-	 * the period are replaced, so running it again gives the same result.
+	 * Summarizes the responses per monitor per UTC hour. Existing summaries
+	 * in the period are replaced, so running it again gives the same result.
 	 * The responses are summarized per monitor, so the queries use the
-	 * `monitor_id_monitored_date` index. The response dates are stored in the
-	 * site timezone, see `current_time( 'mysql' )`.
+	 * `monitor_id_monitored_date` index. The response dates are stored in
+	 * UTC, see `current_time( 'mysql', true )`.
 	 *
-	 * @param DateTimeImmutable $start Start (inclusive), should be the start of an hour.
-	 * @param DateTimeImmutable $end   End (exclusive), should be the start of an hour.
+	 * @param DateTimeImmutable $start Start (inclusive), should be the start of a UTC hour.
+	 * @param DateTimeImmutable $end   End (exclusive), should be the start of a UTC hour.
 	 * @return void
 	 */
 	public function aggregate( DateTimeImmutable $start, DateTimeImmutable $end ): void {
@@ -217,8 +220,8 @@ final readonly class ResponseController {
 					;
 					SQL,
 					$monitor_id,
-					$start->format( 'Y-m-d H:i:s' ),
-					$end->format( 'Y-m-d H:i:s' )
+					$start->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' ),
+					$end->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' )
 				)
 			);
 		}
@@ -279,12 +282,14 @@ final readonly class ResponseController {
 	}
 
 	/**
-	 * Start of hour.
+	 * Start of the UTC hour.
 	 *
 	 * @param DateTimeImmutable $date Date.
 	 * @return DateTimeImmutable
 	 */
 	public function start_of_hour( DateTimeImmutable $date ): DateTimeImmutable {
+		$date = $date->setTimezone( new DateTimeZone( 'UTC' ) );
+
 		return $date->setTime( (int) $date->format( 'G' ), 0 );
 	}
 

@@ -179,7 +179,7 @@ final readonly class AdminController {
 		$columns['orbis_monitor_message']                 = \__( 'Last Message', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_content_length'] = \__( 'Last Content Length', 'orbis-monitoring' );
 		$columns['orbis_monitor_response_content_type']   = \__( 'Last Content Type', 'orbis-monitoring' );
-		$columns['orbis_monitor_modified_date']           = \__( 'Last Check', 'orbis-monitoring' );
+		$columns['orbis_monitor_checked_at']              = \__( 'Last Check', 'orbis-monitoring' );
 
 		return $columns;
 	}
@@ -227,8 +227,16 @@ final readonly class AdminController {
 				echo \esc_html( \get_post_meta( $post_id, '_orbis_monitor_response_content_type', true ) );
 
 				break;
-			case 'orbis_monitor_modified_date':
-				\the_modified_date( \__( 'D j M Y \a\t H:i:s', 'orbis-monitoring' ) );
+			case 'orbis_monitor_checked_at':
+				$monitor = $this->incident_controller->get_monitor_by_post_id( $post_id );
+
+				if ( null === $monitor || null === $monitor->checked_at ) {
+					echo '—';
+
+					break;
+				}
+
+				echo \esc_html( \wp_date( \__( 'D j M Y \a\t H:i:s', 'orbis-monitoring' ), (int) \strtotime( $monitor->checked_at . ' UTC' ) ) );
 
 				break;
 		}

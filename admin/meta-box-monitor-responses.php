@@ -54,7 +54,7 @@ $responses = $wpdb->get_results(
 					<?php echo esc_html( $response->id ); ?>
 				</td>
 				<td>
-					<?php echo esc_html( $response->monitored_date ); ?>
+					<?php echo esc_html( get_date_from_gmt( $response->monitored_date ) ); ?>
 				</td>
 				<td>
 					<?php

@@ -26,10 +26,11 @@ if ( ! array_key_exists( $period, $periods ) ) {
 	$period = 'w';
 }
 
-$group_by = match ( $period ) {
-	'd'     => 'DATE( stats.started_at )',
-	'm'     => 'EXTRACT( YEAR_MONTH FROM stats.started_at )',
-	default => 'YEARWEEK( stats.started_at, 3 )',
+// The summaries are per UTC hour, they are grouped per day, week or month in the site timezone.
+$group_format = match ( $period ) {
+	'd'     => 'Y-m-d',
+	'm'     => 'Y-m',
+	default => 'o-W',
 };
 
 $label_format = match ( $period ) {
@@ -39,13 +40,13 @@ $label_format = match ( $period ) {
 
 $last_year = new DateTimeImmutable( '1 year ago midnight', wp_timezone() );
 
-// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- The group by expression is one of a fixed set of values.
-$response_times = $wpdb->get_results(
+$stats = $wpdb->get_results(
 	$wpdb->prepare(
 		<<<SQL
 		SELECT
-			SUM( stats.duration_total ) / SUM( stats.check_count ) AS avg_duration,
-			MIN( stats.started_at ) AS monitored_date
+			stats.started_at,
+			stats.check_count,
+			stats.duration_total
 		FROM
 			$wpdb->orbis_monitor_response_stats AS stats
 				INNER JOIN
@@ -55,25 +56,37 @@ $response_times = $wpdb->get_results(
 			monitor.post_id = %d
 				AND
 			stats.started_at >= %s
-		GROUP BY
-			$group_by
 		ORDER BY
-			monitored_date ASC
+			stats.started_at ASC
 		SQL,
 		get_the_ID(),
-		$last_year->format( 'Y-m-d H:i:s' )
+		$last_year->setTimezone( new DateTimeZone( 'UTC' ) )->format( 'Y-m-d H:i:s' )
 	)
 );
-// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+$groups = [];
+
+foreach ( $stats as $stat ) {
+	$timestamp = (int) strtotime( $stat->started_at . ' UTC' );
+
+	$key = wp_date( $group_format, $timestamp );
+
+	$groups[ $key ] ??= [
+		'timestamp'      => $timestamp,
+		'check_count'    => 0,
+		'duration_total' => 0.0,
+	];
+
+	$groups[ $key ]['check_count']    += (int) $stat->check_count;
+	$groups[ $key ]['duration_total'] += (float) $stat->duration_total;
+}
 
 $labels = [];
 $data   = [];
 
-foreach ( $response_times as $response ) {
-	$monitored_date = new DateTimeImmutable( $response->monitored_date, wp_timezone() );
-
-	$labels[] = wp_date( $label_format, $monitored_date->getTimestamp() );
-	$data[]   = round( (float) $response->avg_duration, 3 );
+foreach ( $groups as $group ) {
+	$labels[] = wp_date( $label_format, $group['timestamp'] );
+	$data[]   = ( $group['check_count'] > 0 ) ? round( $group['duration_total'] / $group['check_count'], 3 ) : null;
 }
 
 $chart_config = [

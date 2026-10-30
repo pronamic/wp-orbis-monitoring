@@ -32,7 +32,7 @@ final readonly class CliController {
 	}
 
 	/**
-	 * Summarizes the responses per monitor per hour.
+	 * Summarizes the responses per monitor per UTC hour.
 	 *
 	 * Without options, summarizes all responses that are not summarized yet,
 	 * without the limit of 31 days of the hourly scheduled action.
@@ -43,10 +43,10 @@ final readonly class CliController {
 	 * : Delete the summaries for the period that still has responses and summarize these responses again. Summaries of responses that are already removed are kept.
 	 *
 	 * [--from=<date>]
-	 * : Summarize the responses from this date, for example `2026-10-01`. Does not change the progress of the scheduled action.
+	 * : Summarize the responses from this date, for example `2026-10-01`, in the site timezone. Does not change the progress of the scheduled action.
 	 *
 	 * [--to=<date>]
-	 * : Summarize the responses until this date (exclusive). Defaults to the start of the current hour.
+	 * : Summarize the responses until this date (exclusive), in the site timezone. Defaults to the start of the current hour.
 	 *
 	 * [--yes]
 	 * : Answer yes to the confirmation message of `--rebuild`.
@@ -108,7 +108,7 @@ final readonly class CliController {
 			WP_CLI::confirm(
 				\sprintf(
 					'Delete the summaries from %s and summarize the responses again?',
-					$start->format( 'Y-m-d H:i:s' )
+					$start->format( 'Y-m-d H:i:s T' )
 				),
 				$assoc_args
 			);
@@ -137,8 +137,8 @@ final readonly class CliController {
 		WP_CLI::log(
 			\sprintf(
 				'Summarizing the responses from %s until %s.',
-				$start->format( 'Y-m-d H:i:s' ),
-				$end->format( 'Y-m-d H:i:s' )
+				$start->format( 'Y-m-d H:i:s T' ),
+				$end->format( 'Y-m-d H:i:s T' )
 			)
 		);
 
@@ -167,7 +167,7 @@ final readonly class CliController {
 	}
 
 	/**
-	 * Compares the number of responses with the summaries per day.
+	 * Compares the number of responses with the summaries per UTC day.
 	 *
 	 * Only the period that still has responses and is summarized can be compared.
 	 *
@@ -204,8 +204,8 @@ final readonly class CliController {
 
 		$aggregated_until = $this->response_controller->get_aggregated_until();
 
-		WP_CLI::log( \sprintf( 'First response:   %s', null === $first_response_hour ? '-' : $first_response_hour->format( 'Y-m-d H:i:s' ) ) );
-		WP_CLI::log( \sprintf( 'Summarized until: %s', null === $aggregated_until ? '-' : $aggregated_until->format( 'Y-m-d H:i:s' ) ) );
+		WP_CLI::log( \sprintf( 'First response:   %s', null === $first_response_hour ? '-' : $first_response_hour->format( 'Y-m-d H:i:s T' ) ) );
+		WP_CLI::log( \sprintf( 'Summarized until: %s', null === $aggregated_until ? '-' : $aggregated_until->format( 'Y-m-d H:i:s T' ) ) );
 
 		if ( null === $first_response_hour || null === $aggregated_until || $first_response_hour >= $aggregated_until ) {
 			WP_CLI::warning( 'There is no period with responses that is summarized, run `wp orbis-monitoring aggregate-responses` first.' );

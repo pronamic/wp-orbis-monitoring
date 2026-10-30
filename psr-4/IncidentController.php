@@ -191,14 +191,14 @@ final readonly class IncidentController {
 	 * Get the monitor of a monitor post.
 	 *
 	 * @param int $post_id Post ID.
-	 * @return object{id: string, status: Status, failure_count: string, status_changed_at: string|null}|null
+	 * @return object{id: string, status: Status, failure_count: string, status_changed_at: string|null, checked_at: string|null}|null
 	 */
 	public function get_monitor_by_post_id( $post_id ): ?object {
 		global $wpdb;
 
 		$monitor = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT id, status, failure_count, status_changed_at FROM $wpdb->orbis_monitors WHERE post_id = %d;",
+				"SELECT id, status, failure_count, status_changed_at, checked_at FROM $wpdb->orbis_monitors WHERE post_id = %d;",
 				$post_id
 			)
 		);
@@ -210,7 +210,7 @@ final readonly class IncidentController {
 	 * Get the monitors of monitor posts.
 	 *
 	 * @param int[] $post_ids Post IDs.
-	 * @return array<int, object{id: string, post_id: string, status: Status, failure_count: string, status_changed_at: string|null}> Monitors keyed by post ID.
+	 * @return array<int, object{id: string, post_id: string, status: Status, failure_count: string, status_changed_at: string|null, checked_at: string|null}> Monitors keyed by post ID.
 	 */
 	public function get_monitors_by_post_ids( array $post_ids ): array {
 		global $wpdb;
@@ -226,7 +226,7 @@ final readonly class IncidentController {
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- The placeholders are generated above.
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT id, post_id, status, failure_count, status_changed_at FROM $wpdb->orbis_monitors WHERE post_id IN ( $placeholders );",
+				"SELECT id, post_id, status, failure_count, status_changed_at, checked_at FROM $wpdb->orbis_monitors WHERE post_id IN ( $placeholders );",
 				$post_ids
 			)
 		);

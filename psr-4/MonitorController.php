@@ -173,13 +173,6 @@ final readonly class MonitorController {
 	 */
 	private function check_monitor( $post_id ): void {
 		$this->monitor_post( $post_id );
-
-		// Touch the modified date, the admin "Last Check" column shows this date.
-		\wp_update_post(
-			[
-				'ID' => $post_id,
-			]
-		);
 	}
 
 	/**
@@ -219,7 +212,6 @@ final readonly class MonitorController {
 		$error_message = \is_wp_error( $response ) ? \mb_substr( $response->get_error_message(), 0, 255 ) : null;
 		$body          = \wp_remote_retrieve_body( $response );
 		$content_type  = \wp_remote_retrieve_header( $response, 'content-type' );
-		$date          = \wp_remote_retrieve_header( $response, 'date' );
 
 		\update_post_meta( $post->ID, '_orbis_monitor_duration', $duration );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_code', $response_code );
@@ -227,7 +219,6 @@ final readonly class MonitorController {
 		\update_post_meta( $post->ID, '_orbis_monitor_response_body', $body );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_content_length', \strlen( $body ) );
 		\update_post_meta( $post->ID, '_orbis_monitor_response_content_type', $content_type );
-		\update_post_meta( $post->ID, '_orbis_monitor_response_date', \strtotime( $date ) );
 
 		$required_response_code = \get_post_meta( $post->ID, '_orbis_monitor_required_response_code', true );
 		$required_response_code = empty( $required_response_code ) ? '200' : $required_response_code;
@@ -242,11 +233,29 @@ final readonly class MonitorController {
 
 		$monitor_id = $this->get_monitor_id( $post->ID );
 
+		$checked_at = \current_time( 'mysql', true );
+
+		$wpdb->update(
+			$wpdb->orbis_monitors,
+			[
+				'checked_at' => $checked_at,
+			],
+			[
+				'id' => $monitor_id,
+			],
+			[
+				'%s',
+			],
+			[
+				'%d',
+			]
+		);
+
 		$wpdb->insert(
 			$wpdb->orbis_monitor_responses,
 			[
 				'monitor_id'              => $monitor_id,
-				'monitored_date'          => \current_time( 'mysql' ),
+				'monitored_date'          => $checked_at,
 				'duration'                => $duration,
 				'response_code'           => $response_code,
 				'response_content_length' => \strlen( $body ),

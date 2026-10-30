@@ -61,7 +61,6 @@ $checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_
 						$code          = get_post_meta( get_the_ID(), '_orbis_monitor_response_code', true );
 						$error_message = get_post_meta( get_the_ID(), '_orbis_monitor_error_message', true );
 						$duration      = get_post_meta( get_the_ID(), '_orbis_monitor_duration', true );
-						$time          = get_post_meta( get_the_ID(), '_orbis_monitor_response_date', true );
 						$monitor       = $monitors[ get_the_ID() ] ?? null;
 						$checks        = ( null === $monitor ) ? [] : ( $checks_by_monitor[ (int) $monitor->id ] ?? [] );
 
@@ -98,7 +97,7 @@ $checks_by_monitor = $response_controller->get_recent_checks_by_monitor_ids( wp_
 								<?php echo empty( $duration ) ? '—' : esc_html( number_format_i18n( (float) $duration, 2 ) ); ?>
 							</td>
 							<td>
-								<?php echo empty( $time ) ? '—' : esc_html( date_i18n( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) $time ) ); ?>
+								<?php echo ( null === $monitor || null === $monitor->checked_at ) ? '—' : esc_html( wp_date( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) strtotime( $monitor->checked_at . ' UTC' ) ) ); ?>
 							</td>
 							<td>
 								<?php get_template_part( 'templates/table-cell-actions' ); ?>

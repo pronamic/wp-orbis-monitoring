@@ -53,7 +53,7 @@ final class InstallController {
 	 * @return void
 	 */
 	private function maybe_install(): void {
-		if ( '1.8.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
+		if ( '1.9.0' === \get_option( 'orbis_monitoring_db_version' ) ) {
 			return;
 		}
 
@@ -69,10 +69,12 @@ final class InstallController {
 
 		$this->migrate_check_succeeded();
 
+		$this->migrate_checked_at();
+
 		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.flush_rewrite_rules_flush_rewrite_rules -- Only once after activation or an update.
 		\flush_rewrite_rules();
 
-		\update_option( 'orbis_monitoring_db_version', '1.8.0' );
+		\update_option( 'orbis_monitoring_db_version', '1.9.0' );
 	}
 
 	/**
@@ -93,6 +95,7 @@ final class InstallController {
 				status VARCHAR(10) NOT NULL DEFAULT 'unknown',
 				failure_count INT(10) UNSIGNED NOT NULL DEFAULT 0,
 				status_changed_at DATETIME DEFAULT NULL,
+				checked_at DATETIME DEFAULT NULL,
 				created_at DATETIME NOT NULL,
 				updated_at DATETIME NOT NULL,
 				PRIMARY KEY  (id),
@@ -175,6 +178,19 @@ final class InstallController {
 			;
 			SQL
 		);
+	}
+
+	/**
+	 * Migrate checked at.
+	 *
+	 * The `_orbis_monitor_response_date` meta is replaced by the `checked_at`
+	 * column. It contained the `Date` header of the last response, which is
+	 * the time of the monitored server.
+	 *
+	 * @return void
+	 */
+	private function migrate_checked_at(): void {
+		\delete_post_meta_by_key( '_orbis_monitor_response_date' );
 	}
 
 	/**

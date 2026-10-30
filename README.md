@@ -96,7 +96,7 @@ Each published monitor adds an action every minute, so Orbis Monitoring tunes Ac
 | Setting | Default | Orbis Monitoring |
 |---|---|---|
 | Batch size (`action_scheduler_queue_runner_batch_size`) | 25 | at least 100 |
-| Concurrent batches (`action_scheduler_queue_runner_concurrent_batches`) | 1 | at least 3 |
+| Concurrent batches (`action_scheduler_queue_runner_concurrent_batches`) | 1 | at least 5 |
 | Retention period of completed actions (`action_scheduler_retention_period`) | 30 days | at most 3 days |
 
 The concurrent batches are shared by all runners, including the one WP-Cron starts with `wp cron event run --due-now`. When all of them are busy, a new run stops with `Error: There are too many concurrent batches.` and the next minute tries again. If you get this error often, raise the limit with the `action_scheduler_queue_runner_concurrent_batches` filter. Don't use `--force`, it removes the limit on the number of runners.
@@ -183,6 +183,8 @@ Monitoring every minute adds up: with 350 monitors that is over 500,000 response
 | `orbis_monitoring_cleanup_responses` | Daily | Deletes responses older than the response retention period, only when they are summarized. |
 
 The response retention period defaults to 30 days and can be changed under **Settings → Orbis Monitoring → Data**. The hourly summaries are kept indefinitely.
+
+All dates in the database tables are stored in UTC and shown in the timezone of the site. The summaries are per UTC hour, the response time graph groups them per day, week or month in the timezone of the site.
 
 The summaries can also be managed with WP-CLI:
 

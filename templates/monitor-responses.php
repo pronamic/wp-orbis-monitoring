@@ -86,7 +86,7 @@ $responses = $wpdb->get_results(
 
 					<tr>
 						<td>
-							<?php echo esc_html( mysql2date( __( 'd-m-Y H:i', 'orbis-monitoring' ), $response->monitored_date ) ); ?>
+							<?php echo esc_html( wp_date( __( 'd-m-Y H:i', 'orbis-monitoring' ), (int) strtotime( $response->monitored_date . ' UTC' ) ) ); ?>
 						</td>
 						<td>
 							<?php echo empty( $response->duration ) ? '—' : esc_html( number_format_i18n( (float) $response->duration, 2 ) ); ?>
