@@ -153,6 +153,8 @@ final readonly class AdminController {
 			'_orbis_monitor_url'                    => isset( $_POST['_orbis_monitor_url'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_url'] ) ) : '',
 			'_orbis_monitor_required_response_code' => isset( $_POST['_orbis_monitor_required_response_code'] ) ? \absint( $_POST['_orbis_monitor_required_response_code'] ) : 0,
 			'_orbis_monitor_required_location'      => isset( $_POST['_orbis_monitor_required_location'] ) ? \sanitize_url( \wp_unslash( $_POST['_orbis_monitor_required_location'] ) ) : '',
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized in `sanitize_headers()`.
+			'_orbis_monitor_headers'                => isset( $_POST['_orbis_monitor_headers'] ) ? $this->sanitize_headers( \wp_unslash( $_POST['_orbis_monitor_headers'] ) ) : [],
 		];
 
 		foreach ( $data as $key => $value ) {
@@ -164,6 +166,45 @@ final readonly class AdminController {
 		}
 
 		$this->monitor_controller->monitor_post( $post_id );
+	}
+
+	/**
+	 * Sanitize the custom HTTP headers from the monitor details meta box.
+	 *
+	 * Rows with an empty or invalid header name are skipped. Line breaks are
+	 * removed from the values to prevent header injection.
+	 *
+	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/28
+	 * @link https://www.rfc-editor.org/rfc/rfc9110#name-tokens
+	 * @param mixed $input Input.
+	 * @return list<array{name: string, value: string}>
+	 */
+	private function sanitize_headers( $input ): array {
+		if ( ! \is_array( $input ) ) {
+			return [];
+		}
+
+		$headers = [];
+
+		foreach ( $input as $row ) {
+			if ( ! \is_array( $row ) ) {
+				continue;
+			}
+
+			$name  = \trim( \sanitize_text_field( (string) ( $row['name'] ?? '' ) ) );
+			$value = \trim( \sanitize_text_field( (string) ( $row['value'] ?? '' ) ) );
+
+			if ( 1 !== \preg_match( '/^[!#$%&\'*+.^_`|~0-9A-Za-z-]+$/', $name ) ) {
+				continue;
+			}
+
+			$headers[] = [
+				'name'  => $name,
+				'value' => $value,
+			];
+		}
+
+		return $headers;
 	}
 
 	/**

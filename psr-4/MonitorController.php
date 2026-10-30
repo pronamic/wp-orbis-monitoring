@@ -176,6 +176,36 @@ final readonly class MonitorController {
 	}
 
 	/**
+	 * Get the custom HTTP headers that are sent with every check of a monitor.
+	 *
+	 * A `User-Agent` header replaces the default user agent, `WP_Http::request()`
+	 * takes care of that.
+	 *
+	 * @link https://github.com/pronamic/wp-orbis-monitoring/issues/28
+	 * @param int $post_id Post ID.
+	 * @return array<string, string>
+	 */
+	public function get_headers( int $post_id ): array {
+		$rows = \get_post_meta( $post_id, '_orbis_monitor_headers', true );
+
+		if ( ! \is_array( $rows ) ) {
+			return [];
+		}
+
+		$headers = [];
+
+		foreach ( $rows as $row ) {
+			if ( ! \is_array( $row ) || empty( $row['name'] ) ) {
+				continue;
+			}
+
+			$headers[ (string) $row['name'] ] = (string) ( $row['value'] ?? '' );
+		}
+
+		return $headers;
+	}
+
+	/**
 	 * Monitor post.
 	 *
 	 * @param int|\WP_Post $post Post ID or post object.
@@ -201,6 +231,8 @@ final readonly class MonitorController {
 				'redirection' => 0,
 				// @link https://github.com/pronamic/wp-orbis-monitoring/issues/10
 				'user-agent'  => $this->settings_controller->get_user_agent(),
+				// @link https://github.com/pronamic/wp-orbis-monitoring/issues/28
+				'headers'     => $this->get_headers( $post->ID ),
 			]
 		);
 
