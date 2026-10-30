@@ -69,8 +69,10 @@ final class PostTypesController {
 				'menu_position'      => null,
 				'supports'           => [
 					'title',
+					'editor',
 					'author',
 					'comments',
+					'revisions',
 				],
 			]
 		);
