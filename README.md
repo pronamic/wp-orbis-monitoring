@@ -37,6 +37,7 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 | 🗂️ **Full history** | Every check is stored: duration, status code, message, content type and content length. Spot trends, prove SLAs, find out when it started. |
 | 📋 **Overview at a glance** | See the status (OK, pending, alert or unknown) of all monitors in one list, together with the last response code, response time and check time. |
 | 🚨 **Incident history** | Every alert is stored as an incident, with start, end, duration and the error. Open a monitor to see its incidents, including the one that is still ongoing. |
+| 🗄️ **Archiving** | Archive monitors you no longer need with [Orbis Archiver](https://github.com/pronamic/wp-orbis-archiver). Archived monitors are no longer checked, their open alert is resolved without a notification and their history is kept. |
 | 🌐 **Front-end pages** | A `/monitors/` archive and detail pages, which fit right into the Orbis theme when you use it, so your whole team can see the status and incident history. |
 | 🔌 **REST API ready** | Monitors are available via the WordPress REST API at `/wp-json/wp/v2/orbis/monitors`. |
 | 🧩 **Hooks** | Plug in your own notifications, tickets or dashboards with the `orbis_monitoring_incident_opened`, `orbis_monitoring_incident_resolved` and other actions. |

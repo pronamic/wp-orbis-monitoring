@@ -43,6 +43,7 @@ final readonly class IncidentController {
 	 */
 	public function setup(): void {
 		\add_action( 'transition_post_status', $this->transition_post_status( ... ), 10, 3 );
+		\add_action( 'added_post_meta', $this->added_post_meta( ... ), 10, 3 );
 	}
 
 	/**
@@ -168,7 +169,43 @@ final readonly class IncidentController {
 			return;
 		}
 
-		$monitor = $this->get_monitor_by_post_id( $post->ID );
+		$this->reset_monitor( $post->ID );
+	}
+
+	/**
+	 * Added post meta.
+	 *
+	 * When a monitor is archived with the Orbis Archiver plugin, the open
+	 * incident is closed without a notification and the status is reset.
+	 *
+	 * @link https://github.com/pronamic/wp-orbis-archiver
+	 * @param int    $meta_id  Meta ID.
+	 * @param int    $post_id  Post ID.
+	 * @param string $meta_key Meta key.
+	 * @return void
+	 */
+	private function added_post_meta( $meta_id, $post_id, $meta_key ): void {
+		if ( '_orbis_archived_at' !== $meta_key ) {
+			return;
+		}
+
+		if ( 'orbis_monitor' !== \get_post_type( $post_id ) ) {
+			return;
+		}
+
+		$this->reset_monitor( (int) $post_id );
+	}
+
+	/**
+	 * Reset monitor.
+	 *
+	 * Closes the open incident without a notification and resets the status.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	private function reset_monitor( int $post_id ): void {
+		$monitor = $this->get_monitor_by_post_id( $post_id );
 
 		if ( null === $monitor ) {
 			return;
@@ -242,7 +279,7 @@ final readonly class IncidentController {
 	}
 
 	/**
-	 * Count the published monitors per status.
+	 * Count the published monitors that are not archived per status.
 	 *
 	 * Monitors without a row in the monitors table have not been checked yet, so they count as unknown.
 	 *
@@ -261,10 +298,19 @@ final readonly class IncidentController {
 					LEFT JOIN
 				$wpdb->orbis_monitors AS orbis_monitor
 						ON post.ID = orbis_monitor.post_id
+					LEFT JOIN
+				$wpdb->postmeta AS archived_at
+						ON (
+							post.ID = archived_at.post_id
+								AND
+							archived_at.meta_key = '_orbis_archived_at'
+						)
 			WHERE
 				post.post_type = 'orbis_monitor'
 					AND
 				post.post_status = 'publish'
+					AND
+				archived_at.meta_id IS NULL
 			GROUP BY
 				status
 			;

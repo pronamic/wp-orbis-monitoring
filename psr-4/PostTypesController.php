@@ -73,6 +73,7 @@ final class PostTypesController {
 					'author',
 					'comments',
 					'revisions',
+					'orbis-archiving',
 				],
 			]
 		);

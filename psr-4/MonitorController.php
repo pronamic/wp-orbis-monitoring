@@ -42,7 +42,7 @@ final readonly class MonitorController {
 		/**
 		 * Action Scheduler high volume.
 		 *
-		 * Each published monitor adds one action every minute, so Action Scheduler
+		 * Each published monitor that is not archived adds one action every minute, so Action Scheduler
 		 * has to process more actions than its defaults allow for.
 		 *
 		 * @link https://actionscheduler.org/perf/
@@ -143,10 +143,12 @@ final readonly class MonitorController {
 	}
 
 	/**
-	 * Schedule a check for each published monitor.
+	 * Schedule a check for each published monitor that is not archived.
 	 *
 	 * Checks are unique per monitor, so a slow check is not stacked up.
+	 * Monitors archived with the Orbis Archiver plugin are skipped.
 	 *
+	 * @link https://github.com/pronamic/wp-orbis-archiver
 	 * @return void
 	 */
 	private function schedule_checks(): void {
@@ -157,6 +159,13 @@ final readonly class MonitorController {
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'no_found_rows'  => true,
+				// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Archived monitors are excluded, the number of monitors is small.
+				'meta_query'     => [
+					[
+						'key'     => '_orbis_archived_at',
+						'compare' => 'NOT EXISTS',
+					],
+				],
 			]
 		);
 
@@ -168,10 +177,17 @@ final readonly class MonitorController {
 	/**
 	 * Check monitor.
 	 *
+	 * A check can already be enqueued when a monitor is archived, so archived
+	 * monitors are skipped here too.
+	 *
 	 * @param int $post_id Post ID.
 	 * @return void
 	 */
 	private function check_monitor( $post_id ): void {
+		if ( \metadata_exists( 'post', $post_id, '_orbis_archived_at' ) ) {
+			return;
+		}
+
 		$this->monitor_post( $post_id );
 	}
 
