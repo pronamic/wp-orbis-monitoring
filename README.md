@@ -5,7 +5,7 @@
 **Know when your websites don't respond as expected, before your clients do.**
 
 Status code, redirect and response time monitoring for WordPress, with optional [Orbis](https://www.pronamic.eu/orbis/) integration.
-Every site you manage, checked every minute, right inside WordPress.
+Every site you manage, checked every few minutes, right inside WordPress.
 
 [![PHP 8.3+](https://img.shields.io/badge/PHP-8.3%2B-777BB4?logo=php&logoColor=white)](https://www.php.net/)
 [![WordPress 7.1+](https://img.shields.io/badge/WordPress-7.1%2B-21759B?logo=wordpress&logoColor=white)](https://wordpress.org/)
@@ -22,7 +22,7 @@ Every site you manage, checked every minute, right inside WordPress.
 
 You already run your work in WordPress, maybe even your clients, projects and subscriptions in Orbis. Why keep your website monitoring in yet another SaaS dashboard?
 
-Orbis Monitoring turns any URL into a **monitor**, a regular WordPress post that lives next to the rest of your work. Every minute it checks whether the site responds the way it should. If something is off, your team hears about it in Slack right away.
+Orbis Monitoring turns any URL into a **monitor**, a regular WordPress post that lives next to the rest of your work. Every few minutes it checks whether the site responds the way it should. If something is off, your team hears about it in Slack right away.
 
 No external service. No monthly fee per monitor. Your data stays on your own server.
 
@@ -30,7 +30,7 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 
 | | |
 |---|---|
-| ⏱️ **Checked every minute** | Each published monitor is checked every 60 seconds, reliably queued through [Action Scheduler](https://actionscheduler.org/) instead of flaky WP-Cron. |
+| ⏱️ **Checked regularly** | Each published monitor is checked every 5 minutes by default (configurable from 1 to 60 minutes), reliably queued through [Action Scheduler](https://actionscheduler.org/) instead of flaky WP-Cron. |
 | 🎯 **More than "is it online?"** | Set the status code you expect (`200`, `301`, `410`, …) and, for redirects, the exact `Location` it should point to. A wrong redirect counts as a problem too. |
 | 🔔 **Slack alerts without the noise** | An alert is only raised after a number of failed checks in a row (default 3). You get one message when the alert is raised and one when it is resolved, with its duration. Reminders while the alert is open are optional. |
 | 📈 **Response time graphs** | See how fast a site responded over the past year, grouped per day, week or month, with [Chart.js](https://www.chartjs.org/). |
@@ -47,7 +47,7 @@ No external service. No monthly fee per monitor. Your data stays on your own ser
 
 ```mermaid
 flowchart LR
-    A[⏱️ Every minute] --> B[Queue a check<br/>per monitor]
+    A[⏱️ Every check interval] --> B[Queue a check<br/>per monitor]
     B --> C[🌐 Request URL]
     C --> D[(💾 Store response<br/>& timing)]
     D --> E{Expected status<br/>and location?}
@@ -61,7 +61,7 @@ flowchart LR
 ```
 
 1. **Add a monitor**: give it a title and a URL, and optionally the status code and redirect location you expect.
-2. **Sit back**: Action Scheduler queues one check per monitor every minute. Checks are unique per monitor, so a slow site never piles up a backlog.
+2. **Sit back**: Action Scheduler queues one check per monitor every check interval (default 5 minutes, see **Settings → Orbis Monitoring → General**). Checks are unique per monitor, so a slow site never piles up a backlog.
 3. **Get notified**: when the response doesn't match a number of times in a row, an incident is opened, the `orbis_monitoring_incident_opened` action fires and your team gets one Slack message. When the response matches again, the incident is resolved and `orbis_monitoring_incident_resolved` fires. The threshold and an optional reminder interval are set under **Settings → Orbis Monitoring**.
 4. **Dig in**: open the monitor to see its status, incident history, response history and response time graph.
 
@@ -79,7 +79,7 @@ flowchart LR
 
 ### Server cron
 
-By default Action Scheduler runs its queue on WP-Cron, which only fires when someone visits the site. For checks that really run every minute, let the server run the queue with [WP-CLI](https://wp-cli.org/). All actions of this plugin are in the `orbis-monitoring` group, so you can run just those:
+By default Action Scheduler runs its queue on WP-Cron, which only fires when someone visits the site. For checks that really run on time, let the server run the queue with [WP-CLI](https://wp-cli.org/). All actions of this plugin are in the `orbis-monitoring` group, so you can run just those:
 
 ```sh
 * * * * * wp action-scheduler run --group=orbis-monitoring --batch-size=25 --batches=0 --path=/path/to/wordpress --quiet
@@ -92,7 +92,7 @@ By default Action Scheduler runs its queue on WP-Cron, which only fires when som
 
 Runs that overlap are fine, that's how checks run in parallel. Don't use a large batch size: one runner then claims all checks and works through them one by one, while the next runner finds nothing left to do. The **Timeout** under **Settings → Orbis Monitoring** (default 10 seconds) limits how long a single slow site can hold up a runner.
 
-Each published monitor adds an action every minute, so Orbis Monitoring tunes Action Scheduler for a high volume of actions:
+Each published monitor adds an action every check interval, so Orbis Monitoring tunes Action Scheduler for a high volume of actions:
 
 | Setting | Default | Orbis Monitoring |
 |---|---|---|
@@ -176,7 +176,7 @@ Run `composer run build` to create the build version.
 
 ### Housekeeping
 
-Monitoring every minute adds up: with 350 monitors that is over 500,000 responses a day. Orbis Monitoring keeps the database lean with two Action Scheduler jobs in the `orbis-monitoring` group:
+Monitoring adds up: with 350 monitors and a check interval of 5 minutes that is about 100,000 responses a day, with an interval of 1 minute over 500,000. Orbis Monitoring keeps the database lean with two Action Scheduler jobs in the `orbis-monitoring` group:
 
 | Action | Interval | Description |
 |---|---|---|

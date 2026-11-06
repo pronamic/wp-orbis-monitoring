@@ -42,7 +42,7 @@ final readonly class MonitorController {
 		/**
 		 * Action Scheduler high volume.
 		 *
-		 * Each published monitor that is not archived adds one action every minute, so Action Scheduler
+		 * Each published monitor that is not archived adds one action every check interval, so Action Scheduler
 		 * has to process more actions than its defaults allow for.
 		 *
 		 * @link https://actionscheduler.org/perf/
@@ -131,15 +131,28 @@ final readonly class MonitorController {
 	}
 
 	/**
-	 * Schedule the recurring action that schedules the monitor checks every minute.
+	 * Schedule the recurring action that schedules the monitor checks every check interval.
+	 *
+	 * The interval is part of the action arguments, so a changed interval is
+	 * detected: the existing action is unscheduled and a new one is scheduled.
 	 *
 	 * @link https://actionscheduler.org/api/
 	 * @return void
 	 */
 	private function schedule(): void {
-		if ( false === \as_has_scheduled_action( 'orbis_monitoring_schedule_checks' ) ) {
-			\as_schedule_recurring_action( \time(), MINUTE_IN_SECONDS, 'orbis_monitoring_schedule_checks', [], 'orbis-monitoring', true );
+		$interval = $this->settings_controller->get_check_interval() * MINUTE_IN_SECONDS;
+
+		$args = [
+			'interval' => $interval,
+		];
+
+		if ( false !== \as_has_scheduled_action( 'orbis_monitoring_schedule_checks', $args, 'orbis-monitoring' ) ) {
+			return;
 		}
+
+		\as_unschedule_all_actions( 'orbis_monitoring_schedule_checks' );
+
+		\as_schedule_recurring_action( \time(), $interval, 'orbis_monitoring_schedule_checks', $args, 'orbis-monitoring', true );
 	}
 
 	/**

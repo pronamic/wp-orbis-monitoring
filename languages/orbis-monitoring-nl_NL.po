@@ -2,21 +2,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Orbis Monitoring\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/orbis-monitoring\n"
-"POT-Creation-Date: 2026-10-30T09:15:00+00:00\n"
-"PO-Revision-Date: 2026-10-30T08:45:23+00:00\n"
 "Last-Translator: Remco Tolsma <info@remcotolsma.nl>\n"
 "Language-Team: Pronamic <info@pronamic.nl>\n"
-"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-10-30T09:15:00+00:00\n"
+"PO-Revision-Date: 2026-11-06T07:52:30+00:00\n"
+"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Generator: Poedit 3.10\n"
 
 #. Plugin Name of the plugin
-#: orbis-monitoring.php:11 psr-4/SettingsController.php:113
-#: psr-4/SettingsController.php:114
+#: orbis-monitoring.php:11
+#: psr-4/SettingsController.php:122
+#: psr-4/SettingsController.php:123
 msgid "Orbis Monitoring"
 msgstr "Orbis Monitoring"
 
@@ -40,82 +41,96 @@ msgstr "Pronamic"
 msgid "https://www.pronamic.eu/"
 msgstr "https://www.pronamic.nl/"
 
-#: admin/meta-box-monitor-details.php:38 admin/meta-box-monitor-details.php:85
+#: admin/meta-box-monitor-details.php:47
+#: admin/meta-box-monitor-details.php:143
 msgid "Name"
 msgstr "Naam"
 
-#: admin/meta-box-monitor-details.php:41 admin/meta-box-monitor-details.php:86
+#: admin/meta-box-monitor-details.php:50
+#: admin/meta-box-monitor-details.php:144
 msgid "Value"
 msgstr "Waarde"
 
-#: admin/meta-box-monitor-details.php:44
+#: admin/meta-box-monitor-details.php:53
 msgid "Remove"
 msgstr "Verwijderen"
 
-#: admin/meta-box-monitor-details.php:54 templates/archive-orbis_monitor.php:44
-#: templates/monitor-details.php:57
+#: admin/meta-box-monitor-details.php:63
+#: templates/archive-orbis_monitor.php:44
+#: templates/monitor-details.php:56
 msgid "URL"
 msgstr "URL"
 
-#: admin/meta-box-monitor-details.php:62 templates/monitor-details.php:66
+#: admin/meta-box-monitor-details.php:71
+#: templates/monitor-details.php:65
 msgid "Required Response Code"
 msgstr "Vereiste antwoordcode"
 
-#: admin/meta-box-monitor-details.php:70 templates/monitor-details.php:71
+#: admin/meta-box-monitor-details.php:79
+#: templates/monitor-details.php:70
 msgid "Required Location"
 msgstr "Vereiste locatie"
 
-#: admin/meta-box-monitor-details.php:78 templates/monitor-details.php:80
+#: admin/meta-box-monitor-details.php:87
+#: templates/monitor-details.php:79
 msgid "HTTP Headers"
 msgstr "HTTP-headers"
 
-#: admin/meta-box-monitor-details.php:87
+#: admin/meta-box-monitor-details.php:145
 msgid "Actions"
 msgstr "Acties"
 
-#: admin/meta-box-monitor-details.php:106
+#: admin/meta-box-monitor-details.php:164
 msgid "Add Header"
 msgstr "Header toevoegen"
 
-#: admin/meta-box-monitor-details.php:110
+#: admin/meta-box-monitor-details.php:168
 msgid "Headers that are sent with every check, for example Authorization. A User-Agent header replaces the default user agent."
 msgstr "Headers die bij elke controle worden meegestuurd, bijvoorbeeld Authorization. Een User-Agent-header vervangt de standaard user agent."
 
-#: admin/meta-box-monitor-details.php:138
+#: admin/meta-box-monitor-details.php:196
 msgid "cURL"
 msgstr "cURL"
 
-#: admin/meta-box-monitor-incidents.php:15 templates/monitor-incidents.php:42
+#: admin/meta-box-monitor-incidents.php:15
+#: templates/monitor-incidents.php:42
 msgid "No incidents."
 msgstr "Geen incidenten."
 
-#: admin/meta-box-monitor-incidents.php:26 templates/monitor-incidents.php:51
+#: admin/meta-box-monitor-incidents.php:26
+#: templates/monitor-incidents.php:51
 msgid "Started"
 msgstr "Gestart"
 
-#: admin/meta-box-monitor-incidents.php:27 templates/monitor-incidents.php:52
+#: admin/meta-box-monitor-incidents.php:27
+#: templates/monitor-incidents.php:52
 msgid "Resolved"
 msgstr "Opgelost"
 
 #: admin/meta-box-monitor-incidents.php:28
-#: admin/meta-box-monitor-responses.php:40 psr-4/AdminController.php:218
-#: templates/monitor-incidents.php:53 templates/monitor-responses.php:76
+#: admin/meta-box-monitor-responses.php:40
+#: psr-4/AdminController.php:240
+#: templates/monitor-incidents.php:53
+#: templates/monitor-responses.php:76
 msgid "Duration"
 msgstr "Duur"
 
 #: admin/meta-box-monitor-incidents.php:29
-#: admin/meta-box-monitor-responses.php:41 templates/monitor-incidents.php:54
+#: admin/meta-box-monitor-responses.php:41
+#: templates/monitor-incidents.php:54
 #: templates/monitor-responses.php:77
 msgid "Code"
 msgstr "Code"
 
 #: admin/meta-box-monitor-incidents.php:30
-#: admin/meta-box-monitor-responses.php:42 templates/monitor-incidents.php:55
+#: admin/meta-box-monitor-responses.php:42
+#: templates/monitor-incidents.php:55
 #: templates/monitor-responses.php:78
 msgid "Message"
 msgstr "Bericht"
 
-#: admin/meta-box-monitor-incidents.php:43 templates/monitor-incidents.php:69
+#: admin/meta-box-monitor-incidents.php:43
+#: templates/monitor-incidents.php:69
 msgid "Ongoing"
 msgstr "Lopend"
 
@@ -123,11 +138,13 @@ msgstr "Lopend"
 msgid "ID"
 msgstr "ID"
 
-#: admin/meta-box-monitor-responses.php:39 templates/monitor-responses.php:75
+#: admin/meta-box-monitor-responses.php:39
+#: templates/monitor-responses.php:75
 msgid "Date"
 msgstr "Datum"
 
-#: admin/meta-box-monitor-responses.php:43 templates/monitor-responses.php:79
+#: admin/meta-box-monitor-responses.php:43
+#: templates/monitor-responses.php:79
 msgid "Content Length"
 msgstr "Content Length"
 
@@ -135,12 +152,15 @@ msgstr "Content Length"
 msgid "Content Type"
 msgstr "Content Type"
 
-#: psr-4/AdminController.php:55 templates/monitor-details.php:26
+#: psr-4/AdminController.php:55
+#: templates/monitor-details.php:25
 msgid "Monitor Details"
 msgstr "Monitor details"
 
-#: psr-4/AdminController.php:64 psr-4/AdminController.php:217
-#: templates/archive-orbis_monitor.php:41 templates/monitor-details.php:30
+#: psr-4/AdminController.php:64
+#: psr-4/AdminController.php:239
+#: templates/archive-orbis_monitor.php:41
+#: templates/monitor-details.php:29
 #: templates/search-form.php:30
 msgid "Status"
 msgstr "Status"
@@ -153,32 +173,33 @@ msgstr "Monitorincidenten"
 msgid "Monitor Responses"
 msgstr "Monitor antwoorden"
 
-#: psr-4/AdminController.php:219
+#: psr-4/AdminController.php:241
 msgid "Last Response Code"
 msgstr "Laatste antwoordcode"
 
-#: psr-4/AdminController.php:220
+#: psr-4/AdminController.php:242
 msgid "Last Message"
 msgstr "Laatste bericht"
 
-#: psr-4/AdminController.php:221
+#: psr-4/AdminController.php:243
 msgid "Last Content Length"
 msgstr "Laatste Content Length"
 
-#: psr-4/AdminController.php:222
+#: psr-4/AdminController.php:244
 msgid "Last Content Type"
 msgstr "Laatste Content Type"
 
-#: psr-4/AdminController.php:223
+#: psr-4/AdminController.php:245
 msgid "Last Check"
 msgstr "Laatste controle"
 
-#: psr-4/AdminController.php:280
+#: psr-4/AdminController.php:302
 msgid "D j M Y \\a\\t H:i:s"
 msgstr "D j M Y \\o\\m H:i:s"
 
 #. translators: %d: number of failed checks in a row
-#: psr-4/AdminController.php:307 templates/status-badge.php:26
+#: psr-4/AdminController.php:329
+#: templates/status-badge.php:26
 #, php-format
 msgid "(%d failed check)"
 msgid_plural "(%d failed checks)"
@@ -186,7 +207,8 @@ msgstr[0] "(%d mislukte controle)"
 msgstr[1] "(%d mislukte controles)"
 
 #. translators: %s: human readable time difference
-#: psr-4/AdminController.php:316 templates/status-badge.php:38
+#: psr-4/AdminController.php:338
+#: templates/status-badge.php:38
 #, php-format
 msgid "for %s"
 msgstr "al %s"
@@ -256,89 +278,98 @@ msgstr "Geen monitors gevonden in prullenbak."
 msgid "Websites and URLs that are periodically checked for the expected response."
 msgstr "Websites en URL's die periodiek worden gecontroleerd op de verwachte reactie."
 
-#: psr-4/SettingsController.php:186
+#: psr-4/SettingsController.php:205
 msgid "General"
 msgstr "Algemeen"
 
-#: psr-4/SettingsController.php:193
+#: psr-4/SettingsController.php:212
 msgid "User Agent"
 msgstr "User agent"
 
-#: psr-4/SettingsController.php:204
+#: psr-4/SettingsController.php:223
+msgid "Check Interval"
+msgstr "Controle-interval"
+
+#: psr-4/SettingsController.php:234
 msgid "Timeout"
 msgstr "Time-out"
 
-#: psr-4/SettingsController.php:215
+#: psr-4/SettingsController.php:245
 msgid "Notifications"
 msgstr "Notificaties"
 
-#: psr-4/SettingsController.php:222
+#: psr-4/SettingsController.php:252
 msgid "Failure Threshold"
 msgstr "Foutdrempel"
 
-#: psr-4/SettingsController.php:233
+#: psr-4/SettingsController.php:263
 msgid "Reminder Interval"
 msgstr "Herinneringsinterval"
 
-#: psr-4/SettingsController.php:244
+#: psr-4/SettingsController.php:274
 msgid "Data"
 msgstr "Gegevens"
 
-#: psr-4/SettingsController.php:251
+#: psr-4/SettingsController.php:281
 msgid "Response Retention"
 msgstr "Bewaartermijn responses"
 
-#: psr-4/SettingsController.php:271
+#: psr-4/SettingsController.php:301
 msgid "Settings"
 msgstr "Instellingen"
 
 #. translators: %s: default user agent
-#: psr-4/SettingsController.php:324
+#: psr-4/SettingsController.php:354
 #, php-format
 msgid "The user agent used for the monitor requests. Leave empty to use the default user agent: %s"
 msgstr "De user agent die gebruikt wordt voor de monitorverzoeken. Laat leeg om de standaard user agent te gebruiken: %s"
 
 #. translators: %s: link to list of the latest browser user agents
-#: psr-4/SettingsController.php:335
+#: psr-4/SettingsController.php:365
 #, php-format
 msgid "Tip: some websites or firewalls block or treat unknown bots differently. You can also simulate a widely used web browser, see for example %s."
 msgstr "Tip: sommige websites of firewalls blokkeren onbekende bots of behandelen ze anders. Je kunt ook simuleren dat je een veelgebruikte webbrowser bent, zie bijvoorbeeld %s."
 
-#: psr-4/SettingsController.php:336
+#: psr-4/SettingsController.php:366
 msgid "the latest user agents"
 msgstr "de nieuwste user agents"
 
 #. translators: %s: user agent of the current visitor
-#: psr-4/SettingsController.php:349
+#: psr-4/SettingsController.php:379
 #, php-format
 msgid "Your current user agent is: %s"
 msgstr "Je huidige user agent is: %s"
 
-#: psr-4/SettingsController.php:369
-msgid "seconds"
-msgstr "seconden"
-
-#: psr-4/SettingsController.php:374
-msgid "The maximum number of seconds to wait for a response. A check that takes longer counts as a failed check. A short timeout keeps the queue moving when a site responds slowly."
-msgstr "Het maximale aantal seconden dat op een response wordt gewacht. Een check die langer duurt, telt als mislukte check. Met een korte time-out blijft de wachtrij doorlopen als een site traag reageert."
-
-#: psr-4/SettingsController.php:392
-msgid "The number of failed checks in a row before an alert is raised and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification."
-msgstr "Het aantal mislukte controles op rij voordat er alarm wordt geslagen en er een notificatie wordt verstuurd. Monitors controleren elke minuut, dus één enkele hapering leidt niet tot een notificatie."
-
-#: psr-4/SettingsController.php:406
+#: psr-4/SettingsController.php:399
+#: psr-4/SettingsController.php:455
 msgid "minutes"
 msgstr "minuten"
 
-#: psr-4/SettingsController.php:411
+#: psr-4/SettingsController.php:404
+msgid "The number of minutes between two checks of a monitor. Each check is an Action Scheduler action, so a longer interval reduces the load on the server."
+msgstr "Het aantal minuten tussen twee controles van een monitor. Elke controle is een Action Scheduler-actie, dus een langer interval verlaagt de belasting van de server."
+
+#: psr-4/SettingsController.php:418
+msgid "seconds"
+msgstr "seconden"
+
+#: psr-4/SettingsController.php:423
+msgid "The maximum number of seconds to wait for a response. A check that takes longer counts as a failed check. A short timeout keeps the queue moving when a site responds slowly."
+msgstr "Het maximale aantal seconden dat op een response wordt gewacht. Een check die langer duurt, telt als mislukte check. Met een korte time-out blijft de wachtrij doorlopen als een site traag reageert."
+
+#: psr-4/SettingsController.php:441
+msgid "The number of failed checks in a row before an alert is raised and a notification is sent. A single hiccup does not trigger a notification. The time until an alert is raised is about this number multiplied by the check interval."
+msgstr "Het aantal mislukte controles op rij voordat er alarm wordt geslagen en er een notificatie wordt verstuurd. Eén enkele hapering leidt niet tot een notificatie. De tijd tot er alarm wordt geslagen is ongeveer dit aantal vermenigvuldigd met het controle-interval."
+
+#: psr-4/SettingsController.php:460
 msgid "Send a reminder while an alert is still open. Use 0 to only send a notification when the alert is raised and when it is resolved."
 msgstr "Verstuur een herinnering zolang een alarm nog openstaat. Gebruik 0 om alleen een notificatie te versturen wanneer er alarm wordt geslagen en wanneer het alarm is opgelost."
 
-#: psr-4/SettingsController.php:425
+#: psr-4/SettingsController.php:474
 msgid "days"
 msgstr "dagen"
 
-#: psr-4/SettingsController.php:430
+#: psr-4/SettingsController.php:479
 msgid "The number of days to keep the response of each individual check. Hourly summaries of the response times are kept indefinitely."
 msgstr "Het aantal dagen dat de response van elke afzonderlijke check wordt bewaard. Samenvattingen van de responstijden per uur worden onbeperkt bewaard."
 
@@ -394,7 +425,8 @@ msgstr "In afwachting"
 msgid "Alert"
 msgstr "Alarm"
 
-#: templates/archive-orbis_monitor.php:42 templates/monitor-checks-bar.php:28
+#: templates/archive-orbis_monitor.php:42
+#: templates/monitor-checks-bar.php:28
 msgid "Recent checks"
 msgstr "Recente checks"
 
@@ -422,7 +454,8 @@ msgstr "Laatste antwoordduur"
 msgid "Last time checked"
 msgstr "Laatst gecontroleerd"
 
-#: templates/archive-orbis_monitor.php:100 templates/monitor-checks-bar.php:45
+#: templates/archive-orbis_monitor.php:100
+#: templates/monitor-checks-bar.php:45
 #: templates/monitor-responses.php:89
 msgid "d-m-Y H:i:s"
 msgstr "d-m-Y H:i:s"
@@ -453,17 +486,18 @@ msgstr "Laatste %d checks"
 msgid "%s%% succeeded"
 msgstr "%s%% geslaagd"
 
-#: templates/monitor-details.php:36
+#: templates/monitor-details.php:35
 msgid "Current Incident"
 msgstr "Huidig incident"
 
 #. translators: %s: date the incident started
-#: templates/monitor-details.php:42
+#: templates/monitor-details.php:41
 #, php-format
 msgid "Since %s"
 msgstr "Sinds %s"
 
-#: templates/monitor-details.php:43 templates/monitor-incidents.php:65
+#: templates/monitor-details.php:42
+#: templates/monitor-incidents.php:65
 #: templates/monitor-incidents.php:71
 msgid "d-m-Y H:i"
 msgstr "d-m-Y H:i"
@@ -506,7 +540,8 @@ msgstr "Incidenten"
 msgid "Last %d Responses"
 msgstr "Laatste %d antwoorden"
 
-#: templates/search-form.php:22 templates/search-form.php:24
+#: templates/search-form.php:22
+#: templates/search-form.php:24
 #: templates/search-form.php:26
 msgid "Search"
 msgstr "Zoeken"

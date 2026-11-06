@@ -65,6 +65,15 @@ final readonly class SettingsController {
 	}
 
 	/**
+	 * Get the number of minutes between two checks of a monitor.
+	 *
+	 * @return int
+	 */
+	public function get_check_interval(): int {
+		return \min( 60, \max( 1, (int) \get_option( 'orbis_monitoring_check_interval', 5 ) ) );
+	}
+
+	/**
 	 * Get the number of failed checks in a row before an alert is raised.
 	 *
 	 * @return int
@@ -116,6 +125,15 @@ final readonly class SettingsController {
 			'orbis-monitoring',
 			$this->page( ... )
 		);
+
+		\add_submenu_page(
+			'edit.php?post_type=orbis_monitor',
+			\__( 'Orbis Monitoring', 'orbis-monitoring' ),
+			\__( 'Settings', 'orbis-monitoring' ),
+			'manage_options',
+			'orbis-monitoring',
+			$this->page( ... )
+		);
 	}
 
 	/**
@@ -131,6 +149,16 @@ final readonly class SettingsController {
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',
 				'default'           => $this->get_default_user_agent(),
+			]
+		);
+
+		\register_setting(
+			'orbis-monitoring',
+			'orbis_monitoring_check_interval',
+			[
+				'type'              => 'integer',
+				'sanitize_callback' => fn( $value ) => \min( 60, \max( 1, (int) $value ) ),
+				'default'           => 5,
 			]
 		);
 
@@ -196,6 +224,17 @@ final readonly class SettingsController {
 			'orbis_monitoring_general',
 			[
 				'label_for' => 'orbis_monitoring_user_agent',
+			]
+		);
+
+		\add_settings_field(
+			'orbis_monitoring_check_interval',
+			\__( 'Check Interval', 'orbis-monitoring' ),
+			$this->field_check_interval( ... ),
+			'orbis-monitoring',
+			'orbis_monitoring_general',
+			[
+				'label_for' => 'orbis_monitoring_check_interval',
 			]
 		);
 
@@ -358,6 +397,25 @@ final readonly class SettingsController {
 	}
 
 	/**
+	 * Check interval field.
+	 *
+	 * @return void
+	 */
+	private function field_check_interval(): void {
+		\printf(
+			'<input id="orbis_monitoring_check_interval" name="orbis_monitoring_check_interval" value="%s" type="number" min="1" max="60" step="1" class="small-text" /> %s',
+			\esc_attr( (string) $this->get_check_interval() ),
+			\esc_html__( 'minutes', 'orbis-monitoring' )
+		);
+
+		?>
+		<p class="description">
+			<?php \esc_html_e( 'The number of minutes between two checks of a monitor. Each check is an Action Scheduler action, so a longer interval reduces the load on the server.', 'orbis-monitoring' ); ?>
+		</p>
+		<?php
+	}
+
+	/**
 	 * Timeout field.
 	 *
 	 * @return void
@@ -389,7 +447,7 @@ final readonly class SettingsController {
 
 		?>
 		<p class="description">
-			<?php \esc_html_e( 'The number of failed checks in a row before an alert is raised and a notification is sent. Monitors check every minute, so a single hiccup does not trigger a notification.', 'orbis-monitoring' ); ?>
+			<?php \esc_html_e( 'The number of failed checks in a row before an alert is raised and a notification is sent. A single hiccup does not trigger a notification. The time until an alert is raised is about this number multiplied by the check interval.', 'orbis-monitoring' ); ?>
 		</p>
 		<?php
 	}
